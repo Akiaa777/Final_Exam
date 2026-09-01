@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extract Café Inventory System</title>
+  <style>
+    :root {
+      --primary: #4A2C2A;
+      --secondary: #8B5A2B;
+      --accent: #D4A373;
+      --bg: #FAEDCD;
+      --card-bg: #FFFFFF;
+      --text: #333333;
+      --danger: #E63946;
+      --success: #2A9D8F;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+
+    .container { width: 100%; max-width: 900px; background: var(--card-bg); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); overflow: hidden; }
+    header { background-color: var(--primary); color: white; padding: 20px; text-align: center; }
+    
+    .view { display: none; padding: 30px; }
+    .view.active { display: block; }
+
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: 600; }
+    input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
+    
+    button { background-color: var(--secondary); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 16px; width: 100%; margin-top: 10px; transition: background 0.2s; }
+    button:hover { background-color: var(--primary); }
+
+    nav { display: flex; background: var(--accent); padding: 10px; gap: 10px; flex-wrap: wrap; }
+    nav button { flex: 1; margin-top: 0; padding: 8px; font-size: 14px; white-space: nowrap; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    th { background-color: var(--primary); color: white; }
+
+    .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    .status-instock { background-color: #E8F5E9; color: #2E7D32; }
+    .status-lowstock { background-color: #FFEBEE; color: #C62828; }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-top: 20px; }
+    .stat-card { background: var(--bg); padding: 20px; border-radius: 8px; text-align: center; border-left: 5px solid var(--secondary); }
+    .stat-card h3 { font-size: 28px; color: var(--primary); }
+
+    #message { margin-top: 15px; padding: 10px; border-radius: 6px; display: none; }
+    .msg-success { background: #E8F5E9; color: #2E7D32; }
+    .msg-error { background: #FFEBEE; color: #C62828; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Extract Café Inventory</h1>
+      <p id="userStatus">Please login to continue</p>
+    </header>
+
+    <div id="message"></div>
+
+    <!-- LOGIN VIEW -->
+    <div id="loginView" class="view active">
+      <h2>Manager Login</h2>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="loginUsername" placeholder="Enter username">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter password">
+      </div>
+      <button onclick="handleLogin()">Login</button>
+    </div>
+
+    <!-- MFA VIEW -->
+    <div id="mfaView" class="view">
+      <h2>Multi-Factor Authentication</h2>
+      <p style="margin-bottom: 15px;">Enter your 6-digit verification code.</p>
+      <div class="form-group">
+        <label>Verification Code</label>
+        <input type="text" id="mfaCode" placeholder="123456">
+      </div>
+      <button onclick="handleMFA()">Verify Code</button>
+    </div>
+
+    <!-- DASHBOARD VIEW -->
+    <div id="dashboardView" class="view">
+      <nav>
+        <button onclick="switchTab('dashboardTab')">Dashboard</button>
+        <button onclick="switchTab('inventoryTab')">Inventory</button>
+        <button onclick="switchTab('wasteTab')">Waste Logs</button>
+        <button onclick="switchTab('poTab')">Purchase Orders</button>
+        <button onclick="switchTab('configTab')">Settings</button>
+        <button onclick="handleLogout()" style="background-color: var(--danger);">Logout</button>
+      </nav>
+
+      <!-- TAB: DASHBOARD -->
+      <div id="dashboardTab" class="tab-content" style="margin-top: 20px;">
+        <h2>System Overview</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3 id="statTotal">0</h3>
+            <p>Total Items</p>
+          </div>
+          <div class="stat-card">
+            <h3 id="statLow">0</h3>
+            <p>Low Stock Items</p>
+          </div>
+          <div class="stat-card">
+            <h3 id="statWaste">0</h3>
+            <p>Recorded Waste Logs</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: INVENTORY -->
+      <div id="inventoryTab" class="tab-content" style="display:none; margin-top: 20px;">
+        <h2>Inventory Items</h2>
+        <button onclick="showAddItemForm()" style="width: auto; margin-bottom: 15px;">+ Add New Item</button>
+        
+        <div id="addItemForm" style="display:none; background:#f9f9f9; padding:15px; border-radius:8px; margin-bottom:15px;">
+          <h3>New Item Details</h3>
+          <input type="text" id="newItemName" placeholder="Item Name" style="margin-bottom:8px;">
+          <input type="text" id="newItemCategory" placeholder="Category (e.g. Coffee Beans)" style="margin-bottom:8px;">
+          <input type="number" id="newItemQty" placeholder="Quantity" style="margin-bottom:8px;">
+          <input type="text" id="newItemUnit" placeholder="Unit (e.g. kg, liters)" style="margin-bottom:8px;">
+          <input type="number" id="newItemMin" placeholder="Minimum Alert Threshold" style="margin-bottom:8px;">
+          <button onclick="submitNewItem()">Save Item</button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th><th>Item</th><th>Category</th><th>Qty</th><th>Unit</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- TAB: WASTE LOGS -->
+      <div id="wasteTab" class="tab-content" style="display:none; margin-top: 20px;">
+        <h2>Record Item Waste</h2>
+        <div class="form-group">
+          <label>Item Name</label>
+          <input type="text" id="wasteItem" placeholder="e.g. Whole Milk">
+        </div>
+        <div class="form-group">
+          <label>Quantity Wasted</label>
+          <input type="number" id="wasteQty" placeholder="1">
+        </div>
+        <div class="form-group">
+          <label>Reason</label>
+          <input type="text" id="wasteReason" placeholder="Expired / Spilled">
+        </div>
+        <button onclick="submitWaste()">Record Waste</button>
+      </div>
+
+      <!-- TAB: PURCHASE ORDERS -->
+      <div id="poTab" class="tab-content" style="display:none; margin-top: 20px;">
+        <h2>Create Purchase Order</h2>
+        <div class="form-group">
+          <label>Supplier</label>
+          <input type="text" id="poSupplier" placeholder="Supplier Name">
+        </div>
+        <div class="form-group">
+          <label>Item Description</label>
+          <input type="text" id="poItem" placeholder="Item Name">
+        </div>
+        <div class="form-group">
+          <label>Quantity</label>
+          <input type="number" id="poQty" placeholder="10">
+        </div>
+        <div class="form-group">
+          <label>Total Price ($)</label>
+          <input type="number" id="poTotal" placeholder="150.00">
+        </div>
+        <button onclick="submitPO()">Submit Order for Approval</button>
+      </div>
+
+      <!-- TAB: CONFIGURATION -->
+      <div id="configTab" class="tab-content" style="display:none; margin-top: 20px;">
+        <h2>System Settings</h2>
+        <div class="form-group">
+          <label>Low Stock Default Threshold</label>
+          <input type="number" id="configThreshold" placeholder="e.g. 10">
+        </div>
+        <button onclick="submitConfig('Low Stock Threshold')">Request Threshold Change</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Direct Web App connection URL to Google Apps Script
+    const SPREADSHEET_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzsRbGnukqlreoF3feAAtEjuf927HZE7Nx7uPHM_0oKHKHiopqb6i0YX9EeC96PMBivXw/exec";
+
+    let currentUser = "";
+
+    async function apiRequest(actionData) {
+      showMessage("Processing request...", "msg-success");
+      try {
+        const response = await fetch(SPREADSHEET_WEB_APP_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(actionData)
+        });
+        const data = await response.json();
+        hideMessage();
+        return data;
+      } catch (error) {
+        showMessage("Network or Server error: " + error.message, "msg-error");
+        return { success: false };
+      }
+    }
+
+    function showMessage(msg, typeClass) {
+      const msgDiv = document.getElementById("message");
+      msgDiv.className = typeClass;
+      msgDiv.innerText = msg;
+      msgDiv.style.display = "block";
+    }
+
+    function hideMessage() {
+      document.getElementById("message").style.display = "none";
+    }
+
+    async function handleLogin() {
+      const user = document.getElementById("loginUsername").value;
+      const pass = document.getElementById("loginPassword").value;
+
+      if (!user || !pass) {
+        showMessage("Enter both username and password.", "msg-error");
+        return;
+      }
+
+      const res = await apiRequest({ action: "login", username: user, password: pass });
+      if (res.success) {
+        currentUser = res.username;
+        showView("mfaView");
+      } else {
+        showMessage(res.message || "Login failed.", "msg-error");
+      }
+    }
+
+    async function handleMFA() {
+      const code = document.getElementById("mfaCode").value;
+      const res = await apiRequest({ action: "verifyMFA", code: code });
+      if (res.success) {
+        document.getElementById("userStatus").innerText = "Logged in as: " + currentUser;
+        showView("dashboardView");
+        loadDashboardData();
+      } else {
+        showMessage("Invalid MFA Code", "msg-error");
+      }
+    }
+
+    function showView(viewId) {
+      document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+      document.getElementById(viewId).classList.add("active");
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-content").forEach(t => t.style.display = "none");
+      document.getElementById(tabId).style.display = "block";
+      if (tabId === "inventoryTab") loadInventoryData();
+    }
+
+    async function loadDashboardData() {
+      const res = await apiRequest({ action: "dashboard" });
+      if (res.success) {
+        document.getElementById("statTotal").innerText = res.totalItems;
+        document.getElementById("statLow").innerText = res.lowStock;
+        document.getElementById("statWaste").innerText = res.wasteCount;
+      }
+    }
+
+    async function loadInventoryData() {
+      const res = await apiRequest({ action: "getInventory" });
+      const tbody = document.getElementById("inventoryTableBody");
+      tbody.innerHTML = "";
+      if (res.success && res.data) {
+        res.data.forEach(item => {
+          const badgeClass = item.status === "Low Stock" ? "status-lowstock" : "status-instock";
+          tbody.innerHTML += `
+            <tr>
+              <td>${item.id}</td>
+              <td>${item.item}</td>
+              <td>${item.category}</td>
+              <td>${item.quantity}</td>
+              <td>${item.unit}</td>
+              <td><span class="status-badge ${badgeClass}">${item.status}</span></td>
+            </tr>
+          `;
+        });
+      }
+    }
+
+    function showAddItemForm() {
+      const form = document.getElementById("addItemForm");
+      form.style.display = form.style.display === "none" ? "block" : "none";
+    }
+
+    async function submitNewItem() {
+      const item = document.getElementById("newItemName").value;
+      const category = document.getElementById("newItemCategory").value;
+      const quantity = document.getElementById("newItemQty").value;
+      const unit = document.getElementById("newItemUnit").value;
+      const minimumLevel = document.getElementById("newItemMin").value;
+
+      const res = await apiRequest({
+        action: "addInventoryItem",
+        item, category, quantity, unit, minimumLevel,
+        username: currentUser
+      });
+
+      if (res.success) {
+        showMessage(res.message, "msg-success");
+        document.getElementById("addItemForm").style.display = "none";
+        loadInventoryData();
+      } else {
+        showMessage(res.message, "msg-error");
+      }
+    }
+
+    async function submitWaste() {
+      const item = document.getElementById("wasteItem").value;
+      const quantity = document.getElementById("wasteQty").value;
+      const reason = document.getElementById("wasteReason").value;
+
+      const res = await apiRequest({
+        action: "recordWaste",
+        item, quantity, reason, username: currentUser
+      });
+
+      if (res.success) showMessage(res.message, "msg-success");
+      else showMessage(res.message, "msg-error");
+    }
+
+    async function submitPO() {
+      const supplier = document.getElementById("poSupplier").value;
+      const item = document.getElementById("poItem").value;
+      const quantity = document.getElementById("poQty").value;
+      const total = document.getElementById("poTotal").value;
+
+      const res = await apiRequest({
+        action: "createPurchaseOrder",
+        supplier, item, quantity, total, username: currentUser
+      });
+
+      if (res.success) showMessage(res.message, "msg-success");
+      else showMessage(res.message, "msg-error");
+    }
+
+    async function submitConfig(setting) {
+      const newValue = document.getElementById("configThreshold").value;
+
+      const res = await apiRequest({
+        action: "changeConfiguration",
+        setting: setting,
+        newValue: newValue,
+        username: currentUser
+      });
+
+      if (res.success) showMessage(res.message, "msg-success");
+      else showMessage(res.message, "msg-error");
+    }
+
+    function handleLogout() {
+      currentUser = "";
+      document.getElementById("userStatus").innerText = "Please login to continue";
+      showView("loginView");
+    }
+  </script>
+</body>
+</html>
