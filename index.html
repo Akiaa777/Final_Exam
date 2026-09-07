@@ -1,2259 +1,4183 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract Brew Cafe - Inventory System</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+Extract Brew Cafe | Inventory System
+</title>
+
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
-}
+
+/* =====================================================
+   VARIABLES
+===================================================== */
 
 :root {
-    --green: #3d5638;
-    --green-dark: #293c27;
-    --green-light: #e7eee4;
-    --cream: #f7f6f2;
-    --white: #ffffff;
-    --gray: #777;
-    --border: #dedede;
-    --danger: #e85c5c;
-    --warning: #f3b63f;
-    --success: #6bb56b;
+
+    --green:
+        #3f5739;
+
+    --green-dark:
+        #2d4029;
+
+    --green-light:
+        #e8eee5;
+
+    --green-soft:
+        #f2f6f0;
+
+    --dark:
+        #292929;
+
+    --dark-2:
+        #363636;
+
+    --white:
+        #ffffff;
+
+    --cream:
+        #f7f7f4;
+
+    --gray:
+        #737373;
+
+    --gray-light:
+        #eeeeeb;
+
+    --border:
+        #deded9;
+
+    --red:
+        #d9534f;
+
+    --red-light:
+        #fae2e1;
+
+    --yellow:
+        #c99424;
+
+    --yellow-light:
+        #fff2d2;
+
+    --blue:
+        #4479a8;
+
 }
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+* {
+
+    margin:
+        0;
+
+    padding:
+        0;
+
+    box-sizing:
+        border-box;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+}
+
 
 body {
-    background: #f4f4f2;
-    color: #292929;
+
+    background:
+        var(--cream);
+
+    color:
+        #272727;
+
 }
 
-/* =========================
-   LOGIN
-========================= */
+
+/* =====================================================
+   LOGIN PAGE
+===================================================== */
 
 .login-page {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+    min-height:
+        100vh;
+
+    display:
+        flex;
+
+    justify-content:
+        center;
+
+    align-items:
+        center;
+
+    padding:
+        20px;
+
     background:
-        linear-gradient(rgba(42,55,39,.85),rgba(42,55,39,.85)),
-        url("https://images.unsplash.com/photo-1447933601403-0c6688de566e")
-        center/cover;
+        linear-gradient(
+            rgba(38,52,35,.88),
+            rgba(38,52,35,.88)
+        ),
+        url(
+            "https://images.unsplash.com/photo-1447933601403-0c6688de566e"
+        );
+
+    background-size:
+        cover;
+
+    background-position:
+        center;
+
 }
+
 
 .login-card {
-    width: 390px;
-    background: rgba(255,255,255,.96);
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 15px 40px rgba(0,0,0,.25);
+
+    width:
+        400px;
+
+    max-width:
+        100%;
+
+    background:
+        rgba(255,255,255,.97);
+
+    border-radius:
+        12px;
+
+    padding:
+        42px 38px;
+
+    box-shadow:
+        0 25px 60px
+        rgba(0,0,0,.30);
+
 }
 
-.login-logo {
-    text-align: center;
-    margin-bottom: 25px;
+
+.login-brand {
+
+    text-align:
+        center;
+
+    margin-bottom:
+        32px;
+
 }
 
-.login-logo h1 {
-    color: var(--green);
-    font-size: 24px;
+
+.login-brand-icon {
+
+    font-size:
+        42px;
+
+    margin-bottom:
+        8px;
+
 }
 
-.login-logo p {
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: #777;
+
+.login-brand h1 {
+
+    font-size:
+        23px;
+
+    color:
+        var(--green);
+
+    letter-spacing:
+        1px;
+
 }
 
-.login-card h2 {
-    text-align: center;
-    margin-bottom: 25px;
+
+.login-brand p {
+
+    font-size:
+        9px;
+
+    letter-spacing:
+        4px;
+
+    color:
+        #777;
+
+    margin-top:
+        4px;
+
 }
 
-.input-group {
-    margin-bottom: 18px;
+
+.login-title {
+
+    text-align:
+        center;
+
+    margin-bottom:
+        24px;
+
 }
 
-.input-group label {
-    display: block;
-    font-size: 13px;
-    margin-bottom: 6px;
-    font-weight: 600;
+
+.login-title h2 {
+
+    font-size:
+        22px;
+
 }
 
-.input-group input,
-.input-group select,
-.input-group textarea {
-    width: 100%;
-    padding: 11px 12px;
-    border: 1px solid #d8d8d8;
-    border-radius: 6px;
-    outline: none;
-    background: white;
+
+.login-title p {
+
+    font-size:
+        12px;
+
+    color:
+        var(--gray);
+
+    margin-top:
+        5px;
+
 }
 
-.input-group input:focus,
-.input-group select:focus,
-.input-group textarea:focus {
-    border-color: var(--green);
+
+.form-group {
+
+    margin-bottom:
+        17px;
+
 }
 
-.login-button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    background: var(--green);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
+
+.form-group label {
+
+    display:
+        block;
+
+    font-size:
+        12px;
+
+    font-weight:
+        600;
+
+    margin-bottom:
+        6px;
+
 }
 
-.login-button:hover {
-    background: var(--green-dark);
+
+.form-control {
+
+    width:
+        100%;
+
+    border:
+        1px solid
+        #d4d4d4;
+
+    border-radius:
+        6px;
+
+    padding:
+        11px 12px;
+
+    outline:
+        none;
+
+    background:
+        white;
+
+    font-size:
+        13px;
+
 }
 
-.login-footer {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 13px;
+
+.form-control:focus {
+
+    border-color:
+        var(--green);
+
+    box-shadow:
+        0 0 0 2px
+        rgba(63,87,57,.10);
+
 }
 
-.login-footer a {
-    color: var(--green);
-    font-weight: bold;
-    cursor: pointer;
+
+.login-options {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    font-size:
+        11px;
+
+    margin-bottom:
+        20px;
+
+    color:
+        var(--gray);
+
 }
+
+
+.login-options a {
+
+    color:
+        var(--green);
+
+    text-decoration:
+        none;
+
+    font-weight:
+        600;
+
+}
+
+
+.btn-login {
+
+    width:
+        100%;
+
+    padding:
+        12px;
+
+    background:
+        var(--green);
+
+    color:
+        white;
+
+    border:
+        none;
+
+    border-radius:
+        6px;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+    transition:
+        .2s;
+
+}
+
+
+.btn-login:hover {
+
+    background:
+        var(--green-dark);
+
+}
+
+
+.login-register {
+
+    text-align:
+        center;
+
+    margin-top:
+        22px;
+
+    font-size:
+        12px;
+
+    color:
+        var(--gray);
+
+}
+
+
+.login-register span {
+
+    color:
+        var(--green);
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+}
+
 
 .message {
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    display: none;
-    text-align: center;
-    font-size: 13px;
+
+    display:
+        none;
+
+    padding:
+        10px;
+
+    border-radius:
+        5px;
+
+    margin-bottom:
+        15px;
+
+    text-align:
+        center;
+
+    font-size:
+        12px;
+
 }
 
-.error {
-    background: #f8d7da;
-    color: #842029;
+
+.message.success {
+
+    display:
+        block;
+
+    background:
+        #dceedd;
+
+    color:
+        #316334;
+
 }
 
-.success {
-    background: #d1e7dd;
-    color: #0f5132;
+
+.message.error {
+
+    display:
+        block;
+
+    background:
+        #f8dddd;
+
+    color:
+        #8d3030;
+
 }
 
-/* =========================
-   MAIN SYSTEM
-========================= */
 
-.app {
-    display: none;
-    min-height: 100vh;
+/* =====================================================
+   APP
+===================================================== */
+
+#app {
+
+    display:
+        none;
+
+    min-height:
+        100vh;
+
 }
+
+
+/* =====================================================
+   TOP BAR
+===================================================== */
 
 .topbar {
-    height: 64px;
-    background: #292929;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 25px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
+
+    height:
+        64px;
+
+    background:
+        var(--dark);
+
+    color:
+        white;
+
+    position:
+        fixed;
+
+    top:
+        0;
+
+    left:
+        0;
+
+    right:
+        0;
+
+    z-index:
+        1000;
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    padding:
+        0 25px;
+
 }
+
 
 .brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
 }
+
 
 .brand-icon {
-    font-size: 25px;
+
+    font-size:
+        27px;
+
 }
+
 
 .brand-name {
-    font-size: 17px;
-    font-weight: bold;
-    letter-spacing: 1px;
+
+    font-size:
+        16px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        1px;
+
 }
+
 
 .brand-subtitle {
-    font-size: 8px;
-    letter-spacing: 3px;
-    color: #ddd;
+
+    font-size:
+        8px;
+
+    color:
+        #cfcfcf;
+
+    letter-spacing:
+        3px;
+
 }
 
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+
+.top-right {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        14px;
+
+    font-size:
+        13px;
+
 }
 
-.user-icon {
-    width: 35px;
-    height: 35px;
-    background: white;
-    color: #333;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+.notification {
+
+    font-size:
+        18px;
+
+    cursor:
+        pointer;
+
 }
+
+
+.avatar {
+
+    width:
+        35px;
+
+    height:
+        35px;
+
+    border-radius:
+        50%;
+
+    background:
+        white;
+
+    color:
+        #333;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
 
 .sidebar {
-    position: fixed;
-    left: 0;
-    top: 64px;
-    bottom: 0;
-    width: 205px;
-    background: white;
-    border-right: 1px solid #ddd;
-    padding-top: 10px;
-    z-index: 90;
+
+    position:
+        fixed;
+
+    top:
+        64px;
+
+    left:
+        0;
+
+    bottom:
+        0;
+
+    width:
+        210px;
+
+    background:
+        white;
+
+    border-right:
+        1px solid
+        var(--border);
+
+    z-index:
+        900;
+
+    padding-top:
+        10px;
+
 }
+
 
 .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 18px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: .2s;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        12px;
+
+    padding:
+        12px 18px;
+
+    font-size:
+        12px;
+
+    color:
+        #333;
+
+    cursor:
+        pointer;
+
+    transition:
+        .15s;
+
 }
+
 
 .nav-item:hover {
-    background: #edf2eb;
+
+    background:
+        var(--green-soft);
+
 }
+
 
 .nav-item.active {
-    background: #dfe8dc;
-    color: var(--green);
-    font-weight: bold;
-    border-right: 3px solid var(--green);
+
+    background:
+        var(--green-light);
+
+    color:
+        var(--green);
+
+    font-weight:
+        700;
+
+    border-right:
+        3px solid
+        var(--green);
+
 }
+
 
 .nav-icon {
-    width: 20px;
-    text-align: center;
+
+    width:
+        20px;
+
+    text-align:
+        center;
+
+    font-size:
+        16px;
+
 }
 
-.sidebar-divider {
-    border-top: 1px solid #ddd;
-    margin: 18px 12px;
+
+.sidebar-line {
+
+    border-top:
+        1px solid
+        #ddd;
+
+    margin:
+        17px 12px;
+
 }
+
+
+/* =====================================================
+   MAIN
+===================================================== */
 
 .main {
-    margin-left: 205px;
-    padding-top: 64px;
-    min-height: 100vh;
+
+    margin-left:
+        210px;
+
+    padding-top:
+        64px;
+
+    min-height:
+        100vh;
+
 }
+
 
 .content {
-    padding: 25px 30px;
-    max-width: 1500px;
-    margin: auto;
+
+    padding:
+        25px 30px;
+
+    max-width:
+        1500px;
+
+    margin:
+        auto;
+
 }
 
-.page-title {
-    font-size: 23px;
-    font-weight: bold;
+
+.page {
+
+    display:
+        none;
+
 }
 
-.page-subtitle {
-    color: #777;
-    font-size: 13px;
-    margin-top: 3px;
+
+.page.active {
+
+    display:
+        block;
+
 }
+
 
 .page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        20px;
+
+    margin-bottom:
+        20px;
+
 }
 
-.green-button {
-    background: var(--green);
-    color: white;
-    border: none;
-    padding: 11px 17px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
+
+.page-title {
+
+    font-size:
+        23px;
+
+    font-weight:
+        700;
+
 }
 
-.green-button:hover {
-    background: var(--green-dark);
+
+.page-subtitle {
+
+    color:
+        var(--gray);
+
+    font-size:
+        12px;
+
+    margin-top:
+        3px;
+
 }
 
-.white-card {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
+
+.card {
+
+    background:
+        white;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        6px;
+
+    padding:
+        16px;
+
 }
 
-/* =========================
-   DASHBOARD
-========================= */
-
-.stats {
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.stat-card {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 18px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.stat-icon {
-    width: 45px;
-    height: 45px;
-    border-radius: 5px;
-    background: #eef2eb;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 21px;
-}
-
-.stat-label {
-    color: #777;
-    font-size: 11px;
-}
-
-.stat-number {
-    font-size: 23px;
-    font-weight: bold;
-    margin-top: 4px;
-}
-
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 20px;
-}
 
 .card-title {
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 15px;
+
+    font-size:
+        13px;
+
+    font-weight:
+        700;
+
+    margin-bottom:
+        15px;
+
 }
+
+
+.btn {
+
+    border:
+        none;
+
+    background:
+        var(--green);
+
+    color:
+        white;
+
+    padding:
+        10px 15px;
+
+    border-radius:
+        5px;
+
+    cursor:
+        pointer;
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+}
+
+
+.btn:hover {
+
+    background:
+        var(--green-dark);
+
+}
+
+
+.btn-danger {
+
+    background:
+        var(--red);
+
+}
+
+
+.btn-secondary {
+
+    background:
+        #777;
+
+}
+
+
+/* =====================================================
+   DASHBOARD STATS
+===================================================== */
+
+.stats {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:
+        15px;
+
+    margin-bottom:
+        20px;
+
+}
+
+
+.stat-card {
+
+    background:
+        white;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        6px;
+
+    padding:
+        17px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        14px;
+
+}
+
+
+.stat-icon {
+
+    width:
+        44px;
+
+    height:
+        44px;
+
+    background:
+        var(--green-light);
+
+    border-radius:
+        6px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        20px;
+
+}
+
+
+.stat-label {
+
+    font-size:
+        10px;
+
+    color:
+        var(--gray);
+
+}
+
+
+.stat-number {
+
+    font-size:
+        23px;
+
+    font-weight:
+        700;
+
+    margin-top:
+        3px;
+
+}
+
+
+.dashboard-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1.25fr 1fr;
+
+    gap:
+        20px;
+
+}
+
 
 .quick-action {
-    width: 100%;
-    border: none;
-    background: #f0f0f0;
-    padding: 11px;
-    margin-bottom: 7px;
-    text-align: left;
-    cursor: pointer;
-    border-radius: 4px;
+
+    width:
+        100%;
+
+    border:
+        none;
+
+    background:
+        #f0f0ee;
+
+    padding:
+        11px;
+
+    border-radius:
+        5px;
+
+    text-align:
+        left;
+
+    margin-bottom:
+        7px;
+
+    cursor:
+        pointer;
+
+    font-size:
+        12px;
+
 }
+
 
 .quick-action:hover {
-    background: #e3e8e1;
+
+    background:
+        var(--green-light);
+
 }
+
 
 .alert-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #eee;
-    padding: 10px 0;
-    font-size: 12px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        10px;
+
+    border-bottom:
+        1px solid
+        #eee;
+
+    padding:
+        9px 0;
+
+    font-size:
+        11px;
+
 }
 
-.alert-left {
-    display: flex;
-    align-items: center;
-    gap: 9px;
+
+.alert-name {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
 }
 
-.alert-icon {
-    font-size: 17px;
+
+.badge {
+
+    display:
+        inline-block;
+
+    padding:
+        4px 9px;
+
+    border-radius:
+        12px;
+
+    font-size:
+        9px;
+
+    font-weight:
+        700;
+
 }
 
-.low {
-    background: #fff0d0;
-    color: #956700;
-    padding: 4px 8px;
-    border-radius: 10px;
-    font-size: 10px;
+
+.badge-green {
+
+    background:
+        #dcefdc;
+
+    color:
+        #347034;
+
 }
 
-.chart-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-top: 20px;
+
+.badge-yellow {
+
+    background:
+        var(--yellow-light);
+
+    color:
+        var(--yellow);
+
 }
+
+
+.badge-red {
+
+    background:
+        var(--red-light);
+
+    color:
+        #a83c38;
+
+}
+
+
+.dashboard-bottom {
+
+    margin-top:
+        20px;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        20px;
+
+}
+
+
+/* =====================================================
+   BAR CHART
+===================================================== */
 
 .bar-chart {
-    height: 180px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-around;
-    border-bottom: 1px solid #ddd;
+
+    height:
+        190px;
+
+    display:
+        flex;
+
+    align-items:
+        flex-end;
+
+    justify-content:
+        space-around;
+
+    border-bottom:
+        1px solid
+        #ddd;
+
+    padding:
+        15px 15px 0;
+
 }
+
+
+.bar-wrapper {
+
+    height:
+        100%;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        flex-end;
+
+}
+
+
+.bar-value {
+
+    font-size:
+        10px;
+
+    margin-bottom:
+        5px;
+
+}
+
 
 .bar {
-    width: 45px;
-    background: #999;
-    position: relative;
-    text-align: center;
+
+    width:
+        42px;
+
+    background:
+        #8d8d8d;
+
+    border-radius:
+        3px 3px 0 0;
+
 }
 
-.bar span {
-    position: absolute;
-    top: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 11px;
-}
 
 .bar-label {
-    position: absolute;
-    bottom: -25px;
-    width: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 10px;
+
+    font-size:
+        9px;
+
+    margin-top:
+        8px;
+
+    color:
+        #666;
+
 }
 
-/* =========================
-   INVENTORY
-========================= */
 
-.search-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
+/* =====================================================
+   SEARCH / FILTER
+===================================================== */
+
+.search-area {
+
+    display:
+        flex;
+
+    gap:
+        10px;
+
+    align-items:
+        center;
+
 }
+
 
 .search-box {
-    flex: 1;
-    position: relative;
+
+    position:
+        relative;
+
+    flex:
+        1;
+
 }
+
 
 .search-box input {
-    width: 100%;
-    padding: 11px 15px 11px 38px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+
+    width:
+        100%;
+
+    padding:
+        10px 12px 10px 35px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        5px;
+
+    outline:
+        none;
+
 }
 
-.search-symbol {
-    position: absolute;
-    left: 13px;
-    top: 10px;
+
+.search-icon {
+
+    position:
+        absolute;
+
+    left:
+        12px;
+
+    top:
+        9px;
+
+    color:
+        #777;
+
 }
+
 
 .filters {
-    display: flex;
-    gap: 8px;
+
+    display:
+        flex;
+
+    gap:
+        7px;
+
+    margin-top:
+        10px;
+
 }
+
 
 .filter {
-    padding: 8px 15px;
-    border-radius: 18px;
-    border: 1px solid #ddd;
-    background: white;
-    cursor: pointer;
-    font-size: 12px;
+
+    border:
+        1px solid
+        var(--border);
+
+    background:
+        white;
+
+    border-radius:
+        18px;
+
+    padding:
+        7px 14px;
+
+    cursor:
+        pointer;
+
+    font-size:
+        10px;
+
 }
+
 
 .filter.active {
-    background: var(--green);
-    color: white;
+
+    background:
+        var(--green);
+
+    color:
+        white;
+
+    border-color:
+        var(--green);
+
 }
 
-.table-container {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow-x: auto;
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.table-card {
+
+    background:
+        white;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        6px;
+
+    overflow:
+        hidden;
+
 }
+
+
+.table-scroll {
+
+    overflow-x:
+        auto;
+
+}
+
 
 table {
-    width: 100%;
-    border-collapse: collapse;
+
+    width:
+        100%;
+
+    border-collapse:
+        collapse;
+
 }
+
 
 th {
-    background: #f2f2f0;
-    font-size: 11px;
-    text-align: left;
-    padding: 12px;
+
+    background:
+        #f0f0ed;
+
+    color:
+        #555;
+
+    padding:
+        12px;
+
+    text-align:
+        left;
+
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
 }
+
 
 td {
-    padding: 12px;
-    font-size: 12px;
-    border-top: 1px solid #eee;
+
+    padding:
+        11px 12px;
+
+    border-top:
+        1px solid
+        #eee;
+
+    font-size:
+        11px;
+
 }
 
-.status {
-    padding: 5px 10px;
-    border-radius: 12px;
-    font-size: 10px;
-    font-weight: bold;
+
+tr:hover td {
+
+    background:
+        #fafaf8;
+
 }
 
-.status.in-stock {
-    background: #dcefdc;
-    color: #317431;
+
+.action-btn {
+
+    background:
+        transparent;
+
+    border:
+        none;
+
+    cursor:
+        pointer;
+
+    font-size:
+        16px;
+
 }
 
-.status.low-stock {
-    background: #fff0c9;
-    color: #956700;
-}
 
-.status.out-stock {
-    background: #f7d6d6;
-    color: #9d3030;
-}
-
-.action-button {
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 17px;
-}
-
-/* =========================
-   ITEM DETAIL
-========================= */
-
-.detail-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 20px;
-}
-
-.item-header {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-}
-
-.item-image {
-    width: 145px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 4px;
-}
-
-.item-name {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.item-description {
-    font-size: 12px;
-    color: #777;
-    margin-top: 10px;
-}
+/* =====================================================
+   FORMS
+===================================================== */
 
 .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-top: 20px;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        15px;
+
 }
 
-/* =========================
-   ALERTS & ORDERS
-========================= */
 
-.alert-order-grid {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 20px;
+.form-full {
+
+    grid-column:
+        1 / -1;
+
 }
 
-.alert-card {
-    padding: 12px;
-    border-bottom: 1px solid #eee;
+
+textarea.form-control {
+
+    resize:
+        vertical;
+
 }
 
-.alert-card strong {
-    font-size: 12px;
+
+/* =====================================================
+   DETAIL PAGE
+===================================================== */
+
+.detail-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1.5fr .7fr;
+
+    gap:
+        20px;
+
 }
 
-.alert-card small {
-    display: block;
-    color: #777;
-    margin-top: 3px;
+
+.item-header {
+
+    display:
+        flex;
+
+    gap:
+        20px;
+
+    margin-bottom:
+        20px;
+
 }
 
-.order-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+
+.item-image {
+
+    width:
+        150px;
+
+    height:
+        105px;
+
+    object-fit:
+        cover;
+
+    border-radius:
+        5px;
+
 }
 
-.order-form .full {
-    grid-column: 1 / -1;
+
+.item-title {
+
+    font-size:
+        21px;
+
+    font-weight:
+        700;
+
+    margin-bottom:
+        8px;
+
 }
 
-/* =========================
-   SUPPLIERS
-========================= */
 
-.supplier-details {
-    min-height: 180px;
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #777;
-    text-align: center;
+.item-description {
+
+    color:
+        #777;
+
+    font-size:
+        11px;
+
+    margin-top:
+        10px;
+
+    line-height:
+        1.5;
+
 }
 
-/* =========================
+
+.info-row {
+
+    padding:
+        12px 0;
+
+    border-bottom:
+        1px solid
+        #eee;
+
+    font-size:
+        11px;
+
+}
+
+
+.info-row span {
+
+    color:
+        #777;
+
+    display:
+        block;
+
+    margin-bottom:
+        3px;
+
+}
+
+
+/* =====================================================
+   ALERTS
+===================================================== */
+
+.alert-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1.4fr;
+
+    gap:
+        20px;
+
+}
+
+
+.low-alert {
+
+    padding:
+        13px;
+
+    border-bottom:
+        1px solid
+        #eee;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+}
+
+
+.low-alert strong {
+
+    font-size:
+        12px;
+
+}
+
+
+.low-alert small {
+
+    display:
+        block;
+
+    color:
+        #777;
+
+    font-size:
+        10px;
+
+    margin-top:
+        3px;
+
+}
+
+
+/* =====================================================
    REPORTS
-========================= */
+===================================================== */
 
-.report-cards {
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap: 20px;
-    margin-bottom: 20px;
+.report-stats {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:
+        15px;
+
+    margin-bottom:
+        20px;
+
 }
+
+
+.report-card {
+
+    background:
+        white;
+
+    border:
+        1px solid
+        var(--border);
+
+    padding:
+        20px;
+
+    border-radius:
+        6px;
+
+}
+
+
+.report-label {
+
+    font-size:
+        10px;
+
+    color:
+        #777;
+
+}
+
 
 .report-number {
-    font-size: 27px;
-    font-weight: bold;
-    color: var(--green);
+
+    font-size:
+        26px;
+
+    color:
+        var(--green);
+
+    font-weight:
+        700;
+
+    margin-top:
+        5px;
+
 }
 
-/* =========================
+
+/* =====================================================
    SETTINGS
-========================= */
+===================================================== */
 
 .settings-grid {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    gap: 20px;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        210px 1fr;
+
+    gap:
+        20px;
+
 }
+
 
 .settings-menu {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow: hidden;
+
+    background:
+        white;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        6px;
+
+    overflow:
+        hidden;
+
 }
+
 
 .settings-option {
-    padding: 13px;
-    font-size: 13px;
-    border-bottom: 1px solid #eee;
-    cursor: pointer;
+
+    padding:
+        13px;
+
+    border-bottom:
+        1px solid
+        #eee;
+
+    font-size:
+        12px;
+
+    cursor:
+        pointer;
+
 }
+
 
 .settings-option.active {
-    background: var(--green-light);
-    color: var(--green);
-    font-weight: bold;
+
+    background:
+        var(--green-light);
+
+    color:
+        var(--green);
+
+    font-weight:
+        700;
+
 }
 
-/* =========================
+
+/* =====================================================
    MODAL
-========================= */
+===================================================== */
 
 .modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.45);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 300;
+
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    background:
+        rgba(0,0,0,.45);
+
+    display:
+        none;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    z-index:
+        3000;
+
+    padding:
+        20px;
+
 }
+
 
 .modal-box {
-    background: white;
-    width: 600px;
-    max-width: 90%;
-    border-radius: 8px;
-    padding: 25px;
+
+    background:
+        white;
+
+    width:
+        600px;
+
+    max-width:
+        100%;
+
+    border-radius:
+        8px;
+
+    padding:
+        25px;
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,.25);
+
 }
+
 
 .modal-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    margin-bottom:
+        20px;
+
 }
 
-.close {
-    cursor: pointer;
-    font-size: 22px;
+
+.modal-close {
+
+    border:
+        none;
+
+    background:
+        transparent;
+
+    font-size:
+        24px;
+
+    cursor:
+        pointer;
+
 }
 
-/* =========================
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.toast {
+
+    position:
+        fixed;
+
+    right:
+        25px;
+
+    bottom:
+        25px;
+
+    background:
+        var(--dark);
+
+    color:
+        white;
+
+    padding:
+        13px 18px;
+
+    border-radius:
+        6px;
+
+    font-size:
+        12px;
+
+    display:
+        none;
+
+    z-index:
+        5000;
+
+    box-shadow:
+        0 10px 30px
+        rgba(0,0,0,.25);
+
+}
+
+
+/* =====================================================
    RESPONSIVE
-========================= */
+===================================================== */
 
-@media(max-width:900px) {
-
-    .sidebar {
-        width: 70px;
-    }
-
-    .nav-item span:last-child {
-        display: none;
-    }
-
-    .main {
-        margin-left: 70px;
-    }
+@media(max-width:1000px) {
 
     .stats {
-        grid-template-columns: repeat(2,1fr);
+
+        grid-template-columns:
+            repeat(2,1fr);
+
     }
 
     .dashboard-grid,
+    .dashboard-bottom,
     .detail-grid,
-    .alert-order-grid {
-        grid-template-columns: 1fr;
+    .alert-grid {
+
+        grid-template-columns:
+            1fr;
+
     }
+
 }
 
-@media(max-width:600px) {
 
-    .stats,
-    .report-cards {
-        grid-template-columns: 1fr;
+@media(max-width:700px) {
+
+    .sidebar {
+
+        width:
+            65px;
+
+    }
+
+    .nav-item span {
+
+        display:
+            none;
+
+    }
+
+    .nav-item {
+
+        justify-content:
+            center;
+
+        padding:
+            14px 5px;
+
+    }
+
+    .main {
+
+        margin-left:
+            65px;
+
     }
 
     .content {
-        padding: 15px;
+
+        padding:
+            20px 15px;
+
     }
 
     .brand-subtitle {
-        display: none;
+
+        display:
+            none;
+
     }
+
+    .stats {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .form-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .form-full {
+
+        grid-column:
+            auto;
+
+    }
+
+    .settings-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <!-- =====================================================
-     LOGIN PAGE
+     LOGIN
 ===================================================== -->
 
-<div class="login-page" id="loginPage">
+<div
+    id="loginPage"
+    class="login-page"
+>
 
-    <div class="login-card">
 
-        <div class="login-logo">
-            <h1>☕ EXTRACT BREW CAFE</h1>
-            <p>INVENTORY SYSTEM</p>
+<div class="login-card">
+
+
+    <div class="login-brand">
+
+        <div class="login-brand-icon">
+            ☕
         </div>
 
-        <div id="message" class="message"></div>
+        <h1>
+            EXTRACT BREW CAFE
+        </h1>
 
-        <!-- LOGIN -->
+        <p>
+            INVENTORY SYSTEM
+        </p>
 
-        <div id="loginSection">
+    </div>
 
-            <h2>Login</h2>
 
-            <form onsubmit="event.preventDefault(); login();">
+    <div
+        id="authMessage"
+        class="message"
+    ></div>
 
-                <div class="input-group">
-                    <label>Username / Email</label>
-                    <input
-                        type="text"
-                        id="loginUsername"
-                        required
-                    >
-                </div>
 
-                <div class="input-group">
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        id="loginPassword"
-                        required
-                    >
-                </div>
+    <!-- LOGIN -->
 
-                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:20px;">
-                    <label>
-                        <input type="checkbox">
-                        Remember Me
-                    </label>
+    <div id="loginSection">
 
-                    <a href="#" style="color:#3d5638;">
-                        Forgot Password?
-                    </a>
-                </div>
+        <div class="login-title">
 
-                <button class="login-button">
-                    Log In
-                </button>
+            <h2>
+                Welcome Back
+            </h2>
 
-            </form>
+            <p>
+                Sign in to manage your inventory
+            </p>
 
-            <div class="login-footer">
-                Don't have an account?
-                <a onclick="showRegister()">Register</a>
+        </div>
+
+
+        <form
+            onsubmit="
+                event.preventDefault();
+                login();
+            "
+        >
+
+
+            <div class="form-group">
+
+                <label>
+                    Username / Email
+                </label>
+
+                <input
+                    class="form-control"
+                    id="loginUsername"
+                    required
+                    autocomplete="username"
+                >
+
             </div>
 
+
+            <div class="form-group">
+
+                <label>
+                    Password
+                </label>
+
+                <input
+                    class="form-control"
+                    type="password"
+                    id="loginPassword"
+                    required
+                    autocomplete="current-password"
+                >
+
+            </div>
+
+
+            <div class="login-options">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                    >
+
+                    Remember me
+
+                </label>
+
+
+                <a href="#">
+                    Forgot Password?
+                </a>
+
+            </div>
+
+
+            <button
+                class="btn-login"
+                type="submit"
+            >
+                Log In
+            </button>
+
+
+        </form>
+
+
+        <div class="login-register">
+
+            Don't have an account?
+
+            <span
+                onclick="showRegister()"
+            >
+                Register
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- REGISTER -->
+
+    <div
+        id="registerSection"
+        style="display:none;"
+    >
+
+        <div class="login-title">
+
+            <h2>
+                Create Account
+            </h2>
+
+            <p>
+                Register a new system user
+            </p>
+
         </div>
 
 
-        <!-- REGISTER -->
+        <form
+            onsubmit="
+                event.preventDefault();
+                register();
+            "
+        >
 
-        <div id="registerSection" style="display:none;">
 
-            <h2>Register</h2>
+            <div class="form-group">
 
-            <form onsubmit="event.preventDefault(); register();">
+                <label>
+                    Username / Email
+                </label>
 
-                <div class="input-group">
-                    <label>Username / Email</label>
-                    <input
-                        type="text"
-                        id="registerUsername"
-                        required
-                    >
-                </div>
+                <input
+                    class="form-control"
+                    id="registerUsername"
+                    required
+                >
 
-                <div class="input-group">
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        id="registerPassword"
-                        required
-                    >
-                </div>
+            </div>
 
-                <button class="login-button">
-                    Create Account
-                </button>
 
-            </form>
+            <div class="form-group">
 
-            <div class="login-footer">
-                Already have an account?
-                <a onclick="showLogin()">Login</a>
+                <label>
+                    Password
+                </label>
+
+                <input
+                    class="form-control"
+                    type="password"
+                    id="registerPassword"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                class="btn-login"
+                type="submit"
+            >
+                Create Account
+            </button>
+
+
+        </form>
+
+
+        <div class="login-register">
+
+            Already have an account?
+
+            <span
+                onclick="showLogin()"
+            >
+                Login
+            </span>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN APP
+===================================================== -->
+
+<div id="app">
+
+
+<!-- TOPBAR -->
+
+<header class="topbar">
+
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            ☕
+        </div>
+
+        <div>
+
+            <div class="brand-name">
+                EXTRACT BREW CAFE
+            </div>
+
+            <div class="brand-subtitle">
+                INVENTORY SYSTEM
             </div>
 
         </div>
 
     </div>
 
-</div>
+
+    <div class="top-right">
+
+        <span
+            class="notification"
+            onclick="openPageById('alerts')"
+        >
+            🔔
+        </span>
+
+
+        <div class="avatar">
+            👤
+        </div>
+
+
+        <span id="topUsername">
+            Manager
+        </span>
+
+        <span>
+            ▾
+        </span>
+
+    </div>
+
+
+</header>
+
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+
+    <div
+        class="nav-item active"
+        onclick="
+            openPage(
+                'dashboard',
+                this
+            )
+        "
+    >
+
+        <div class="nav-icon">
+            🏠
+        </div>
+
+        <span>
+            Dashboard
+        </span>
+
+    </div>
+
+
+    <div
+        class="nav-item"
+        onclick="
+            openPage(
+                'inventory',
+                this
+            )
+        "
+    >
+
+        <div class="nav-icon">
+            ▣
+        </div>
+
+        <span>
+            Inventory
+        </span>
+
+    </div>
+
+
+    <div
+        class="nav-item"
+        onclick="
+            openPage(
+                'addstock',
+                this
+            )
+        "
+    >
+
+        <div class="nav-icon">
+            ＋
+        </div>
+
+        <span>
+            Add Stock
+        </span>
+
+    </div>
+
+
+    <div
+        class="nav-item"
+        onclick="
+            openPage(
+                'suppliers',
+                this
+            )
+        "
+    >
+
+        <div class="nav-icon">
+            ♟
+        </div>
+
+        <span>
+            Suppliers
+        </span>
+
+    </div>
+
+
+    <div
+        class="nav-item"
+        onclick="
+            openPage(
+                'alerts',
+                this
+            )
+        "
+    >
+
+        <div class="nav-icon">
+            🔔
+        </div>
+
+        <span>
+            Alerts & Orders
+        </span>
+
+    </div>
+
+
+    <div
+        class="nav-item"
+        onclick="
+            openPage(
+                'reports',
+                this
+            )
+        "
+    >
+
+        <div class="nav-icon">
+            ▥
+        </div>
+
+        <span>
+            Reports
+        </span>
+
+    </div>
+
+
+    <div class="sidebar-line"></div>
+
+
+    <div
+        class="nav-item"
+        onclick="
+            openPage(
+                'settings',
+                this
+            )
+        "
+    >
+
+        <div class="nav-icon">
+            ⚙
+        </div>
+
+        <span>
+            Settings
+        </span>
+
+    </div>
+
+
+    <div
+        class="nav-item"
+        onclick="logout()"
+    >
+
+        <div class="nav-icon">
+            ⇥
+        </div>
+
+        <span>
+            Logout
+        </span>
+
+    </div>
+
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
 
 
 <!-- =====================================================
-     MAIN APPLICATION
+     1. DASHBOARD
 ===================================================== -->
 
-<div class="app" id="app">
+<section
+    id="dashboard"
+    class="page active content"
+>
 
-    <!-- TOP BAR -->
 
-    <header class="topbar">
+    <div class="page-header">
 
-        <div class="brand">
+        <div>
 
-            <div class="brand-icon">☕</div>
+            <div class="page-title">
+                Hello, Manager!
+            </div>
+
+            <div class="page-subtitle">
+                Here's an overview of your inventory.
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            📅 September 2, 2026
+
+        </div>
+
+    </div>
+
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                ⚠
+            </div>
 
             <div>
-                <div class="brand-name">
-                    EXTRACT BREW CAFE
+
+                <div class="stat-label">
+                    LOW STOCK ITEMS
                 </div>
 
-                <div class="brand-subtitle">
-                    INVENTORY SYSTEM
+                <div
+                    class="stat-number"
+                    id="lowStockCount"
+                >
+                    0
                 </div>
+
             </div>
 
         </div>
 
-        <div class="user-area">
 
-            <span>🔔</span>
+        <div class="stat-card">
 
-            <div class="user-icon">
-                👤
+            <div class="stat-icon">
+                ☕
             </div>
 
-            <span id="currentUser">
-                Manager
+            <div>
+
+                <div class="stat-label">
+                    TOTAL COFFEE BEANS
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="coffeeBeansCount"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                ▣
+            </div>
+
+            <div>
+
+                <div class="stat-label">
+                    TOTAL ITEMS
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="totalItemsCount"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                ♟
+            </div>
+
+            <div>
+
+                <div class="stat-label">
+                    TOTAL SUPPLIERS
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="totalSuppliersCount"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- QUICK ACTIONS + ALERTS -->
+
+    <div class="dashboard-grid">
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Quick Actions
+            </div>
+
+
+            <button
+                class="quick-action"
+                onclick="
+                    openPageById(
+                        'inventory'
+                    )
+                "
+            >
+                ☷ &nbsp;
+                View Full Inventory
+            </button>
+
+
+            <button
+                class="quick-action"
+                onclick="
+                    openPageById(
+                        'addstock'
+                    )
+                "
+            >
+                ＋ &nbsp;
+                Add New Stock
+            </button>
+
+
+            <button
+                class="quick-action"
+                onclick="
+                    openPageById(
+                        'suppliers'
+                    )
+                "
+            >
+                🚚 &nbsp;
+                Manage Suppliers
+            </button>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+
+                Recent Alerts
+
+            </div>
+
+
+            <div
+                id="dashboardAlerts"
+            >
+                Loading...
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- CHARTS -->
+
+    <div class="dashboard-bottom">
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Stock Status Overview
+            </div>
+
+
+            <div
+                id="stockChart"
+                class="bar-chart"
+            >
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Inventory Category
+            </div>
+
+
+            <div
+                id="categoryChart"
+                style="
+                    padding:10px;
+                "
+            >
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     2. INVENTORY
+===================================================== -->
+
+<section
+    id="inventory"
+    class="page content"
+>
+
+
+    <div class="page-header">
+
+        <div>
+
+            <div class="page-title">
+                Inventory
+            </div>
+
+            <div class="page-subtitle">
+                Manage and monitor all inventory items.
+            </div>
+
+        </div>
+
+
+        <button
+            class="btn"
+            onclick="
+                openPageById(
+                    'addstock'
+                )
+            "
+        >
+            ＋ Add New Item
+        </button>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="search-area">
+
+            <div class="search-box">
+
+                <span class="search-icon">
+                    🔍
+                </span>
+
+                <input
+                    class="form-control"
+                    id="inventorySearch"
+                    placeholder="Search items..."
+                    onkeyup="
+                        renderInventory()
+                    "
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="filters">
+
+            <button
+                class="filter active"
+                onclick="
+                    setCategory(
+                        'All',
+                        this
+                    )
+                "
+            >
+                All
+            </button>
+
+
+            <button
+                class="filter"
+                onclick="
+                    setCategory(
+                        'Coffee',
+                        this
+                    )
+                "
+            >
+                Coffee
+            </button>
+
+
+            <button
+                class="filter"
+                onclick="
+                    setCategory(
+                        'Milk',
+                        this
+                    )
+                "
+            >
+                Milk
+            </button>
+
+
+            <button
+                class="filter"
+                onclick="
+                    setCategory(
+                        'Syrup',
+                        this
+                    )
+                "
+            >
+                Syrup
+            </button>
+
+
+            <button
+                class="filter"
+                onclick="
+                    setCategory(
+                        'Other',
+                        this
+                    )
+                "
+            >
+                Other
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <br>
+
+
+    <div class="table-card">
+
+        <div class="table-scroll">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            #
+                        </th>
+
+                        <th>
+                            ITEM NAME
+                        </th>
+
+                        <th>
+                            CATEGORY
+                        </th>
+
+                        <th>
+                            CURRENT STOCK
+                        </th>
+
+                        <th>
+                            UNIT
+                        </th>
+
+                        <th>
+                            STATUS
+                        </th>
+
+                        <th>
+                            ACTIONS
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="inventoryTable"
+                >
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     3. ADD STOCK
+===================================================== -->
+
+<section
+    id="addstock"
+    class="page content"
+>
+
+
+    <div class="page-header">
+
+        <div>
+
+            <div class="page-title">
+                Add Stock
+            </div>
+
+            <div class="page-subtitle">
+                Add a new item to your inventory.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+
+        <div class="form-grid">
+
+
+            <div class="form-group">
+
+                <label>
+                    Item Name
+                </label>
+
+                <input
+                    class="form-control"
+                    id="addName"
+                    placeholder="e.g. Espresso Roast Beans"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Category
+                </label>
+
+                <select
+                    class="form-control"
+                    id="addCategory"
+                >
+
+                    <option value="Coffee">
+                        Coffee Beans
+                    </option>
+
+                    <option value="Milk">
+                        Milk
+                    </option>
+
+                    <option value="Syrup">
+                        Syrup
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Quantity
+                </label>
+
+                <input
+                    type="number"
+                    class="form-control"
+                    id="addQuantity"
+                    min="0"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Unit
+                </label>
+
+                <select
+                    class="form-control"
+                    id="addUnit"
+                >
+
+                    <option>
+                        Bags
+                    </option>
+
+                    <option>
+                        Liters
+                    </option>
+
+                    <option>
+                        Bottles
+                    </option>
+
+                    <option>
+                        Pieces
+                    </option>
+
+                    <option>
+                        Cartons
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Unit Price
+                </label>
+
+                <input
+                    type="number"
+                    class="form-control"
+                    id="addPrice"
+                    min="0"
+                    step="0.01"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Low Stock Threshold
+                </label>
+
+                <input
+                    type="number"
+                    class="form-control"
+                    id="addThreshold"
+                    value="5"
+                    min="0"
+                >
+
+            </div>
+
+
+            <div class="form-group form-full">
+
+                <label>
+                    Supplier
+                </label>
+
+                <select
+                    class="form-control"
+                    id="addSupplier"
+                >
+                </select>
+
+            </div>
+
+
+            <div class="form-group form-full">
+
+                <label>
+                    Notes
+                </label>
+
+                <textarea
+                    class="form-control"
+                    id="addNotes"
+                    rows="5"
+                    placeholder="Additional notes..."
+                ></textarea>
+
+            </div>
+
+
+        </div>
+
+
+        <button
+            class="btn"
+            onclick="addInventoryItem()"
+        >
+            ＋ Add Stock
+        </button>
+
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     4. SUPPLIERS
+===================================================== -->
+
+<section
+    id="suppliers"
+    class="page content"
+>
+
+
+    <div class="page-header">
+
+        <div>
+
+            <div class="page-title">
+                Manage Suppliers
+            </div>
+
+            <div class="page-subtitle">
+                View, add, and manage your suppliers.
+            </div>
+
+        </div>
+
+
+        <button
+            class="btn"
+            onclick="openSupplierModal()"
+        >
+            ＋ Add Supplier
+        </button>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="search-box">
+
+            <span class="search-icon">
+                🔍
             </span>
 
-            <span>⌄</span>
+            <input
+                class="form-control"
+                id="supplierSearch"
+                placeholder="Search suppliers..."
+                onkeyup="
+                    renderSuppliers()
+                "
+            >
 
         </div>
 
-    </header>
+    </div>
 
 
-    <!-- SIDEBAR -->
+    <br>
 
-    <aside class="sidebar">
 
-        <div
-            class="nav-item active"
-            onclick="showPage('dashboard',this)"
-        >
-            <div class="nav-icon">⌂</div>
-            <span>Dashboard</span>
-        </div>
+    <div class="table-card">
 
+        <div class="table-scroll">
 
-        <div
-            class="nav-item"
-            onclick="showPage('inventory',this)"
-        >
-            <div class="nav-icon">▣</div>
-            <span>Inventory</span>
-        </div>
+            <table>
 
+                <thead>
 
-        <div
-            class="nav-item"
-            onclick="showPage('addstock',this)"
-        >
-            <div class="nav-icon">＋</div>
-            <span>Add Stock</span>
-        </div>
+                    <tr>
 
+                        <th>
+                            #
+                        </th>
 
-        <div
-            class="nav-item"
-            onclick="showPage('suppliers',this)"
-        >
-            <div class="nav-icon">♟</div>
-            <span>Suppliers</span>
-        </div>
+                        <th>
+                            SUPPLIER NAME
+                        </th>
 
+                        <th>
+                            CONTACT PERSON
+                        </th>
 
-        <div
-            class="nav-item"
-            onclick="showPage('alerts',this)"
-        >
-            <div class="nav-icon">♟</div>
-            <span>Alerts & Orders</span>
-        </div>
+                        <th>
+                            EMAIL
+                        </th>
 
+                        <th>
+                            PHONE
+                        </th>
 
-        <div
-            class="nav-item"
-            onclick="showPage('reports',this)"
-        >
-            <div class="nav-icon">▥</div>
-            <span>Reports</span>
-        </div>
+                        <th>
+                            ADDRESS
+                        </th>
 
+                        <th>
+                            STATUS
+                        </th>
 
-        <div class="sidebar-divider"></div>
+                        <th>
+                            ACTIONS
+                        </th>
 
+                    </tr>
 
-        <div
-            class="nav-item"
-            onclick="showPage('settings',this)"
-        >
-            <div class="nav-icon">⚙</div>
-            <span>Settings</span>
-        </div>
+                </thead>
 
 
-        <div
-            class="nav-item"
-            onclick="logout()"
-        >
-            <div class="nav-icon">⇥</div>
-            <span>Logout</span>
-        </div>
-
-    </aside>
-
-
-    <!-- MAIN CONTENT -->
-
-    <main class="main">
-
-        <!-- =================================================
-             DASHBOARD
-        ================================================== -->
-
-        <section
-            id="page-dashboard"
-            class="page content"
-        >
-
-            <div class="page-header">
-
-                <div>
-                    <div class="page-title">
-                        Hello, Manager!
-                    </div>
-
-                    <div class="page-subtitle">
-                        Here's an overview of your inventory.
-                    </div>
-                </div>
-
-                <div class="white-card">
-                    📅 September 2, 2026
-                </div>
-
-            </div>
-
-
-            <div class="stats">
-
-                <div class="stat-card">
-
-                    <div class="stat-icon">▣</div>
-
-                    <div>
-                        <div class="stat-label">
-                            Low Stock Items
-                        </div>
-
-                        <div
-                            class="stat-number"
-                            id="lowStockCount"
-                        >
-                            0
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <div class="stat-icon">◉</div>
-
-                    <div>
-                        <div class="stat-label">
-                            Total Coffee Beans
-                        </div>
-
-                        <div class="stat-number">
-                            12 kg
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <div class="stat-icon">▣</div>
-
-                    <div>
-                        <div class="stat-label">
-                            Total Items
-                        </div>
-
-                        <div
-                            class="stat-number"
-                            id="totalItems"
-                        >
-                            0
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <div class="stat-icon">♟</div>
-
-                    <div>
-                        <div class="stat-label">
-                            Total Suppliers
-                        </div>
-
-                        <div class="stat-number">
-                            4
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="dashboard-grid">
-
-                <div class="white-card">
-
-                    <div class="card-title">
-                        Quick Actions
-                    </div>
-
-                    <button
-                        class="quick-action"
-                        onclick="showPageById('inventory')"
-                    >
-                        ☷ &nbsp; View Full Inventory
-                    </button>
-
-                    <button
-                        class="quick-action"
-                        onclick="showPageById('addstock')"
-                    >
-                        ＋ &nbsp; Add New Stock
-                    </button>
-
-                    <button
-                        class="quick-action"
-                        onclick="showPageById('suppliers')"
-                    >
-                        🚚 &nbsp; Manage Suppliers
-                    </button>
-
-                </div>
-
-
-                <div class="white-card">
-
-                    <div class="card-title">
-                        Recent Alerts
-                    </div>
-
-                    <div id="dashboardAlerts">
-                        Loading alerts...
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="chart-container">
-
-                <div class="white-card">
-
-                    <div class="card-title">
-                        Stock Status Overview
-                    </div>
-
-                    <div class="bar-chart">
-
-                        <div
-                            class="bar"
-                            style="height:47%;"
-                        >
-                            <span>14</span>
-                            <div class="bar-label">
-                                Coffee Beans
-                            </div>
-                        </div>
-
-                        <div
-                            class="bar"
-                            style="height:40%;"
-                        >
-                            <span>12</span>
-                            <div class="bar-label">
-                                Milk
-                            </div>
-                        </div>
-
-                        <div
-                            class="bar"
-                            style="height:27%;"
-                        >
-                            <span>8</span>
-                            <div class="bar-label">
-                                Syrup
-                            </div>
-                        </div>
-
-                        <div
-                            class="bar"
-                            style="height:67%;"
-                        >
-                            <span>20</span>
-                            <div class="bar-label">
-                                Other
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="white-card">
-
-                    <div class="card-title">
-                        Inventory Category
-                    </div>
-
-                    <div style="text-align:center;padding:35px;font-size:55px;">
-                        ◕
-                    </div>
-
-                    <div style="text-align:center;font-size:12px;">
-                        Coffee Beans 36% &nbsp; Milk 29%
-                        <br>
-                        Syrup 21% &nbsp; Other 14%
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             INVENTORY
-        ================================================== -->
-
-        <section
-            id="page-inventory"
-            class="page content"
-            style="display:none;"
-        >
-
-            <div class="page-header">
-
-                <div>
-                    <div class="page-title">
-                        Inventory
-                    </div>
-
-                    <div class="page-subtitle">
-                        Manage and monitor all inventory items.
-                    </div>
-                </div>
-
-                <button
-                    class="green-button"
-                    onclick="showPageById('addstock')"
+                <tbody
+                    id="supplierTable"
                 >
-                    ＋ Add New Item
-                </button>
+                </tbody>
 
+            </table>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     5. ALERTS & ORDERS
+===================================================== -->
+
+<section
+    id="alerts"
+    class="page content"
+>
+
+
+    <div class="page-header">
+
+        <div>
+
+            <div class="page-title">
+                Alerts & Orders
+            </div>
+
+            <div class="page-subtitle">
+                Monitor low stock alerts and manage purchase orders.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="alert-grid">
+
+
+        <div class="card">
+
+            <div class="card-title">
+                ⚠ Low Stock Alerts
             </div>
 
 
-            <div class="white-card">
+            <div
+                id="alertList"
+            >
+            </div>
 
-                <div class="search-row">
-
-                    <div class="search-box">
-
-                        <span class="search-symbol">
-                            🔍
-                        </span>
-
-                        <input
-                            type="text"
-                            id="inventorySearch"
-                            placeholder="Search items..."
-                            onkeyup="filterInventory()"
-                        >
-
-                    </div>
-
-                </div>
+        </div>
 
 
-                <div class="filters">
+        <div class="card">
 
-                    <button
-                        class="filter active"
-                        onclick="filterCategory('All',this)"
-                    >
-                        All
-                    </button>
-
-                    <button
-                        class="filter"
-                        onclick="filterCategory('Coffee',this)"
-                    >
-                        Coffee
-                    </button>
-
-                    <button
-                        class="filter"
-                        onclick="filterCategory('Milk',this)"
-                    >
-                        Milk
-                    </button>
-
-                    <button
-                        class="filter"
-                        onclick="filterCategory('Syrup',this)"
-                    >
-                        Syrup
-                    </button>
-
-                    <button
-                        class="filter"
-                        onclick="filterCategory('Other',this)"
-                    >
-                        Other
-                    </button>
-
-                </div>
-
+            <div class="card-title">
+                ▤ Recent Orders
             </div>
 
 
-            <br>
-
-
-            <div class="table-container">
+            <div class="table-scroll">
 
                 <table>
 
                     <thead>
 
-                    <tr>
-                        <th>#</th>
-                        <th>Item Name</th>
-                        <th>Category</th>
-                        <th>Current Stock</th>
-                        <th>Unit</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
+                        <tr>
+
+                            <th>
+                                DATE
+                            </th>
+
+                            <th>
+                                ITEM
+                            </th>
+
+                            <th>
+                                QTY
+                            </th>
+
+                            <th>
+                                SUPPLIER
+                            </th>
+
+                            <th>
+                                STATUS
+                            </th>
+
+                        </tr>
 
                     </thead>
 
-                    <tbody id="inventoryTable">
+
+                    <tbody
+                        id="ordersTable"
+                    >
                     </tbody>
 
                 </table>
 
             </div>
 
-        </section>
+        </div>
 
 
-        <!-- =================================================
-             ADD STOCK
-        ================================================== -->
+    </div>
 
-        <section
-            id="page-addstock"
-            class="page content"
-            style="display:none;"
-        >
 
-            <div class="page-header">
+    <br>
 
-                <div>
-                    <div class="page-title">
-                        Add Stock
-                    </div>
 
-                    <div class="page-subtitle">
-                        Add a new inventory item or update existing stock.
-                    </div>
-                </div>
+    <div class="card">
+
+        <div class="card-title">
+            🛒 Create Purchase Order
+        </div>
+
+
+        <div class="form-grid">
+
+
+            <div class="form-group">
+
+                <label>
+                    Select Supplier
+                </label>
+
+                <select
+                    class="form-control"
+                    id="orderSupplier"
+                >
+                </select>
 
             </div>
 
 
-            <div class="white-card">
+            <div class="form-group">
 
-                <div class="form-grid">
+                <label>
+                    Select Item
+                </label>
 
-                    <div class="input-group">
-                        <label>Item Name</label>
-                        <input
-                            id="newItemName"
-                            placeholder="e.g. Espresso Roast Beans"
-                        >
+                <select
+                    class="form-control"
+                    id="orderItem"
+                >
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Quantity
+                </label>
+
+                <input
+                    type="number"
+                    class="form-control"
+                    id="orderQuantity"
+                    min="1"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Notes
+                </label>
+
+                <input
+                    class="form-control"
+                    id="orderNotes"
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <button
+            class="btn"
+            onclick="createPurchaseOrder()"
+        >
+            🛒 Send Purchase Order
+        </button>
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     6. REPORTS
+===================================================== -->
+
+<section
+    id="reports"
+    class="page content"
+>
+
+
+    <div class="page-header">
+
+        <div>
+
+            <div class="page-title">
+                Reports
+            </div>
+
+            <div class="page-subtitle">
+                View inventory statistics and reports.
+            </div>
+
+        </div>
+
+
+        <button
+            class="btn"
+            onclick="window.print()"
+        >
+            🖨 Print Report
+        </button>
+
+    </div>
+
+
+    <div class="report-stats">
+
+
+        <div class="report-card">
+
+            <div class="report-label">
+                TOTAL INVENTORY ITEMS
+            </div>
+
+            <div
+                class="report-number"
+                id="reportItems"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="report-card">
+
+            <div class="report-label">
+                LOW STOCK ITEMS
+            </div>
+
+            <div
+                class="report-number"
+                id="reportLow"
+            >
+                0
+            </div>
+
+        </div>
+
+
+        <div class="report-card">
+
+            <div class="report-label">
+                INVENTORY VALUE
+            </div>
+
+            <div
+                class="report-number"
+                id="reportValue"
+            >
+                ₱0.00
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            Inventory Report
+        </div>
+
+
+        <div
+            class="table-scroll"
+        >
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ITEM
+                        </th>
+
+                        <th>
+                            CATEGORY
+                        </th>
+
+                        <th>
+                            STOCK
+                        </th>
+
+                        <th>
+                            PRICE
+                        </th>
+
+                        <th>
+                            VALUE
+                        </th>
+
+                        <th>
+                            STATUS
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="reportTable"
+                >
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     7. SETTINGS
+===================================================== -->
+
+<section
+    id="settings"
+    class="page content"
+>
+
+
+    <div class="page-header">
+
+        <div>
+
+            <div class="page-title">
+                Settings
+            </div>
+
+            <div class="page-subtitle">
+                Manage your account and system preferences.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="settings-grid">
+
+
+        <div class="settings-menu">
+
+            <div
+                class="settings-option active"
+            >
+                Profile
+            </div>
+
+            <div
+                class="settings-option"
+            >
+                Security
+            </div>
+
+            <div
+                class="settings-option"
+            >
+                Notifications
+            </div>
+
+            <div
+                class="settings-option"
+            >
+                System Preferences
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Profile Settings
+            </h3>
+
+            <br>
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Username
+                    </label>
+
+                    <input
+                        class="form-control"
+                        id="settingsUsername"
+                        readonly
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Role
+                    </label>
+
+                    <input
+                        class="form-control"
+                        id="settingsRole"
+                        value="Manager"
+                        readonly
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <button
+                class="btn"
+                onclick="
+                    showToast(
+                        'Profile settings saved.'
+                    )
+                "
+            >
+                Save Changes
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- =====================================================
+     ITEM DETAIL
+===================================================== -->
+
+<section
+    id="detail"
+    class="page content"
+>
+
+
+    <div class="page-header">
+
+        <div>
+
+            <div
+                style="
+                    font-size:11px;
+                    cursor:pointer;
+                    color:#555;
+                    margin-bottom:8px;
+                "
+                onclick="
+                    openPageById(
+                        'inventory'
+                    )
+                "
+            >
+                ← Back to Inventory
+            </div>
+
+
+            <div class="page-title">
+                Item Detail
+            </div>
+
+            <div class="page-subtitle">
+                View and manage item information.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="detail-grid">
+
+
+        <div class="card">
+
+
+            <div class="item-header">
+
+
+                <img
+                    class="item-image"
+                    src="
+                    https://images.unsplash.com/photo-1447933601403-0c6688de566e
+                    "
+                >
+
+
+                <div>
+
+                    <div
+                        class="item-title"
+                        id="detailTitle"
+                    >
+                        Item
                     </div>
 
 
-                    <div class="input-group">
-                        <label>Category</label>
-
-                        <select id="newItemCategory">
-
-                            <option value="Coffee">
-                                Coffee Beans
-                            </option>
-
-                            <option value="Milk">
-                                Milk
-                            </option>
-
-                            <option value="Syrup">
-                                Syrup
-                            </option>
-
-                            <option value="Other">
-                                Other
-                            </option>
-
-                        </select>
-
-                    </div>
+                    <span
+                        class="badge badge-green"
+                        id="detailStatus"
+                    >
+                        In Stock
+                    </span>
 
 
-                    <div class="input-group">
-                        <label>Quantity</label>
-
-                        <input
-                            type="number"
-                            id="newItemQuantity"
-                            placeholder="0"
-                        >
-
-                    </div>
-
-
-                    <div class="input-group">
-                        <label>Unit</label>
-
-                        <select id="newItemUnit">
-
-                            <option>Bags</option>
-                            <option>Liters</option>
-                            <option>Bottles</option>
-                            <option>Pieces</option>
-                            <option>Cartons</option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="input-group">
-                        <label>Unit Price</label>
-
-                        <input
-                            type="number"
-                            id="newItemPrice"
-                            placeholder="0.00"
-                        >
-
-                    </div>
-
-
-                    <div class="input-group">
-                        <label>Low Stock Threshold</label>
-
-                        <input
-                            type="number"
-                            id="newItemThreshold"
-                            value="5"
-                        >
-
+                    <div
+                        class="item-description"
+                        id="detailDescription"
+                    >
                     </div>
 
                 </div>
 
 
-                <div class="input-group">
+            </div>
 
-                    <label>Notes</label>
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Item Name
+                    </label>
+
+                    <input
+                        class="form-control"
+                        id="editName"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Category
+                    </label>
+
+                    <select
+                        class="form-control"
+                        id="editCategory"
+                    >
+
+                        <option value="Coffee">
+                            Coffee Beans
+                        </option>
+
+                        <option value="Milk">
+                            Milk
+                        </option>
+
+                        <option value="Syrup">
+                            Syrup
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Current Stock
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="editQuantity"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Unit
+                    </label>
+
+                    <select
+                        class="form-control"
+                        id="editUnit"
+                    >
+
+                        <option>
+                            Bags
+                        </option>
+
+                        <option>
+                            Liters
+                        </option>
+
+                        <option>
+                            Bottles
+                        </option>
+
+                        <option>
+                            Pieces
+                        </option>
+
+                        <option>
+                            Cartons
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Unit Price
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="editPrice"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Low Stock Threshold
+                    </label>
+
+                    <input
+                        type="number"
+                        class="form-control"
+                        id="editThreshold"
+                    >
+
+                </div>
+
+
+                <div class="form-group form-full">
+
+                    <label>
+                        Supplier
+                    </label>
+
+                    <select
+                        class="form-control"
+                        id="editSupplier"
+                    >
+                    </select>
+
+                </div>
+
+
+                <div class="form-group form-full">
+
+                    <label>
+                        Notes
+                    </label>
 
                     <textarea
-                        id="newItemNotes"
+                        class="form-control"
+                        id="editNotes"
                         rows="4"
-                        placeholder="Additional information..."
                     ></textarea>
 
                 </div>
 
 
-                <button
-                    class="green-button"
-                    onclick="addStock()"
+            </div>
+
+
+            <button
+                class="btn"
+                onclick="saveInventoryItem()"
+            >
+                💾 Save Changes
+            </button>
+
+
+            <button
+                class="btn btn-danger"
+                onclick="deleteInventoryItem()"
+            >
+                Delete Item
+            </button>
+
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Additional Information
+            </div>
+
+
+            <div class="info-row">
+
+                <span>
+                    Item ID
+                </span>
+
+                <strong
+                    id="detailID"
                 >
-                    ＋ Add Stock
-                </button>
+                    -
+                </strong>
 
             </div>
 
-        </section>
 
+            <div class="info-row">
 
-        <!-- =================================================
-             SUPPLIERS
-        ================================================== -->
+                <span>
+                    Date Added
+                </span>
 
-        <section
-            id="page-suppliers"
-            class="page content"
-            style="display:none;"
-        >
-
-            <div class="page-header">
-
-                <div>
-
-                    <div class="page-title">
-                        Manage Suppliers
-                    </div>
-
-                    <div class="page-subtitle">
-                        View, add, and manage your suppliers.
-                    </div>
-
-                </div>
-
-                <button
-                    class="green-button"
-                    onclick="openSupplierModal()"
+                <strong
+                    id="detailDate"
                 >
-                    ＋ Add Supplier
-                </button>
+                    -
+                </strong>
 
             </div>
 
 
-            <div class="white-card">
+            <div class="info-row">
 
-                <div class="search-box">
+                <span>
+                    Last Updated
+                </span>
 
-                    <span class="search-symbol">
-                        🔍
-                    </span>
-
-                    <input
-                        id="supplierSearch"
-                        placeholder="Search suppliers..."
-                    >
-
-                </div>
-
-            </div>
-
-
-            <br>
-
-
-            <div class="table-container">
-
-                <table>
-
-                    <thead>
-
-                    <tr>
-                        <th>#</th>
-                        <th>Supplier Name</th>
-                        <th>Contact Person</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Address</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-
-                    </thead>
-
-                    <tbody id="supplierTable">
-
-                    <tr>
-                        <td>1</td>
-                        <td>Café Essentials Co.</td>
-                        <td>Maria Santos</td>
-                        <td>cafe@supplies.com</td>
-                        <td>0912 345 6789</td>
-                        <td>Manila, PH</td>
-                        <td>
-                            <span class="status in-stock">
-                                Active
-                            </span>
-                        </td>
-                        <td>•••</td>
-                    </tr>
-
-                    <tr>
-                        <td>2</td>
-                        <td>Dairy Fresh</td>
-                        <td>Juan Dela Cruz</td>
-                        <td>dairy@fresh.com</td>
-                        <td>0917 555 1234</td>
-                        <td>Quezon City, PH</td>
-                        <td>
-                            <span class="status in-stock">
-                                Active
-                            </span>
-                        </td>
-                        <td>•••</td>
-                    </tr>
-
-                    <tr>
-                        <td>3</td>
-                        <td>Bean Traders</td>
-                        <td>Ana Reyes</td>
-                        <td>beans@traders.com</td>
-                        <td>0908 777 9101</td>
-                        <td>Makati, PH</td>
-                        <td>
-                            <span class="status in-stock">
-                                Active
-                            </span>
-                        </td>
-                        <td>•••</td>
-                    </tr>
-
-                    <tr>
-                        <td>4</td>
-                        <td>Sweet Additions</td>
-                        <td>Mark Villanueva</td>
-                        <td>sweet@additions.com</td>
-                        <td>0906 222 3344</td>
-                        <td>Pasig, PH</td>
-                        <td>
-                            <span class="status in-stock">
-                                Active
-                            </span>
-                        </td>
-                        <td>•••</td>
-                    </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-
-            <div class="white-card supplier-details">
-
-                <div>
-                    <div style="font-size:35px;">
-                        ♟
-                    </div>
-
-                    Select a supplier from the list to view details.
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             ALERTS AND ORDERS
-        ================================================== -->
-
-        <section
-            id="page-alerts"
-            class="page content"
-            style="display:none;"
-        >
-
-            <div class="page-header">
-
-                <div>
-
-                    <div class="page-title">
-                        Alerts & Orders
-                    </div>
-
-                    <div class="page-subtitle">
-                        Monitor low stock alerts and manage purchase orders.
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="alert-order-grid">
-
-                <div class="white-card">
-
-                    <div class="card-title">
-                        ⚠ Low Stock Alerts
-                    </div>
-
-                    <div id="alertsList">
-                    </div>
-
-                </div>
-
-
-                <div class="white-card">
-
-                    <div class="card-title">
-                        ▤ Recent Orders
-                    </div>
-
-                    <table>
-
-                        <thead>
-
-                        <tr>
-                            <th>Date</th>
-                            <th>Items</th>
-                            <th>Supplier</th>
-                            <th>Status</th>
-                        </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                        <tr>
-                            <td>Sep 1, 2026</td>
-                            <td>Oat Milk (10)</td>
-                            <td>Dairy Fresh</td>
-                            <td>
-                                <span class="status low-stock">
-                                    Pending
-                                </span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Aug 28, 2026</td>
-                            <td>Espresso Beans (5)</td>
-                            <td>Bean Traders</td>
-                            <td>
-                                <span class="status in-stock">
-                                    Delivered
-                                </span>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Aug 25, 2026</td>
-                            <td>Vanilla Syrup (8)</td>
-                            <td>Sweet Additions</td>
-                            <td>
-                                <span class="status in-stock">
-                                    Delivered
-                                </span>
-                            </td>
-                        </tr>
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </div>
-
-
-            <br>
-
-
-            <div class="white-card">
-
-                <div class="card-title">
-                    🛒 Create Purchase Order
-                </div>
-
-                <div class="order-form">
-
-                    <div class="input-group">
-
-                        <label>Select Supplier</label>
-
-                        <select>
-
-                            <option>
-                                Select Supplier
-                            </option>
-
-                            <option>
-                                Café Essentials Co.
-                            </option>
-
-                            <option>
-                                Dairy Fresh
-                            </option>
-
-                            <option>
-                                Bean Traders
-                            </option>
-
-                            <option>
-                                Sweet Additions
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="input-group">
-
-                        <label>Select Item</label>
-
-                        <select id="orderItem">
-                            <option>
-                                Select Item
-                            </option>
-                        </select>
-
-                    </div>
-
-
-                    <div class="input-group">
-
-                        <label>Quantity</label>
-
-                        <input
-                            type="number"
-                            placeholder="Enter quantity"
-                        >
-
-                    </div>
-
-
-                    <div class="input-group">
-
-                        <label>Notes</label>
-
-                        <input
-                            placeholder="Enter notes..."
-                        >
-
-                    </div>
-
-                </div>
-
-
-                <button class="green-button">
-                    🛒 Send Purchase Order
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             REPORTS
-        ================================================== -->
-
-        <section
-            id="page-reports"
-            class="page content"
-            style="display:none;"
-        >
-
-            <div class="page-header">
-
-                <div>
-
-                    <div class="page-title">
-                        Reports
-                    </div>
-
-                    <div class="page-subtitle">
-                        View inventory and stock reports.
-                    </div>
-
-                </div>
-
-                <button
-                    class="green-button"
-                    onclick="window.print()"
+                <strong
+                    id="detailUpdated"
                 >
-                    🖨 Print Report
-                </button>
+                    -
+                </strong>
 
             </div>
 
 
-            <div class="report-cards">
+            <div class="info-row">
 
-                <div class="white-card">
+                <span>
+                    Supplier
+                </span>
 
-                    <div class="stat-label">
-                        TOTAL INVENTORY ITEMS
-                    </div>
-
-                    <div
-                        class="report-number"
-                        id="reportTotal"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-
-                <div class="white-card">
-
-                    <div class="stat-label">
-                        LOW STOCK ITEMS
-                    </div>
-
-                    <div
-                        class="report-number"
-                        id="reportLow"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-
-                <div class="white-card">
-
-                    <div class="stat-label">
-                        INVENTORY VALUE
-                    </div>
-
-                    <div class="report-number">
-                        ₱0.00
-                    </div>
-
-                </div>
+                <strong
+                    id="detailSupplier"
+                >
+                    -
+                </strong>
 
             </div>
 
 
-            <div class="white-card">
+        </div>
 
-                <div class="card-title">
-                    Inventory Report
-                </div>
 
-                <div id="reportContent">
-                    Loading report...
-                </div>
+    </div>
 
-            </div>
 
-        </section>
+</section>
 
 
-        <!-- =================================================
-             SETTINGS
-        ================================================== -->
+</main>
 
-        <section
-            id="page-settings"
-            class="page content"
-            style="display:none;"
-        >
-
-            <div class="page-header">
-
-                <div>
-
-                    <div class="page-title">
-                        Settings
-                    </div>
-
-                    <div class="page-subtitle">
-                        Manage your account and system preferences.
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="settings-grid">
-
-                <div class="settings-menu">
-
-                    <div class="settings-option active">
-                        Profile
-                    </div>
-
-                    <div class="settings-option">
-                        Security
-                    </div>
-
-                    <div class="settings-option">
-                        Notifications
-                    </div>
-
-                    <div class="settings-option">
-                        System Preferences
-                    </div>
-
-                </div>
-
-
-                <div class="white-card">
-
-                    <h3>
-                        Profile Settings
-                    </h3>
-
-                    <br>
-
-                    <div class="form-grid">
-
-                        <div class="input-group">
-
-                            <label>Username</label>
-
-                            <input
-                                id="settingsUsername"
-                                readonly
-                            >
-
-                        </div>
-
-
-                        <div class="input-group">
-
-                            <label>Role</label>
-
-                            <input
-                                value="Manager"
-                                readonly
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        class="green-button"
-                        onclick="alert('Profile updated successfully!')"
-                    >
-                        Save Changes
-                    </button>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             ITEM DETAIL
-        ================================================== -->
-
-        <section
-            id="page-detail"
-            class="page content"
-            style="display:none;"
-        >
-
-            <div class="page-header">
-
-                <div>
-
-                    <div
-                        onclick="showPageById('inventory')"
-                        style="cursor:pointer;font-size:12px;margin-bottom:8px;"
-                    >
-                        ← Back to Inventory
-                    </div>
-
-                    <div class="page-title">
-                        Item Detail
-                    </div>
-
-                    <div class="page-subtitle">
-                        View and manage item information.
-                    </div>
-
-                </div>
-
-                <button class="green-button">
-                    ✎ Edit
-                </button>
-
-            </div>
-
-
-            <div class="detail-grid">
-
-                <div class="white-card">
-
-                    <div class="item-header">
-
-                        <img
-                            class="item-image"
-                            src="https://images.unsplash.com/photo-1447933601403-0c6688de566e"
-                        >
-
-                        <div>
-
-                            <div
-                                class="item-name"
-                                id="detailName"
-                            >
-                                Espresso Roast Beans
-                            </div>
-
-                            <br>
-
-                            <span class="status in-stock">
-                                In Stock
-                            </span>
-
-                            <div
-                                style="font-size:12px;margin-top:10px;"
-                                id="detailCategory"
-                            >
-                                Category: Coffee Beans
-                            </div>
-
-                            <div class="item-description">
-                                Rich and bold espresso roast beans,
-                                perfect for brewing high-quality coffee.
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-grid">
-
-                        <div class="input-group">
-
-                            <label>Item Name</label>
-
-                            <input
-                                id="detailItemName"
-                                value="Espresso Roast Beans"
-                            >
-
-                        </div>
-
-
-                        <div class="input-group">
-
-                            <label>Category</label>
-
-                            <select>
-
-                                <option>
-                                    Coffee Beans
-                                </option>
-
-                                <option>
-                                    Milk
-                                </option>
-
-                                <option>
-                                    Syrup
-                                </option>
-
-                                <option>
-                                    Other
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <div class="input-group">
-
-                            <label>Current Stock</label>
-
-                            <input
-                                id="detailQuantity"
-                                value="14"
-                            >
-
-                        </div>
-
-
-                        <div class="input-group">
-
-                            <label>Unit</label>
-
-                            <select>
-
-                                <option>Bags</option>
-                                <option>Liters</option>
-                                <option>Bottles</option>
-                                <option>Pieces</option>
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="input-group">
-
-                        <label>Notes</label>
-
-                        <textarea rows="4">
-Keep in a cool, dry place. Best before 6 months from opening.
-                        </textarea>
-
-                    </div>
-
-
-                    <button class="green-button">
-                        💾 Save Changes
-                    </button>
-
-                </div>
-
-
-                <div class="white-card">
-
-                    <div class="card-title">
-                        Additional Information
-                    </div>
-
-                    <p style="font-size:12px;margin:15px 0;">
-                        ▥ &nbsp; Item ID
-                        <br>
-                        <strong>CB-001</strong>
-                    </p>
-
-                    <p style="font-size:12px;margin:15px 0;">
-                        📅 &nbsp; Date Added
-                        <br>
-                        <strong>Aug 10, 2026</strong>
-                    </p>
-
-                    <p style="font-size:12px;margin:15px 0;">
-                        ♟ &nbsp; Supplier
-                        <br>
-                        <strong>Bean Traders</strong>
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
 
 </div>
 
@@ -2262,9 +4186,14 @@ Keep in a cool, dry place. Best before 6 months from opening.
      SUPPLIER MODAL
 ===================================================== -->
 
-<div class="modal" id="supplierModal">
+<div
+    class="modal"
+    id="supplierModal"
+>
+
 
     <div class="modal-box">
+
 
         <div class="modal-header">
 
@@ -2272,208 +4201,316 @@ Keep in a cool, dry place. Best before 6 months from opening.
                 Add Supplier
             </h3>
 
-            <span
-                class="close"
-                onclick="closeSupplierModal()"
+
+            <button
+                class="modal-close"
+                onclick="
+                    closeSupplierModal()
+                "
             >
                 ×
-            </span>
+            </button>
 
         </div>
 
 
-        <div class="input-group">
+        <div class="form-group">
 
-            <label>Supplier Name</label>
+            <label>
+                Supplier Name
+            </label>
 
             <input
+                class="form-control"
                 id="supplierName"
-                placeholder="Supplier name"
             >
 
         </div>
 
 
-        <div class="input-group">
+        <div class="form-group">
 
-            <label>Contact Person</label>
+            <label>
+                Contact Person
+            </label>
 
             <input
-                placeholder="Contact person"
+                class="form-control"
+                id="supplierContact"
             >
 
         </div>
 
 
-        <div class="input-group">
+        <div class="form-group">
 
-            <label>Email</label>
+            <label>
+                Email
+            </label>
 
             <input
-                type="email"
-                placeholder="Email"
+                class="form-control"
+                id="supplierEmail"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Phone
+            </label>
+
+            <input
+                class="form-control"
+                id="supplierPhone"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>
+                Address
+            </label>
+
+            <input
+                class="form-control"
+                id="supplierAddress"
             >
 
         </div>
 
 
         <button
-            class="green-button"
+            class="btn"
             onclick="saveSupplier()"
         >
             Save Supplier
         </button>
 
+
     </div>
+
 
 </div>
 
 
+<!-- TOAST -->
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
+
 <script>
 
-/* =====================================================
+/* =========================================================
    GOOGLE APPS SCRIPT URL
-===================================================== */
+========================================================= */
 
-const SPREADSHEET_WEB_APP_URL =
-"https://script.google.com/macros/s/AKfycbxAFs1s6jTePxIpV4TXK5RKvJzu_wg5GidtDqK45kTpIMvN9muWdw5JpQZMPyiqyDg2Jg/exec";
+/*
+   IMPORTANT:
+
+   Replace YOUR_SCRIPT_ID with the URL
+   from your Apps Script deployment.
+
+   Example:
+
+   const API_URL =
+   "https://script.google.com/macros/s/AKfycbxxxxxxxx/exec";
+*/
+
+const API_URL =
+"https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
 
 
-/* =====================================================
-   DATA
-===================================================== */
+/* =========================================================
+   GLOBAL DATA
+========================================================= */
 
 let inventory = [];
 
-let currentCategory = "All";
+let suppliers = [];
+
+let orders = [];
+
+let selectedCategory = "All";
+
+let selectedItem = null;
 
 
-/* =====================================================
-   AUTHENTICATION
-===================================================== */
+/* =========================================================
+   API REQUEST
+========================================================= */
 
-function showMessage(message, type) {
+async function api(data) {
 
-    const box = document.getElementById("message");
+    const response =
+        await fetch(
+            API_URL,
+            {
 
-    box.innerText = message;
+                method:
+                    "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "text/plain;charset=utf-8"
+
+                },
+
+                body:
+                    JSON.stringify(
+                        data
+                    )
+
+            }
+        );
+
+
+    return await response.json();
+
+}
+
+
+/* =========================================================
+   AUTH MESSAGE
+========================================================= */
+
+function showAuthMessage(
+    message,
+    type
+) {
+
+    const box =
+        document.getElementById(
+            "authMessage"
+        );
+
+
+    box.innerText =
+        message;
+
 
     box.className =
         "message " +
-        (type === "error" ? "error" : "success");
-
-    box.style.display = "block";
-}
+        type;
 
 
-function showRegister() {
-
-    document.getElementById("loginSection").style.display =
-        "none";
-
-    document.getElementById("registerSection").style.display =
+    box.style.display =
         "block";
 
-    document.getElementById("message").style.display =
-        "none";
 }
 
 
-function showLogin() {
-
-    document.getElementById("registerSection").style.display =
-        "none";
-
-    document.getElementById("loginSection").style.display =
-        "block";
-
-    document.getElementById("message").style.display =
-        "none";
-}
-
+/* =========================================================
+   LOGIN
+========================================================= */
 
 async function login() {
 
     const username =
-        document.getElementById("loginUsername").value.trim();
+        document
+            .getElementById(
+                "loginUsername"
+            )
+            .value
+            .trim();
+
 
     const password =
-        document.getElementById("loginPassword").value.trim();
+        document
+            .getElementById(
+                "loginPassword"
+            )
+            .value;
 
-    if (!username || !password) {
 
-        showMessage(
-            "Please fill in all fields.",
+    if (
+        !username ||
+        !password
+    ) {
+
+        showAuthMessage(
+            "Please enter your username and password.",
             "error"
         );
 
         return;
+
     }
 
 
-    showMessage(
-        "Connecting...",
+    showAuthMessage(
+        "Signing in...",
         "success"
     );
 
 
     try {
 
-        const response = await fetch(
-            SPREADSHEET_WEB_APP_URL,
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                        "text/plain;charset=utf-8"
-                },
-
-                body: JSON.stringify({
-
-                    action: "login",
-
-                    username: username,
-
-                    password: password
-
-                })
-            }
-        );
-
-
         const result =
-            await response.json();
+            await api({
+
+                action:
+                    "login",
+
+                username:
+                    username,
+
+                password:
+                    password
+
+            });
 
 
-        if (result.success) {
+        if (!result.success) {
 
-            sessionStorage.setItem(
-                "currentUser",
-                result.username
-            );
-
-
-            showApp(
-                result.username
-            );
-
-        } else {
-
-            showMessage(
+            showAuthMessage(
                 result.message,
                 "error"
             );
 
+            return;
+
         }
 
-    } catch (error) {
+
+        sessionStorage.setItem(
+            "currentUser",
+            result.username
+        );
+
+
+        sessionStorage.setItem(
+            "currentRole",
+            result.role
+        );
+
+
+        showApplication(
+            result.username,
+            result.role
+        );
+
+
+    }
+
+    catch(error) {
 
         console.error(error);
 
-        showMessage(
-            "Connection error. Check your Apps Script deployment.",
+        showAuthMessage(
+
+            "Unable to connect to Google Sheets. Check your Apps Script URL and deployment.",
+
             "error"
+
         );
 
     }
@@ -2481,80 +4518,111 @@ async function login() {
 }
 
 
+/* =========================================================
+   REGISTER
+========================================================= */
+
 async function register() {
 
     const username =
-        document.getElementById("registerUsername").value.trim();
+        document
+            .getElementById(
+                "registerUsername"
+            )
+            .value
+            .trim();
+
 
     const password =
-        document.getElementById("registerPassword").value.trim();
+        document
+            .getElementById(
+                "registerPassword"
+            )
+            .value;
 
 
-    if (!username || !password) {
+    if (
+        !username ||
+        !password
+    ) {
 
-        showMessage(
-            "Please fill in all fields.",
+        showAuthMessage(
+            "Please complete all fields.",
             "error"
         );
 
         return;
+
+    }
+
+
+    if (
+        password.length < 6
+    ) {
+
+        showAuthMessage(
+            "Password must contain at least 6 characters.",
+            "error"
+        );
+
+        return;
+
     }
 
 
     try {
 
-        const response = await fetch(
-            SPREADSHEET_WEB_APP_URL,
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                        "text/plain;charset=utf-8"
-                },
-
-                body: JSON.stringify({
-
-                    action: "register",
-
-                    username: username,
-
-                    password: password
-
-                })
-            }
-        );
-
-
         const result =
-            await response.json();
+            await api({
+
+                action:
+                    "register",
+
+                username:
+                    username,
+
+                password:
+                    password
+
+            });
 
 
-        if (result.success) {
+        if (
+            result.success
+        ) {
 
-            showMessage(
+            showAuthMessage(
                 result.message,
                 "success"
             );
 
+
             setTimeout(
-                showLogin,
+                function() {
+
+                    showLogin();
+
+                },
                 1000
             );
 
-        } else {
+        }
 
-            showMessage(
+        else {
+
+            showAuthMessage(
                 result.message,
                 "error"
             );
 
         }
 
-    } catch (error) {
+    }
 
-        showMessage(
-            "Connection error.",
+    catch(error) {
+
+        showAuthMessage(
+            "Registration failed.",
             "error"
         );
 
@@ -2563,258 +4631,300 @@ async function register() {
 }
 
 
-/* =====================================================
-   SHOW APPLICATION
-===================================================== */
+/* =========================================================
+   SHOW LOGIN / REGISTER
+========================================================= */
 
-function showApp(username) {
+function showRegister() {
 
-    document.getElementById("loginPage").style.display =
+    document
+        .getElementById(
+            "loginSection"
+        )
+        .style.display =
         "none";
 
-    document.getElementById("app").style.display =
+
+    document
+        .getElementById(
+            "registerSection"
+        )
+        .style.display =
         "block";
 
-    document.getElementById("currentUser").innerText =
-        username;
 
-    document.getElementById("settingsUsername").value =
-        username;
-
-    loadInventory();
+    document
+        .getElementById(
+            "authMessage"
+        )
+        .style.display =
+        "none";
 
 }
 
 
-/* =====================================================
+function showLogin() {
+
+    document
+        .getElementById(
+            "registerSection"
+        )
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById(
+            "loginSection"
+        )
+        .style.display =
+        "block";
+
+
+    document
+        .getElementById(
+            "authMessage"
+        )
+        .style.display =
+        "none";
+
+}
+
+
+/* =========================================================
+   SHOW APPLICATION
+========================================================= */
+
+async function showApplication(
+    username,
+    role
+) {
+
+    document
+        .getElementById(
+            "loginPage"
+        )
+        .style.display =
+        "none";
+
+
+    document
+        .getElementById(
+            "app"
+        )
+        .style.display =
+        "block";
+
+
+    document
+        .getElementById(
+            "topUsername"
+        )
+        .innerText =
+        username;
+
+
+    document
+        .getElementById(
+            "settingsUsername"
+        )
+        .value =
+        username;
+
+
+    document
+        .getElementById(
+            "settingsRole"
+        )
+        .value =
+        role;
+
+
+    await loadAll();
+
+}
+
+
+/* =========================================================
    LOGOUT
-===================================================== */
+========================================================= */
 
 function logout() {
 
     sessionStorage.clear();
 
-    document.getElementById("app").style.display =
-        "none";
-
-    document.getElementById("loginPage").style.display =
-        "flex";
+    location.reload();
 
 }
 
 
-/* =====================================================
-   LOAD INVENTORY FROM GOOGLE SHEETS
-===================================================== */
+/* =========================================================
+   LOAD ALL DATA
+========================================================= */
 
-async function loadInventory() {
+async function loadAll() {
 
     try {
 
-        const response = await fetch(
-            SPREADSHEET_WEB_APP_URL,
-            {
-                method: "POST",
+        await loadInventory();
 
-                headers: {
-                    "Content-Type":
-                        "text/plain;charset=utf-8"
-                },
+        await loadSuppliers();
 
-                body: JSON.stringify({
+        await loadOrders();
 
-                    action: "getInventory"
+        updateDashboard();
 
-                })
-            }
-        );
+        renderAlerts();
 
+        updateReports();
 
-        const result =
-            await response.json();
-
-
-        if (result.success) {
-
-            inventory =
-                result.inventory || [];
-
-        } else {
-
-            inventory = [];
-
-        }
-
-    } catch (error) {
-
-        console.error(error);
-
-        /*
-         If Google Sheets cannot be reached,
-         use sample data so the interface
-         remains visible.
-        */
-
-        inventory = [
-
-            {
-                name: "Espresso Roast Beans",
-                category: "Coffee",
-                quantity: "14",
-                price: "850",
-                status: "In Stock"
-            },
-
-            {
-                name: "Oat Milk",
-                category: "Milk",
-                quantity: "2",
-                price: "95",
-                status: "Low Stock"
-            },
-
-            {
-                name: "Whole Milk",
-                category: "Milk",
-                quantity: "12",
-                price: "95",
-                status: "In Stock"
-            },
-
-            {
-                name: "Vanilla Syrup",
-                category: "Syrup",
-                quantity: "3",
-                price: "450",
-                status: "Low Stock"
-            },
-
-            {
-                name: "Caramel Syrup",
-                category: "Syrup",
-                quantity: "8",
-                price: "450",
-                status: "In Stock"
-            },
-
-            {
-                name: "Chocolate Powder",
-                category: "Other",
-                quantity: "20",
-                price: "500",
-                status: "In Stock"
-            },
-
-            {
-                name: "Matcha Powder",
-                category: "Other",
-                quantity: "4",
-                price: "620",
-                status: "Low Stock"
-            },
-
-            {
-                name: "Plastic Cups (16oz)",
-                category: "Other",
-                quantity: "50",
-                price: "5",
-                status: "In Stock"
-            }
-
-        ];
+        fillDropdowns();
 
     }
 
+    catch(error) {
 
-    renderInventory();
+        console.error(error);
 
-    updateDashboard();
+        showToast(
+            "Unable to load system data."
+        );
 
-    updateAlerts();
+    }
 
 }
 
 
-/* =====================================================
-   INVENTORY TABLE
-===================================================== */
+/* =========================================================
+   LOAD INVENTORY
+========================================================= */
 
-function renderInventory() {
+async function loadInventory() {
 
-    const table =
-        document.getElementById("inventoryTable");
+    const result =
+        await api({
 
-    table.innerHTML = "";
-
-
-    let filtered =
-        inventory.filter(item => {
-
-            if (
-                currentCategory !== "All" &&
-                item.category !== currentCategory
-            ) {
-
-                return false;
-
-            }
-
-            const search =
-                document
-                    .getElementById("inventorySearch")
-                    .value
-                    .toLowerCase();
-
-            return item.name
-                .toLowerCase()
-                .includes(search);
+            action:
+                "getInventory"
 
         });
 
 
+    if (
+        result.success
+    ) {
+
+        inventory =
+            result.inventory || [];
+
+
+        renderInventory();
+
+    }
+
+}
+
+
+/* =========================================================
+   RENDER INVENTORY
+========================================================= */
+
+function renderInventory() {
+
+    const table =
+        document.getElementById(
+            "inventoryTable"
+        );
+
+
+    const search =
+        document
+            .getElementById(
+                "inventorySearch"
+            )
+            .value
+            .toLowerCase();
+
+
+    table.innerHTML =
+        "";
+
+
+    const filtered =
+        inventory.filter(
+            function(item) {
+
+                const matchesSearch =
+                    item.name
+                        .toLowerCase()
+                        .includes(
+                            search
+                        );
+
+
+                const matchesCategory =
+                    selectedCategory ===
+                    "All" ||
+                    item.category ===
+                    selectedCategory;
+
+
+                return (
+                    matchesSearch &&
+                    matchesCategory
+                );
+
+            }
+        );
+
+
+    if (
+        filtered.length === 0
+    ) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    style="
+                        text-align:center;
+                        padding:30px;
+                        color:#777;
+                    "
+                >
+                    No inventory items found.
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
     filtered.forEach(
-        (item,index) => {
-
-            let statusClass =
-                "in-stock";
-
-            if (
-                item.status
-                .toLowerCase()
-                .includes("low")
-            ) {
-
-                statusClass =
-                    "low-stock";
-
-            }
-
-            if (
-                item.status
-                .toLowerCase()
-                .includes("out")
-            ) {
-
-                statusClass =
-                    "out-stock";
-
-            }
-
+        function(item,index) {
 
             table.innerHTML += `
 
                 <tr>
 
-                    <td>${index + 1}</td>
+                    <td>
+                        ${index + 1}
+                    </td>
 
                     <td>
                         <strong>
-                            ${item.name}
+                            ${escapeHTML(item.name)}
                         </strong>
                     </td>
 
                     <td>
-                        ${item.category}
+                        ${escapeHTML(item.category)}
                     </td>
 
                     <td>
@@ -2822,26 +4932,24 @@ function renderInventory() {
                     </td>
 
                     <td>
-                        ${getUnit(item)}
+                        ${escapeHTML(item.unit)}
                     </td>
 
                     <td>
-
-                        <span
-                            class="status ${statusClass}"
-                        >
-                            ${item.status}
-                        </span>
-
+                        ${statusBadge(item.status)}
                     </td>
 
                     <td>
 
                         <button
-                            class="action-button"
-                            onclick="viewItem(${inventory.indexOf(item)})"
+                            class="action-btn"
+                            onclick="
+                                openItem(
+                                    '${item.id}'
+                                )
+                            "
                         >
-                            •••
+                            ⋯
                         </button>
 
                     </td>
@@ -2856,62 +4964,37 @@ function renderInventory() {
 }
 
 
-function getUnit(item) {
+/* =========================================================
+   CATEGORY
+========================================================= */
 
-    if (
-        item.name.toLowerCase().includes("milk")
-    ) {
+function setCategory(
+    category,
+    button
+) {
 
-        return "Liters";
-
-    }
-
-    if (
-        item.name.toLowerCase().includes("syrup")
-    ) {
-
-        return "Bottles";
-
-    }
-
-    if (
-        item.name.toLowerCase().includes("beans")
-    ) {
-
-        return "Bags";
-
-    }
-
-    return "Pieces";
-
-}
-
-
-/* =====================================================
-   SEARCH
-===================================================== */
-
-function filterInventory() {
-
-    renderInventory();
-
-}
-
-
-function filterCategory(category, button) {
-
-    currentCategory =
+    selectedCategory =
         category;
 
 
     document
-        .querySelectorAll(".filter")
+        .querySelectorAll(
+            ".filter"
+        )
         .forEach(
-            b => b.classList.remove("active")
+            function(item) {
+
+                item.classList.remove(
+                    "active"
+                );
+
+            }
         );
 
 
-    button.classList.add("active");
+    button.classList.add(
+        "active"
+    );
 
 
     renderInventory();
@@ -2919,182 +5002,677 @@ function filterCategory(category, button) {
 }
 
 
-/* =====================================================
-   VIEW ITEM DETAIL
-===================================================== */
+/* =========================================================
+   STATUS BADGE
+========================================================= */
 
-function viewItem(index) {
+function statusBadge(
+    status
+) {
 
-    const item =
-        inventory[index];
-
-
-    document.getElementById("detailName")
-        .innerText =
-        item.name;
-
-
-    document.getElementById("detailItemName")
-        .value =
-        item.name;
+    const value =
+        String(
+            status
+        ).toLowerCase();
 
 
-    document.getElementById("detailQuantity")
-        .value =
-        item.quantity;
+    if (
+        value.includes(
+            "out"
+        )
+    ) {
 
-
-    document.getElementById("detailCategory")
-        .innerText =
-        "Category: " +
-        item.category;
-
-
-    showPageById("detail");
-
-}
-
-
-/* =====================================================
-   DASHBOARD
-===================================================== */
-
-function updateDashboard() {
-
-    const low =
-        inventory.filter(
-            item =>
-                item.status
-                    .toLowerCase()
-                    .includes("low")
-        ).length;
-
-
-    document.getElementById("lowStockCount")
-        .innerText =
-        low;
-
-
-    document.getElementById("totalItems")
-        .innerText =
-        inventory.length;
-
-
-    document.getElementById("reportTotal")
-        .innerText =
-        inventory.length;
-
-
-    document.getElementById("reportLow")
-        .innerText =
-        low;
-
-
-    document.getElementById("reportContent")
-        .innerHTML = `
-
-            <p style="font-size:13px;">
-                Total items:
-                <strong>${inventory.length}</strong>
-            </p>
-
-            <br>
-
-            <p style="font-size:13px;">
-                Low stock:
-                <strong>${low}</strong>
-            </p>
-
+        return `
+            <span class="badge badge-red">
+                Out of Stock
+            </span>
         `;
 
+    }
+
+
+    if (
+        value.includes(
+            "low"
+        )
+    ) {
+
+        return `
+            <span class="badge badge-yellow">
+                Low Stock
+            </span>
+        `;
+
+    }
+
+
+    return `
+        <span class="badge badge-green">
+            In Stock
+        </span>
+    `;
+
 }
 
 
-/* =====================================================
-   ALERTS
-===================================================== */
+/* =========================================================
+   OPEN ITEM
+========================================================= */
 
-function updateAlerts() {
+function openItem(id) {
 
-    const alerts =
-        inventory.filter(
-            item =>
-                item.status
-                    .toLowerCase()
-                    .includes("low")
+    selectedItem =
+        inventory.find(
+            function(item) {
+
+                return (
+                    String(item.id) ===
+                    String(id)
+                );
+
+            }
         );
 
 
-    const alertsList =
-        document.getElementById("alertsList");
-
-    const dashboardAlerts =
-        document.getElementById("dashboardAlerts");
+    if (!selectedItem)
+        return;
 
 
-    alertsList.innerHTML = "";
+    document
+        .getElementById(
+            "detailTitle"
+        )
+        .innerText =
+        selectedItem.name;
 
-    dashboardAlerts.innerHTML = "";
+
+    document
+        .getElementById(
+            "detailStatus"
+        )
+        .innerHTML =
+        statusBadge(
+            selectedItem.status
+        );
 
 
-    if (alerts.length === 0) {
+    document
+        .getElementById(
+            "detailDescription"
+        )
+        .innerText =
+        selectedItem.notes ||
+        "No additional description available.";
 
-        alertsList.innerHTML =
-            "<p>No low stock alerts.</p>";
 
-        dashboardAlerts.innerHTML =
-            "<p>No recent alerts.</p>";
+    document
+        .getElementById(
+            "detailID"
+        )
+        .innerText =
+        selectedItem.id;
+
+
+    document
+        .getElementById(
+            "detailDate"
+        )
+        .innerText =
+        selectedItem.dateAdded;
+
+
+    document
+        .getElementById(
+            "detailUpdated"
+        )
+        .innerText =
+        selectedItem.lastUpdated;
+
+
+    document
+        .getElementById(
+            "detailSupplier"
+        )
+        .innerText =
+        selectedItem.supplier ||
+        "No supplier";
+
+
+    document
+        .getElementById(
+            "editName"
+        )
+        .value =
+        selectedItem.name;
+
+
+    document
+        .getElementById(
+            "editCategory"
+        )
+        .value =
+        selectedItem.category;
+
+
+    document
+        .getElementById(
+            "editQuantity"
+        )
+        .value =
+        selectedItem.quantity;
+
+
+    document
+        .getElementById(
+            "editUnit"
+        )
+        .value =
+        selectedItem.unit;
+
+
+    document
+        .getElementById(
+            "editPrice"
+        )
+        .value =
+        selectedItem.price;
+
+
+    document
+        .getElementById(
+            "editThreshold"
+        )
+        .value =
+        selectedItem.threshold;
+
+
+    document
+        .getElementById(
+            "editNotes"
+        )
+        .value =
+        selectedItem.notes;
+
+
+    fillEditSupplier(
+        selectedItem.supplier
+    );
+
+
+    openPageById(
+        "detail"
+    );
+
+}
+
+
+/* =========================================================
+   SAVE ITEM
+========================================================= */
+
+async function saveInventoryItem() {
+
+    if (!selectedItem)
+        return;
+
+
+    const result =
+        await api({
+
+            action:
+                "updateInventory",
+
+            id:
+                selectedItem.id,
+
+            name:
+                document
+                    .getElementById(
+                        "editName"
+                    )
+                    .value,
+
+            category:
+                document
+                    .getElementById(
+                        "editCategory"
+                    )
+                    .value,
+
+            quantity:
+                document
+                    .getElementById(
+                        "editQuantity"
+                    )
+                    .value,
+
+            unit:
+                document
+                    .getElementById(
+                        "editUnit"
+                    )
+                    .value,
+
+            price:
+                document
+                    .getElementById(
+                        "editPrice"
+                    )
+                    .value,
+
+            threshold:
+                document
+                    .getElementById(
+                        "editThreshold"
+                    )
+                    .value,
+
+            supplier:
+                document
+                    .getElementById(
+                        "editSupplier"
+                    )
+                    .value,
+
+            notes:
+                document
+                    .getElementById(
+                        "editNotes"
+                    )
+                    .value
+
+        });
+
+
+    showToast(
+        result.message
+    );
+
+
+    if (
+        result.success
+    ) {
+
+        await loadInventory();
+
+        updateDashboard();
+
+        renderAlerts();
+
+    }
+
+}
+
+
+/* =========================================================
+   DELETE ITEM
+========================================================= */
+
+async function deleteInventoryItem() {
+
+    if (!selectedItem)
+        return;
+
+
+    const confirmDelete =
+        confirm(
+            "Are you sure you want to delete this inventory item?"
+        );
+
+
+    if (!confirmDelete)
+        return;
+
+
+    const result =
+        await api({
+
+            action:
+                "deleteInventory",
+
+            id:
+                selectedItem.id
+
+        });
+
+
+    showToast(
+        result.message
+    );
+
+
+    if (
+        result.success
+    ) {
+
+        selectedItem =
+            null;
+
+
+        await loadInventory();
+
+        updateDashboard();
+
+        renderAlerts();
+
+        openPageById(
+            "inventory"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   ADD INVENTORY
+========================================================= */
+
+async function addInventoryItem() {
+
+    const name =
+        document
+            .getElementById(
+                "addName"
+            )
+            .value
+            .trim();
+
+
+    const quantity =
+        document
+            .getElementById(
+                "addQuantity"
+            )
+            .value;
+
+
+    if (
+        !name ||
+        quantity === ""
+    ) {
+
+        showToast(
+            "Item name and quantity are required."
+        );
 
         return;
 
     }
 
 
-    alerts.forEach(
-        item => {
+    const result =
+        await api({
 
-            alertsList.innerHTML += `
+            action:
+                "addInventory",
 
-                <div class="alert-card">
+            name:
+                name,
 
-                    <strong>
-                        ${item.name}
-                    </strong>
+            category:
+                document
+                    .getElementById(
+                        "addCategory"
+                    )
+                    .value,
 
-                    <small>
-                        Current Stock:
-                        ${item.quantity}
-                    </small>
+            quantity:
+                quantity,
 
-                    <span class="low">
-                        Low Stock
-                    </span>
+            unit:
+                document
+                    .getElementById(
+                        "addUnit"
+                    )
+                    .value,
 
-                </div>
+            price:
+                document
+                    .getElementById(
+                        "addPrice"
+                    )
+                    .value,
 
-            `;
+            threshold:
+                document
+                    .getElementById(
+                        "addThreshold"
+                    )
+                    .value,
 
-            dashboardAlerts.innerHTML += `
+            supplier:
+                document
+                    .getElementById(
+                        "addSupplier"
+                    )
+                    .value,
 
-                <div class="alert-row">
+            notes:
+                document
+                    .getElementById(
+                        "addNotes"
+                    )
+                    .value
 
-                    <div class="alert-left">
+        });
 
-                        <span class="alert-icon">
-                            🔔
-                        </span>
 
+    showToast(
+        result.message
+    );
+
+
+    if (
+        result.success
+    ) {
+
+        clearAddForm();
+
+        await loadInventory();
+
+        updateDashboard();
+
+        renderAlerts();
+
+        openPageById(
+            "inventory"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CLEAR ADD FORM
+========================================================= */
+
+function clearAddForm() {
+
+    document
+        .getElementById(
+            "addName"
+        )
+        .value =
+        "";
+
+
+    document
+        .getElementById(
+            "addQuantity"
+        )
+        .value =
+        "";
+
+
+    document
+        .getElementById(
+            "addPrice"
+        )
+        .value =
+        "";
+
+
+    document
+        .getElementById(
+            "addThreshold"
+        )
+        .value =
+        "5";
+
+
+    document
+        .getElementById(
+            "addNotes"
+        )
+        .value =
+        "";
+
+}
+
+
+/* =========================================================
+   SUPPLIERS
+========================================================= */
+
+async function loadSuppliers() {
+
+    const result =
+        await api({
+
+            action:
+                "getSuppliers"
+
+        });
+
+
+    if (
+        result.success
+    ) {
+
+        suppliers =
+            result.suppliers || [];
+
+
+        renderSuppliers();
+
+    }
+
+}
+
+
+/* =========================================================
+   RENDER SUPPLIERS
+========================================================= */
+
+function renderSuppliers() {
+
+    const table =
+        document.getElementById(
+            "supplierTable"
+        );
+
+
+    const search =
+        document
+            .getElementById(
+                "supplierSearch"
+            )
+            .value
+            .toLowerCase();
+
+
+    table.innerHTML =
+        "";
+
+
+    const filtered =
+        suppliers.filter(
+            function(supplier) {
+
+                return (
+                    supplier.name
+                        .toLowerCase()
+                        .includes(
+                            search
+                        ) ||
+                    supplier.contact
+                        .toLowerCase()
+                        .includes(
+                            search
+                        )
+                );
+
+            }
+        );
+
+
+    filtered.forEach(
+        function(supplier,index) {
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
                         <strong>
-                            ${item.name}
+                            ${escapeHTML(
+                                supplier.name
+                            )}
                         </strong>
+                    </td>
 
-                    </div>
+                    <td>
+                        ${escapeHTML(
+                            supplier.contact
+                        )}
+                    </td>
 
-                    <span class="low">
-                        Low Stock
-                    </span>
+                    <td>
+                        ${escapeHTML(
+                            supplier.email
+                        )}
+                    </td>
 
-                </div>
+                    <td>
+                        ${escapeHTML(
+                            supplier.phone
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            supplier.address
+                        )}
+                    </td>
+
+                    <td>
+                        ${statusBadge(
+                            supplier.status
+                        )}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="action-btn"
+                            onclick="
+                                editSupplier(
+                                    '${supplier.id}'
+                                )
+                            "
+                        >
+                            ⋯
+                        </button>
+
+                    </td>
+
+                </tr>
 
             `;
 
@@ -3104,116 +5682,17 @@ function updateAlerts() {
 }
 
 
-/* =====================================================
-   ADD STOCK
-===================================================== */
-
-function addStock() {
-
-    const name =
-        document.getElementById("newItemName")
-            .value.trim();
-
-
-    const category =
-        document.getElementById("newItemCategory")
-            .value;
-
-
-    const quantity =
-        document.getElementById("newItemQuantity")
-            .value;
-
-
-    const price =
-        document.getElementById("newItemPrice")
-            .value;
-
-
-    if (!name || !quantity) {
-
-        alert(
-            "Please enter the item name and quantity."
-        );
-
-        return;
-
-    }
-
-
-    const threshold =
-        Number(
-            document.getElementById("newItemThreshold")
-                .value
-        );
-
-
-    const status =
-        Number(quantity) <= threshold
-            ? "Low Stock"
-            : "In Stock";
-
-
-    inventory.push({
-
-        name: name,
-
-        category: category,
-
-        quantity: quantity,
-
-        price: price || "0",
-
-        status: status
-
-    });
-
-
-    /*
-       This currently updates the frontend.
-
-       To permanently save the new item to
-       Google Sheets, your Apps Script needs
-       an "addInventory" action.
-    */
-
-
-    alert(
-        "Stock added successfully!"
-    );
-
-
-    document.getElementById("newItemName")
-        .value = "";
-
-    document.getElementById("newItemQuantity")
-        .value = "";
-
-    document.getElementById("newItemPrice")
-        .value = "";
-
-
-    updateDashboard();
-
-    renderInventory();
-
-    updateAlerts();
-
-
-    showPageById("inventory");
-
-}
-
-
-/* =====================================================
-   SUPPLIERS
-===================================================== */
+/* =========================================================
+   SUPPLIER MODAL
+========================================================= */
 
 function openSupplierModal() {
 
-    document.getElementById(
-        "supplierModal"
-    ).style.display =
+    document
+        .getElementById(
+            "supplierModal"
+        )
+        .style.display =
         "flex";
 
 }
@@ -3221,25 +5700,31 @@ function openSupplierModal() {
 
 function closeSupplierModal() {
 
-    document.getElementById(
-        "supplierModal"
-    ).style.display =
+    document
+        .getElementById(
+            "supplierModal"
+        )
+        .style.display =
         "none";
 
 }
 
 
-function saveSupplier() {
+async function saveSupplier() {
 
     const name =
-        document.getElementById("supplierName")
-            .value.trim();
+        document
+            .getElementById(
+                "supplierName"
+            )
+            .value
+            .trim();
 
 
     if (!name) {
 
-        alert(
-            "Please enter supplier name."
+        showToast(
+            "Supplier name is required."
         );
 
         return;
@@ -3247,159 +5732,1394 @@ function saveSupplier() {
     }
 
 
-    const table =
-        document.getElementById("supplierTable");
+    const result =
+        await api({
+
+            action:
+                "addSupplier",
+
+            name:
+                name,
+
+            contact:
+                document
+                    .getElementById(
+                        "supplierContact"
+                    )
+                    .value,
+
+            email:
+                document
+                    .getElementById(
+                        "supplierEmail"
+                    )
+                    .value,
+
+            phone:
+                document
+                    .getElementById(
+                        "supplierPhone"
+                    )
+                    .value,
+
+            address:
+                document
+                    .getElementById(
+                        "supplierAddress"
+                    )
+                    .value
+
+        });
 
 
-    table.innerHTML += `
-
-        <tr>
-
-            <td>-</td>
-
-            <td>
-                ${name}
-            </td>
-
-            <td>
-                -
-            </td>
-
-            <td>
-                -
-            </td>
-
-            <td>
-                -
-            </td>
-
-            <td>
-                -
-            </td>
-
-            <td>
-                <span class="status in-stock">
-                    Active
-                </span>
-            </td>
-
-            <td>
-                •••
-            </td>
-
-        </tr>
-
-    `;
+    showToast(
+        result.message
+    );
 
 
-    document.getElementById(
-        "supplierName"
-    ).value = "";
+    if (
+        result.success
+    ) {
 
+        closeSupplierModal();
 
-    closeSupplierModal();
+        document
+            .getElementById(
+                "supplierName"
+            )
+            .value =
+            "";
+
+        document
+            .getElementById(
+                "supplierContact"
+            )
+            .value =
+            "";
+
+        document
+            .getElementById(
+                "supplierEmail"
+            )
+            .value =
+            "";
+
+        document
+            .getElementById(
+                "supplierPhone"
+            )
+            .value =
+            "";
+
+        document
+            .getElementById(
+                "supplierAddress"
+            )
+            .value =
+            "";
+
+        await loadSuppliers();
+
+        fillDropdowns();
+
+    }
 
 }
 
 
-/* =====================================================
-   PAGE NAVIGATION
-===================================================== */
+/*
+   Simple edit supplier.
+   The prompt is intentionally used so the
+   backend update function is also functional.
+*/
 
-function showPage(page, element) {
+async function editSupplier(id) {
+
+    const supplier =
+        suppliers.find(
+            function(item) {
+
+                return (
+                    item.id === id
+                );
+
+            }
+        );
+
+
+    if (!supplier)
+        return;
+
+
+    const name =
+        prompt(
+            "Supplier Name:",
+            supplier.name
+        );
+
+
+    if (
+        name === null
+    )
+        return;
+
+
+    const contact =
+        prompt(
+            "Contact Person:",
+            supplier.contact
+        );
+
+
+    const email =
+        prompt(
+            "Email:",
+            supplier.email
+        );
+
+
+    const phone =
+        prompt(
+            "Phone:",
+            supplier.phone
+        );
+
+
+    const address =
+        prompt(
+            "Address:",
+            supplier.address
+        );
+
+
+    const result =
+        await api({
+
+            action:
+                "updateSupplier",
+
+            id:
+                id,
+
+            name:
+                name,
+
+            contact:
+                contact,
+
+            email:
+                email,
+
+            phone:
+                phone,
+
+            address:
+                address,
+
+            status:
+                supplier.status
+
+        });
+
+
+    showToast(
+        result.message
+    );
+
+
+    if (
+        result.success
+    ) {
+
+        await loadSuppliers();
+
+        fillDropdowns();
+
+    }
+
+}
+
+
+/* =========================================================
+   DROPDOWNS
+========================================================= */
+
+function fillDropdowns() {
+
+    const addSupplier =
+        document.getElementById(
+            "addSupplier"
+        );
+
+
+    const orderSupplier =
+        document.getElementById(
+            "orderSupplier"
+        );
+
+
+    addSupplier.innerHTML =
+        `<option value="">
+            Select Supplier
+        </option>`;
+
+
+    orderSupplier.innerHTML =
+        `<option value="">
+            Select Supplier
+        </option>`;
+
+
+    suppliers.forEach(
+        function(supplier) {
+
+            addSupplier.innerHTML += `
+
+                <option
+                    value="${escapeHTML(
+                        supplier.name
+                    )}"
+                >
+                    ${escapeHTML(
+                        supplier.name
+                    )}
+                </option>
+
+            `;
+
+
+            orderSupplier.innerHTML += `
+
+                <option
+                    value="${escapeHTML(
+                        supplier.name
+                    )}"
+                >
+                    ${escapeHTML(
+                        supplier.name
+                    )}
+                </option>
+
+            `;
+
+        }
+    );
+
+
+    const orderItem =
+        document.getElementById(
+            "orderItem"
+        );
+
+
+    orderItem.innerHTML =
+        `<option value="">
+            Select Item
+        </option>`;
+
+
+    inventory.forEach(
+        function(item) {
+
+            orderItem.innerHTML += `
+
+                <option
+                    value="${escapeHTML(
+                        item.name
+                    )}"
+                >
+                    ${escapeHTML(
+                        item.name
+                    )}
+                </option>
+
+            `;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   EDIT SUPPLIER DROPDOWN
+========================================================= */
+
+function fillEditSupplier(
+    selected
+) {
+
+    const dropdown =
+        document.getElementById(
+            "editSupplier"
+        );
+
+
+    dropdown.innerHTML =
+        "";
+
+
+    suppliers.forEach(
+        function(supplier) {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                supplier.name;
+
+
+            option.textContent =
+                supplier.name;
+
+
+            dropdown.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+    if (selected) {
+
+        dropdown.value =
+            selected;
+
+    }
+
+}
+
+
+/* =========================================================
+   ORDERS
+========================================================= */
+
+async function loadOrders() {
+
+    const result =
+        await api({
+
+            action:
+                "getOrders"
+
+        });
+
+
+    if (
+        result.success
+    ) {
+
+        orders =
+            result.orders || [];
+
+
+        renderOrders();
+
+    }
+
+}
+
+
+/* =========================================================
+   RENDER ORDERS
+========================================================= */
+
+function renderOrders() {
+
+    const table =
+        document.getElementById(
+            "ordersTable"
+        );
+
+
+    table.innerHTML =
+        "";
+
+
+    if (
+        orders.length === 0
+    ) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="5"
+                    style="
+                        text-align:center;
+                        color:#777;
+                    "
+                >
+                    No purchase orders yet.
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    orders.forEach(
+        function(order) {
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>
+                        ${order.date}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            order.item
+                        )}
+                    </td>
+
+                    <td>
+                        ${order.quantity}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            order.supplier
+                        )}
+                    </td>
+
+                    <td>
+                        ${statusBadge(
+                            order.status
+                        )}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CREATE ORDER
+========================================================= */
+
+async function createPurchaseOrder() {
+
+    const supplier =
+        document
+            .getElementById(
+                "orderSupplier"
+            )
+            .value;
+
+
+    const item =
+        document
+            .getElementById(
+                "orderItem"
+            )
+            .value;
+
+
+    const quantity =
+        document
+            .getElementById(
+                "orderQuantity"
+            )
+            .value;
+
+
+    const notes =
+        document
+            .getElementById(
+                "orderNotes"
+            )
+            .value;
+
+
+    if (
+        !supplier ||
+        !item ||
+        !quantity
+    ) {
+
+        showToast(
+            "Please complete the purchase order."
+        );
+
+        return;
+
+    }
+
+
+    const result =
+        await api({
+
+            action:
+                "createOrder",
+
+            supplier:
+                supplier,
+
+            item:
+                item,
+
+            quantity:
+                quantity,
+
+            notes:
+                notes
+
+        });
+
+
+    showToast(
+        result.message
+    );
+
+
+    if (
+        result.success
+    ) {
+
+        document
+            .getElementById(
+                "orderQuantity"
+            )
+            .value =
+            "";
+
+        document
+            .getElementById(
+                "orderNotes"
+            )
+            .value =
+            "";
+
+        await loadOrders();
+
+    }
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function updateDashboard() {
+
+    const lowStock =
+        inventory.filter(
+            function(item) {
+
+                return String(
+                    item.status
+                )
+                .toLowerCase()
+                .includes(
+                    "low"
+                );
+
+            }
+        );
+
 
     document
-        .querySelectorAll(".page")
+        .getElementById(
+            "lowStockCount"
+        )
+        .innerText =
+        lowStock.length;
+
+
+    document
+        .getElementById(
+            "totalItemsCount"
+        )
+        .innerText =
+        inventory.length;
+
+
+    document
+        .getElementById(
+            "totalSuppliersCount"
+        )
+        .innerText =
+        suppliers.length;
+
+
+    const coffee =
+        inventory.filter(
+            function(item) {
+
+                return (
+                    item.category ===
+                    "Coffee"
+                );
+
+            }
+        );
+
+
+    const coffeeTotal =
+        coffee.reduce(
+            function(total,item) {
+
+                return (
+                    total +
+                    Number(
+                        item.quantity
+                    )
+                );
+
+            },
+            0
+        );
+
+
+    document
+        .getElementById(
+            "coffeeBeansCount"
+        )
+        .innerText =
+        coffeeTotal;
+
+
+    /* ALERTS */
+
+    const alertBox =
+        document.getElementById(
+            "dashboardAlerts"
+        );
+
+
+    alertBox.innerHTML =
+        "";
+
+
+    lowStock
+        .slice(0,4)
         .forEach(
-            p => p.style.display = "none"
+            function(item) {
+
+                alertBox.innerHTML += `
+
+                    <div class="alert-row">
+
+                        <div class="alert-name">
+
+                            🔔
+
+                            <strong>
+                                ${escapeHTML(
+                                    item.name
+                                )}
+                            </strong>
+
+                        </div>
+
+                        ${statusBadge(
+                            item.status
+                        )}
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+
+    if (
+        lowStock.length === 0
+    ) {
+
+        alertBox.innerHTML =
+            "No low stock alerts.";
+
+    }
+
+
+    createStockChart();
+
+    createCategoryChart();
+
+}
+
+
+/* =========================================================
+   STOCK CHART
+========================================================= */
+
+function createStockChart() {
+
+    const categories = {};
+
+
+    inventory.forEach(
+        function(item) {
+
+            if (
+                !categories[
+                    item.category
+                ]
+            ) {
+
+                categories[
+                    item.category
+                ] = 0;
+
+            }
+
+
+            categories[
+                item.category
+            ] +=
+                Number(
+                    item.quantity
+                ) || 0;
+
+        }
+    );
+
+
+    const max =
+        Math.max(
+            ...Object.values(
+                categories
+            ),
+            1
+        );
+
+
+    const chart =
+        document.getElementById(
+            "stockChart"
+        );
+
+
+    chart.innerHTML =
+        "";
+
+
+    Object.keys(categories)
+        .slice(0,5)
+        .forEach(
+            function(category) {
+
+                const value =
+                    categories[
+                        category
+                    ];
+
+
+                const height =
+                    Math.max(
+                        10,
+                        (
+                            value /
+                            max
+                        ) * 130
+                    );
+
+
+                chart.innerHTML += `
+
+                    <div class="bar-wrapper">
+
+                        <div class="bar-value">
+                            ${value}
+                        </div>
+
+                        <div
+                            class="bar"
+                            style="
+                                height:${height}px;
+                            "
+                        >
+                        </div>
+
+                        <div class="bar-label">
+                            ${escapeHTML(
+                                category
+                            )}
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   CATEGORY CHART
+========================================================= */
+
+function createCategoryChart() {
+
+    const categories = {};
+
+
+    inventory.forEach(
+        function(item) {
+
+            if (
+                !categories[
+                    item.category
+                ]
+            ) {
+
+                categories[
+                    item.category
+                ] = 0;
+
+            }
+
+
+            categories[
+                item.category
+            ]++;
+
+        }
+    );
+
+
+    const total =
+        inventory.length || 1;
+
+
+    const chart =
+        document.getElementById(
+            "categoryChart"
+        );
+
+
+    chart.innerHTML =
+        "";
+
+
+    Object.keys(categories)
+        .forEach(
+            function(category) {
+
+                const percentage =
+                    Math.round(
+                        (
+                            categories[
+                                category
+                            ] /
+                            total
+                        ) * 100
+                    );
+
+
+                chart.innerHTML += `
+
+                    <div
+                        style="
+                            margin-bottom:12px;
+                        "
+                    >
+
+                        <div
+                            style="
+                                display:flex;
+                                justify-content:space-between;
+                                font-size:10px;
+                                margin-bottom:5px;
+                            "
+                        >
+
+                            <span>
+                                ${escapeHTML(
+                                    category
+                                )}
+                            </span>
+
+                            <strong>
+                                ${percentage}%
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            style="
+                                height:9px;
+                                background:#eee;
+                                border-radius:10px;
+                            "
+                        >
+
+                            <div
+                                style="
+                                    width:${percentage}%;
+                                    height:100%;
+                                    background:#6f8069;
+                                    border-radius:10px;
+                                "
+                            >
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   ALERT PAGE
+========================================================= */
+
+function renderAlerts() {
+
+    const container =
+        document.getElementById(
+            "alertList"
+        );
+
+
+    const low =
+        inventory.filter(
+            function(item) {
+
+                return String(
+                    item.status
+                )
+                .toLowerCase()
+                .includes(
+                    "low"
+                );
+
+            }
+        );
+
+
+    container.innerHTML =
+        "";
+
+
+    low.forEach(
+        function(item) {
+
+            container.innerHTML += `
+
+                <div class="low-alert">
+
+                    <div>
+
+                        <strong>
+                            ${escapeHTML(
+                                item.name
+                            )}
+                        </strong>
+
+                        <small>
+                            Current Stock:
+                            ${item.quantity}
+                            ${escapeHTML(
+                                item.unit
+                            )}
+                        </small>
+
+                    </div>
+
+                    ${statusBadge(
+                        item.status
+                    )}
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    if (
+        low.length === 0
+    ) {
+
+        container.innerHTML =
+            `
+                <p
+                    style="
+                        color:#777;
+                        font-size:12px;
+                    "
+                >
+                    No low stock alerts.
+                </p>
+            `;
+
+    }
+
+}
+
+
+/* =========================================================
+   REPORTS
+========================================================= */
+
+async function updateReports() {
+
+    const result =
+        await api({
+
+            action:
+                "getReports"
+
+        });
+
+
+    if (
+        !result.success
+    )
+        return;
+
+
+    document
+        .getElementById(
+            "reportItems"
+        )
+        .innerText =
+        result.reports.totalItems;
+
+
+    document
+        .getElementById(
+            "reportLow"
+        )
+        .innerText =
+        result.reports.lowStock;
+
+
+    document
+        .getElementById(
+            "reportValue"
+        )
+        .innerText =
+        peso(
+            result.reports.inventoryValue
+        );
+
+
+    const table =
+        document.getElementById(
+            "reportTable"
+        );
+
+
+    table.innerHTML =
+        "";
+
+
+    inventory.forEach(
+        function(item) {
+
+            const value =
+                (
+                    Number(
+                        item.quantity
+                    ) || 0
+                ) *
+                (
+                    Number(
+                        item.price
+                    ) || 0
+                );
+
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>
+                        <strong>
+                            ${escapeHTML(
+                                item.name
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            item.category
+                        )}
+                    </td>
+
+                    <td>
+                        ${item.quantity}
+                        ${escapeHTML(
+                            item.unit
+                        )}
+                    </td>
+
+                    <td>
+                        ${peso(
+                            item.price
+                        )}
+                    </td>
+
+                    <td>
+                        ${peso(
+                            value
+                        )}
+                    </td>
+
+                    <td>
+                        ${statusBadge(
+                            item.status
+                        )}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   PESO FORMAT
+========================================================= */
+
+function peso(value) {
+
+    return (
+        "₱" +
+        Number(
+            value || 0
+        ).toLocaleString(
+            "en-PH",
+            {
+                minimumFractionDigits:
+                    2,
+
+                maximumFractionDigits:
+                    2
+            }
+        )
+    );
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function openPage(
+    page,
+    element
+) {
+
+    document
+        .querySelectorAll(
+            ".page"
+        )
+        .forEach(
+            function(p) {
+
+                p.classList.remove(
+                    "active"
+                );
+
+            }
         );
 
 
     const target =
         document.getElementById(
-            "page-" + page
+            page
         );
 
 
-    if (target) {
+    if (!target)
+        return;
 
-        target.style.display =
-            "block";
 
-    }
+    target.classList.add(
+        "active"
+    );
 
 
     document
-        .querySelectorAll(".nav-item")
+        .querySelectorAll(
+            ".nav-item"
+        )
         .forEach(
-            item =>
-                item.classList.remove("active")
+            function(nav) {
+
+                nav.classList.remove(
+                    "active"
+                );
+
+            }
         );
 
 
     if (element) {
 
-        element.classList.add("active");
+        element.classList.add(
+            "active"
+        );
+
+    }
+
+
+    if (
+        page === "alerts"
+    ) {
+
+        renderAlerts();
+
+        renderOrders();
+
+    }
+
+
+    if (
+        page === "reports"
+    ) {
+
+        updateReports();
 
     }
 
 }
 
 
-function showPageById(page) {
+function openPageById(
+    page
+) {
 
-    document
-        .querySelectorAll(".page")
-        .forEach(
-            p => p.style.display = "none"
-        );
+    openPage(
+        page,
+        null
+    );
+
+}
 
 
-    const target =
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(
+    message
+) {
+
+    const toast =
         document.getElementById(
-            "page-" + page
+            "toast"
         );
 
 
-    if (target) {
-
-        target.style.display =
-            "block";
-
-    }
+    toast.innerText =
+        message;
 
 
-    document
-        .querySelectorAll(".nav-item")
-        .forEach(
-            item =>
-                item.classList.remove("active")
-        );
+    toast.style.display =
+        "block";
+
+
+    setTimeout(
+        function() {
+
+            toast.style.display =
+                "none";
+
+        },
+        2500
+    );
 
 }
 
 
-/* =====================================================
-   SESSION RESTORE
-===================================================== */
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
-window.onload = function() {
+function escapeHTML(
+    value
+) {
 
-    const savedUser =
-        sessionStorage.getItem(
-            "currentUser"
+    const div =
+        document.createElement(
+            "div"
         );
 
 
-    if (savedUser) {
+    div.textContent =
+        value === undefined ||
+        value === null
+            ? ""
+            : String(value);
 
-        showApp(savedUser);
 
-    }
+    return div.innerHTML;
 
-};
+}
+
+
+/* =========================================================
+   SESSION RESTORE
+========================================================= */
+
+window.onload =
+    async function() {
+
+        const user =
+            sessionStorage.getItem(
+                "currentUser"
+            );
+
+
+        const role =
+            sessionStorage.getItem(
+                "currentRole"
+            );
+
+
+        if (user) {
+
+            await showApplication(
+                user,
+                role || "User"
+            );
+
+        }
+
+    };
 
 </script>
 
 </body>
+
 </html>
