@@ -2302,7 +2302,7 @@ textarea.form-control {
 
 
         <span id="topUsername">
-            Manager
+            User
         </span>
 
         <span>
@@ -2384,6 +2384,7 @@ textarea.form-control {
 
 
     <div
+        id="navSuppliers"
         class="nav-item"
         onclick="
             openPage(
@@ -2426,6 +2427,7 @@ textarea.form-control {
 
 
     <div
+        id="navReports"
         class="nav-item"
         onclick="
             openPage(
@@ -2450,6 +2452,7 @@ textarea.form-control {
 
 
     <div
+        id="navSettings"
         class="nav-item"
         onclick="
             openPage(
@@ -2509,7 +2512,7 @@ textarea.form-control {
         <div>
 
             <div class="page-title">
-                Hello, Manager!
+                Hello, User!
             </div>
 
             <div class="page-subtitle">
@@ -4009,6 +4012,7 @@ textarea.form-control {
 
 
             <button
+                id="deleteInventoryBtn"
                 class="btn btn-danger"
                 onclick="deleteInventoryItem()"
             >
@@ -4268,6 +4272,21 @@ let selectedItem = null;
 
 async function api(data) {
 
+    const action = data && data.action;
+
+    // Attach the server-issued session token to every authenticated request.
+    if (
+        action !== "login" &&
+        action !== "verifyOTP"
+    ) {
+        const sessionToken =
+            sessionStorage.getItem("sessionToken");
+
+        if (sessionToken) {
+            data.sessionToken = sessionToken;
+        }
+    }
+
     const response =
         await fetch(
             API_URL,
@@ -4284,15 +4303,31 @@ async function api(data) {
                 },
 
                 body:
-                    JSON.stringify(
-                        data
-                    )
+                    JSON.stringify(data)
 
             }
         );
 
+    const result = await response.json();
 
-    return await response.json();
+    // If the server rejects the session, return to login.
+    if (
+        result &&
+        result.success === false &&
+        result.message &&
+        (result.message.toLowerCase().includes("session") ||
+         result.message.toLowerCase().includes("log in again"))
+    ) {
+        sessionStorage.clear();
+        if (document.getElementById("app")) {
+            document.getElementById("app").style.display = "none";
+        }
+        if (document.getElementById("loginPage")) {
+            document.getElementById("loginPage").style.display = "flex";
+        }
+    }
+
+    return result;
 
 }
 
@@ -4450,7 +4485,12 @@ async function verifyOTP() {
 
         sessionStorage.setItem(
             "currentRole",
-            result.role || "User"
+            result.role || "Employee"
+        );
+
+        sessionStorage.setItem(
+            "sessionToken",
+            result.sessionToken || ""
         );
 
         showApplication(
@@ -4552,9 +4592,80 @@ async function showApplication(
         .value =
         role;
 
+    applyRolePermissions(role);
+
+    const greeting = document.querySelector("#dashboard .page-title");
+    if (greeting) {
+        greeting.innerText = "Hello, " + (username || "User") + "!";
+    }
 
     await loadAll();
 
+}
+
+
+/* =========================================================
+   ROLE-BASED UI PERMISSIONS
+========================================================= */
+
+function applyRolePermissions(role) {
+
+    const normalizedRole =
+        String(role || "Employee").toLowerCase();
+
+    const isManager =
+        normalizedRole === "manager";
+
+    // Manager-only navigation.
+    [
+        "navSuppliers",
+        "navReports",
+        "navSettings"
+    ].forEach(function(id) {
+
+        const element = document.getElementById(id);
+
+        if (element) {
+            element.style.display =
+                isManager ? "flex" : "none";
+        }
+
+    });
+
+    // Employees may add/edit inventory but cannot delete products.
+    const deleteButton =
+        document.getElementById("deleteInventoryBtn");
+
+    if (deleteButton) {
+        deleteButton.style.display =
+            isManager ? "inline-block" : "none";
+    }
+
+    // Prevent direct navigation to manager-only pages.
+    if (!isManager) {
+        ["suppliers", "reports", "settings"].forEach(function(pageId) {
+            const page = document.getElementById(pageId);
+            if (page) {
+                page.classList.remove("active");
+            }
+        });
+    }
+}
+
+
+function canManageSystem() {
+    return String(
+        sessionStorage.getItem("currentRole") || "Employee"
+    ).toLowerCase() === "manager";
+}
+
+
+function requireManager() {
+    if (!canManageSystem()) {
+        showToast("Manager permission required.");
+        return false;
+    }
+    return true;
 }
 
 
@@ -5647,6 +5758,8 @@ async function saveSupplier() {
 */
 
 async function editSupplier(id) {
+
+    if (!requireManager()) return;
 
     const supplier =
         suppliers.find(
@@ -6752,6 +6865,14 @@ function openPage(
     element
 ) {
 
+    if (
+        ["suppliers", "reports", "settings"].includes(page) &&
+        !canManageSystem()
+    ) {
+        showToast("Manager permission required.");
+        return;
+    }
+
     document
         .querySelectorAll(
             ".page"
@@ -6920,11 +7041,14 @@ window.onload =
             );
 
 
-        if (user) {
+        const sessionToken =
+            sessionStorage.getItem("sessionToken");
+
+        if (user && sessionToken) {
 
             await showApplication(
                 user,
-                role || "User"
+                role || "Employee"
             );
 
         }
