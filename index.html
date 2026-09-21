@@ -2145,185 +2145,104 @@ textarea.form-control {
     <div id="loginSection">
 
         <div class="login-title">
-
-            <h2>
-                Welcome Back
-            </h2>
-
-            <p>
-                Sign in to manage your inventory
-            </p>
-
+            <h2>Welcome Back</h2>
+            <p>Sign in to manage your inventory</p>
         </div>
 
-
-        <form
-            onsubmit="
-                event.preventDefault();
-                login();
-            "
-        >
-
+        <form onsubmit="event.preventDefault(); login();">
 
             <div class="form-group">
-
-                <label>
-                    Username / Email
-                </label>
-
+                <label>Gmail Address</label>
                 <input
                     class="form-control"
+                    type="email"
                     id="loginUsername"
                     required
-                    autocomplete="username"
+                    autocomplete="email"
+                    placeholder="Enter your Gmail address"
                 >
-
             </div>
 
-
             <div class="form-group">
-
-                <label>
-                    Password
-                </label>
-
+                <label>Password</label>
                 <input
                     class="form-control"
                     type="password"
                     id="loginPassword"
                     required
                     autocomplete="current-password"
+                    placeholder="Enter your password"
                 >
-
             </div>
-
 
             <div class="login-options">
-
                 <label>
-
-                    <input
-                        type="checkbox"
-                    >
-
+                    <input type="checkbox" id="rememberMe">
                     Remember me
-
                 </label>
 
-
-                <a href="#">
+                <a href="#" onclick="forgotPassword(); return false;">
                     Forgot Password?
                 </a>
-
             </div>
 
-
-            <button
-                class="btn-login"
-                type="submit"
-            >
+            <button class="btn-login" type="submit">
                 Log In
             </button>
 
-
         </form>
 
-
         <div class="login-register">
-
             Don't have an account?
-
-            <span
-                onclick="showRegister()"
+            <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=admin@gmail.com"
+                target="_blank"
+                style="color:var(--green);font-weight:700;text-decoration:none;"
             >
-                Register
-            </span>
-
+                Contact Admin
+            </a>
         </div>
 
     </div>
 
 
-    <!-- REGISTER -->
+    <!-- OTP VERIFICATION -->
 
-    <div
-        id="registerSection"
-        style="display:none;"
-    >
+    <div id="otpSection" style="display:none;">
 
         <div class="login-title">
-
-            <h2>
-                Create Account
-            </h2>
-
-            <p>
-                Register a new system user
-            </p>
-
+            <h2>Verify Your Email</h2>
+            <p>Enter the 6-digit code sent to your Gmail.</p>
         </div>
 
-
-        <form
-            onsubmit="
-                event.preventDefault();
-                register();
-            "
-        >
-
+        <form onsubmit="event.preventDefault(); verifyOTP();">
 
             <div class="form-group">
-
-                <label>
-                    Username / Email
-                </label>
-
+                <label>Verification Code</label>
                 <input
                     class="form-control"
-                    id="registerUsername"
+                    id="otpInput"
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="6"
+                    autocomplete="one-time-code"
+                    pattern="[0-9]{6}"
+                    placeholder="Enter 6-digit OTP"
                     required
                 >
-
             </div>
 
-
-            <div class="form-group">
-
-                <label>
-                    Password
-                </label>
-
-                <input
-                    class="form-control"
-                    type="password"
-                    id="registerPassword"
-                    required
-                >
-
-            </div>
-
-
-            <button
-                class="btn-login"
-                type="submit"
-            >
-                Create Account
+            <button class="btn-login" type="submit">
+                Verify OTP
             </button>
-
 
         </form>
 
-
         <div class="login-register">
-
-            Already have an account?
-
-            <span
-                onclick="showLogin()"
-            >
-                Login
+            Didn't receive the code?
+            <span onclick="backToLogin()">
+                Try Again
             </span>
-
         </div>
 
     </div>
@@ -4409,220 +4328,142 @@ function showAuthMessage(
 
 
 /* =========================================================
-   LOGIN
+   LOGIN WITH EMAIL + OTP
 ========================================================= */
 
 async function login() {
 
-    const username =
-        document
-            .getElementById(
-                "loginUsername"
-            )
-            .value
-            .trim();
-
+    const email =
+        document.getElementById("loginUsername").value.trim().toLowerCase();
 
     const password =
-        document
-            .getElementById(
-                "loginPassword"
-            )
-            .value;
+        document.getElementById("loginPassword").value;
 
-
-    if (
-        !username ||
-        !password
-    ) {
-
+    if (!email || !password) {
         showAuthMessage(
-            "Please enter your username and password.",
+            "Please enter your Gmail address and password.",
             "error"
         );
-
         return;
-
     }
 
+    if (!email.endsWith("@gmail.com")) {
+        showAuthMessage(
+            "Please enter a valid Gmail address.",
+            "error"
+        );
+        return;
+    }
 
-    showAuthMessage(
-        "Signing in...",
-        "success"
-    );
-
+    showAuthMessage("Checking your account...", "success");
 
     try {
 
-        const result =
-            await api({
-
-                action:
-                    "login",
-
-                username:
-                    username,
-
-                password:
-                    password
-
-            });
-
+        const result = await api({
+            action: "login",
+            email: email,
+            password: password
+        });
 
         if (!result.success) {
-
             showAuthMessage(
-                result.message,
+                result.message || "Invalid Gmail or password.",
                 "error"
             );
-
             return;
+        }
+
+        if (result.otpRequired) {
+
+            sessionStorage.setItem("pendingEmail", email);
+            sessionStorage.setItem("pendingRole", result.role || "");
+
+            document.getElementById("loginSection").style.display = "none";
+            document.getElementById("otpSection").style.display = "block";
+            document.getElementById("authMessage").style.display = "none";
+            document.getElementById("otpInput").value = "";
+            document.getElementById("otpInput").focus();
 
         }
 
+    } catch (error) {
+
+        console.error("Login error:", error);
+
+        showAuthMessage(
+            "Unable to connect to Google Sheets. Check your Apps Script URL and deployment.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   VERIFY OTP
+========================================================= */
+
+async function verifyOTP() {
+
+    const email = sessionStorage.getItem("pendingEmail");
+    const otp = document.getElementById("otpInput").value.trim();
+
+    if (!email) {
+        backToLogin();
+        return;
+    }
+
+    if (!/^\d{6}$/.test(otp)) {
+        showAuthMessage(
+            "Please enter the 6-digit verification code.",
+            "error"
+        );
+        return;
+    }
+
+    showAuthMessage("Verifying code...", "success");
+
+    try {
+
+        const result = await api({
+            action: "verifyOTP",
+            email: email,
+            otp: otp
+        });
+
+        if (!result.success) {
+            showAuthMessage(
+                result.message || "Invalid verification code.",
+                "error"
+            );
+            return;
+        }
+
+        sessionStorage.removeItem("pendingEmail");
+        sessionStorage.removeItem("pendingRole");
 
         sessionStorage.setItem(
             "currentUser",
-            result.username
+            result.username || email
         );
-
 
         sessionStorage.setItem(
             "currentRole",
-            result.role
+            result.role || "User"
         );
-
 
         showApplication(
-            result.username,
-            result.role
+            result.username || email,
+            result.role || "User"
         );
 
+    } catch (error) {
 
-    }
-
-    catch(error) {
-
-        console.error(error);
+        console.error("OTP verification error:", error);
 
         showAuthMessage(
-
-            "Unable to connect to Google Sheets. Check your Apps Script URL and deployment.",
-
-            "error"
-
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   REGISTER
-========================================================= */
-
-async function register() {
-
-    const username =
-        document
-            .getElementById(
-                "registerUsername"
-            )
-            .value
-            .trim();
-
-
-    const password =
-        document
-            .getElementById(
-                "registerPassword"
-            )
-            .value;
-
-
-    if (
-        !username ||
-        !password
-    ) {
-
-        showAuthMessage(
-            "Please complete all fields.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    if (
-        password.length < 6
-    ) {
-
-        showAuthMessage(
-            "Password must contain at least 6 characters.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    try {
-
-        const result =
-            await api({
-
-                action:
-                    "register",
-
-                username:
-                    username,
-
-                password:
-                    password
-
-            });
-
-
-        if (
-            result.success
-        ) {
-
-            showAuthMessage(
-                result.message,
-                "success"
-            );
-
-
-            setTimeout(
-                function() {
-
-                    showLogin();
-
-                },
-                1000
-            );
-
-        }
-
-        else {
-
-            showAuthMessage(
-                result.message,
-                "error"
-            );
-
-        }
-
-    }
-
-    catch(error) {
-
-        showAuthMessage(
-            "Registration failed.",
+            "Unable to verify the code. Please try again.",
             "error"
         );
 
@@ -4632,61 +4473,33 @@ async function register() {
 
 
 /* =========================================================
-   SHOW LOGIN / REGISTER
+   BACK TO LOGIN
 ========================================================= */
 
-function showRegister() {
+function backToLogin() {
 
-    document
-        .getElementById(
-            "loginSection"
-        )
-        .style.display =
-        "none";
+    sessionStorage.removeItem("pendingEmail");
+    sessionStorage.removeItem("pendingRole");
 
-
-    document
-        .getElementById(
-            "registerSection"
-        )
-        .style.display =
-        "block";
-
-
-    document
-        .getElementById(
-            "authMessage"
-        )
-        .style.display =
-        "none";
+    document.getElementById("otpSection").style.display = "none";
+    document.getElementById("loginSection").style.display = "block";
+    document.getElementById("otpInput").value = "";
+    document.getElementById("loginPassword").value = "";
+    document.getElementById("authMessage").style.display = "none";
 
 }
 
 
-function showLogin() {
+/* =========================================================
+   FORGOT PASSWORD
+========================================================= */
 
-    document
-        .getElementById(
-            "registerSection"
-        )
-        .style.display =
-        "none";
+function forgotPassword() {
 
-
-    document
-        .getElementById(
-            "loginSection"
-        )
-        .style.display =
-        "block";
-
-
-    document
-        .getElementById(
-            "authMessage"
-        )
-        .style.display =
-        "none";
+    window.open(
+        "https://mail.google.com/mail/?view=cm&fs=1&to=admin@gmail.com&su=Extract%20Brew%20Cafe%20Password%20Reset",
+        "_blank"
+    );
 
 }
 
