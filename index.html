@@ -2152,14 +2152,14 @@ textarea.form-control {
         <form onsubmit="event.preventDefault(); login();">
 
             <div class="form-group">
-                <label>Gmail Address</label>
+                <label>Username or Email</label>
                 <input
                     class="form-control"
-                    type="email"
+                    type="text"
                     id="loginUsername"
                     required
-                    autocomplete="email"
-                    placeholder="Enter your Gmail address"
+                    autocomplete="username"
+                    placeholder="Enter your username or email"
                 >
             </div>
 
@@ -2181,9 +2181,6 @@ textarea.form-control {
                     Remember me
                 </label>
 
-                <a href="#" onclick="forgotPassword(); return false;">
-                    Forgot Password?
-                </a>
             </div>
 
             <button class="btn-login" type="submit">
@@ -2192,16 +2189,6 @@ textarea.form-control {
 
         </form>
 
-        <div class="login-register">
-            Don't have an account?
-            <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=admin@gmail.com"
-                target="_blank"
-                style="color:var(--green);font-weight:700;text-decoration:none;"
-            >
-                Contact Admin
-            </a>
-        </div>
 
     </div>
 
@@ -2212,7 +2199,7 @@ textarea.form-control {
 
         <div class="login-title">
             <h2>Verify Your Email</h2>
-            <p>Enter the 6-digit code sent to your Gmail.</p>
+            <p>Enter the 6-digit code sent to your registered email.</p>
         </div>
 
         <form onsubmit="event.preventDefault(); verifyOTP();">
@@ -4368,23 +4355,15 @@ function showAuthMessage(
 
 async function login() {
 
-    const email =
-        document.getElementById("loginUsername").value.trim().toLowerCase();
+    const loginValue =
+        document.getElementById("loginUsername").value.trim();
 
     const password =
         document.getElementById("loginPassword").value;
 
-    if (!email || !password) {
+    if (!loginValue || !password) {
         showAuthMessage(
-            "Please enter your Gmail address and password.",
-            "error"
-        );
-        return;
-    }
-
-    if (!email.endsWith("@gmail.com")) {
-        showAuthMessage(
-            "Please enter a valid Gmail address.",
+            "Please enter your username or email and password.",
             "error"
         );
         return;
@@ -4396,13 +4375,13 @@ async function login() {
 
         const result = await api({
             action: "login",
-            email: email,
+            usernameOrEmail: loginValue,
             password: password
         });
 
         if (!result.success) {
             showAuthMessage(
-                result.message || "Invalid Gmail or password.",
+                result.message || "Invalid username/email or password.",
                 "error"
             );
             return;
@@ -4410,7 +4389,8 @@ async function login() {
 
         if (result.otpRequired) {
 
-            sessionStorage.setItem("pendingEmail", email);
+            sessionStorage.setItem("pendingEmail", result.email);
+            sessionStorage.setItem("pendingUsername", result.username || "");
             sessionStorage.setItem("pendingRole", result.role || "");
 
             document.getElementById("loginSection").style.display = "none";
@@ -4442,6 +4422,7 @@ async function login() {
 async function verifyOTP() {
 
     const email = sessionStorage.getItem("pendingEmail");
+    const pendingUsername = sessionStorage.getItem("pendingUsername") || "";
     const otp = document.getElementById("otpInput").value.trim();
 
     if (!email) {
@@ -4476,11 +4457,12 @@ async function verifyOTP() {
         }
 
         sessionStorage.removeItem("pendingEmail");
+        sessionStorage.removeItem("pendingUsername");
         sessionStorage.removeItem("pendingRole");
 
         sessionStorage.setItem(
             "currentUser",
-            result.username || email
+            result.username || pendingUsername || email
         );
 
         sessionStorage.setItem(
@@ -4494,7 +4476,7 @@ async function verifyOTP() {
         );
 
         showApplication(
-            result.username || email,
+            result.username || pendingUsername || email,
             result.role || "User"
         );
 
@@ -4519,6 +4501,7 @@ async function verifyOTP() {
 function backToLogin() {
 
     sessionStorage.removeItem("pendingEmail");
+    sessionStorage.removeItem("pendingUsername");
     sessionStorage.removeItem("pendingRole");
 
     document.getElementById("otpSection").style.display = "none";
@@ -4526,20 +4509,6 @@ function backToLogin() {
     document.getElementById("otpInput").value = "";
     document.getElementById("loginPassword").value = "";
     document.getElementById("authMessage").style.display = "none";
-
-}
-
-
-/* =========================================================
-   FORGOT PASSWORD
-========================================================= */
-
-function forgotPassword() {
-
-    window.open(
-        "https://mail.google.com/mail/?view=cm&fs=1&to=admin@gmail.com&su=Extract%20Brew%20Cafe%20Password%20Reset",
-        "_blank"
-    );
 
 }
 
