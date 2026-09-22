@@ -4,52 +4,128 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
-  <title>COFFEE CAFE - Inventory System</title>
+  <title>The Daily Grind - Cafe Inventory</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: #12181f; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; }
+    :root {
+      --espresso: #3e2723;
+      --mocha: #4e342e;
+      --caramel: #bc6c25;
+      --cream: #f7f4ef;
+      --card-bg: #ffffff;
+      --text-main: #2c221e;
+      --text-muted: #7c6f64;
+      --border-subtle: #e6dfd5;
+    }
 
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: var(--cream); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* Login Screen Design */
     .login-card {
-      max-width: 400px;
+      max-width: 420px;
       width: 90%;
       margin: 80px auto;
-      padding: 30px;
-      background-color: #1b222c;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      padding: 35px;
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(62, 39, 35, 0.08);
+      border: 1px solid var(--border-subtle);
     }
 
     .form-group { margin-bottom: 20px; text-align: left; }
     .form-group input { width: 100%; padding: 12px; padding-right: 70px; }
 
-    .btn-primary { width: 100%; padding: 12px; background: #d97706; color: #12181f; border: none; font-weight: 700; cursor: pointer; border-radius: 8px; font-size: 14px; }
+    .btn-primary { 
+      width: 100%; 
+      padding: 12px; 
+      background: var(--caramel); 
+      color: #ffffff; 
+      border: none; 
+      font-weight: 700; 
+      cursor: pointer; 
+      border-radius: 8px; 
+      font-size: 14px; 
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #a35d1f; }
     .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    header { background: #1a222d; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2d3748; }
-    .brand { font-size: 18px; font-weight: 800; color: #d97706; display: flex; align-items: center; gap: 8px; }
+    /* Header & Navigation */
+    header { 
+      background: var(--espresso); 
+      padding: 16px 24px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .brand { font-size: 19px; font-weight: 800; color: #fdfbf7; display: flex; align-items: center; gap: 10px; letter-spacing: 0.5px; }
     
-    .nav-bar { display: flex; background: #1a222d; overflow-x: auto; border-bottom: 2px solid #2d3748; white-space: nowrap; -webkit-overflow-scrolling: touch; }
-    .nav-btn { background: none; border: none; color: #94a3b8; padding: 12px 16px; font-size: 13px; font-weight: 600; cursor: pointer; }
-    .nav-btn.active { color: #d97706; border-bottom: 3px solid #d97706; }
+    .nav-bar { 
+      display: flex; 
+      background: #ede8e1; 
+      overflow-x: auto; 
+      border-bottom: 1px solid var(--border-subtle); 
+      white-space: nowrap; 
+      -webkit-overflow-scrolling: touch; 
+      padding: 0 12px;
+    }
+    .nav-btn { 
+      background: none; 
+      border: none; 
+      color: var(--text-muted); 
+      padding: 14px 18px; 
+      font-size: 13px; 
+      font-weight: 600; 
+      cursor: pointer; 
+      transition: color 0.2s;
+    }
+    .nav-btn:hover { color: var(--espresso); }
+    .nav-btn.active { color: var(--espresso); border-bottom: 3px solid var(--caramel); font-weight: 700; }
 
-    .container { padding: 16px; flex: 1; max-width: 800px; margin: 0 auto; width: 100%; }
-    .card { background: #1a222d; border-radius: 12px; padding: 16px; margin-bottom: 16px; border: 1px solid #2d3748; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3); }
+    /* Containers & Cards */
+    .container { padding: 24px 16px; flex: 1; max-width: 900px; margin: 0 auto; width: 100%; }
+    .card { 
+      background: var(--card-bg); 
+      border-radius: 14px; 
+      padding: 24px; 
+      margin-bottom: 20px; 
+      border: 1px solid var(--border-subtle); 
+      box-shadow: 0 4px 12px rgba(62, 39, 35, 0.04); 
+    }
 
-    label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-top: 8px; display: block; }
-    input, select, button { width: 100%; padding: 12px; margin-top: 4px; border-radius: 8px; border: 1px solid #475569; background: #12181f; color: #fff; font-size: 14px; }
-    button.btn-amber { background: #d97706; color: #12181f; border: none; font-weight: 700; cursor: pointer; margin-top: 12px; }
-    button.btn-danger { background: #ef4444; color: #fff; border: none; font-weight: 700; cursor: pointer; padding: 6px 12px; width: auto; font-size: 12px; border-radius: 6px; }
+    label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-top: 12px; display: block; letter-spacing: 0.5px; }
+    input, select, button { 
+      width: 100%; 
+      padding: 12px; 
+      margin-top: 6px; 
+      border-radius: 8px; 
+      border: 1px solid var(--border-subtle); 
+      background: #fdfbf7; 
+      color: var(--text-main); 
+      font-size: 14px; 
+    }
+    input:focus, select:focus { outline: none; border-color: var(--caramel); box-shadow: 0 0 0 3px rgba(188, 108, 37, 0.1); }
 
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; }
-    .metric-box { background: #12181f; padding: 12px; border-radius: 8px; border: 1px solid #2d3748; }
-    .metric-val { font-size: 20px; font-weight: 800; color: #d97706; margin-top: 4px; }
+    button.btn-amber { background: var(--caramel); color: #fff; border: none; font-weight: 700; cursor: pointer; margin-top: 16px; border-radius: 8px; padding: 12px; }
+    button.btn-amber:hover { background: #a35d1f; }
+    
+    button.btn-danger { background: #d9534f; color: #fff; border: none; font-weight: 700; cursor: pointer; padding: 6px 12px; width: auto; font-size: 12px; border-radius: 6px; }
+    button.btn-danger:hover { background: #c9302c; }
 
-    .table-responsive { overflow-x: auto; margin-top: 12px; }
+    /* Dashboard Metrics */
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; text-align: center; }
+    .metric-box { background: #fdfbf7; padding: 16px; border-radius: 10px; border: 1px solid var(--border-subtle); }
+    .metric-val { font-size: 24px; font-weight: 800; color: var(--caramel); margin-top: 6px; }
+
+    /* Tables */
+    .table-responsive { overflow-x: auto; margin-top: 15px; border-radius: 8px; border: 1px solid var(--border-subtle); }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
-    th { background: #12181f; color: #d97706; padding: 10px; border-bottom: 1px solid #2d3748; }
-    td { padding: 10px; border-bottom: 1px solid #2d3748; color: #cbd5e1; }
+    th { background: var(--mocha); color: #fdfbf7; padding: 12px; font-weight: 600; letter-spacing: 0.5px; }
+    td { padding: 12px; border-bottom: 1px solid var(--border-subtle); color: var(--text-main); background: #ffffff; }
+    tr:last-child td { border-bottom: none; }
 
-    .otp-input-box { text-align: center; font-size: 22px; letter-spacing: 8px; font-weight: bold; }
+    .otp-input-box { text-align: center; font-size: 24px; letter-spacing: 10px; font-weight: bold; }
     .hidden { display: none !important; }
   </style>
 </head>
@@ -57,56 +133,60 @@
 
   <!-- LOGIN SECTION -->
   <div id="loginSection" class="login-card">
-    <h2 style="color: #d97706; margin-bottom: 20px; text-align: center;">☕ CAFE PORTAL</h2>
+    <div style="text-align: center; margin-bottom: 24px;">
+      <span style="font-size: 40px;">☕</span>
+      <h2 style="color: var(--espresso); margin-top: 8px; font-size: 22px;">The Daily Grind</h2>
+      <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Staff & Inventory Portal</p>
+    </div>
     
     <!-- STEP 1: CREDENTIALS -->
     <div id="stepCredentials">
       <div class="form-group">
-        <label>USERNAME</label>
-        <input type="text" id="loginUsername" placeholder="Enter username">
+        <label>Username</label>
+        <input type="text" id="loginUsername" placeholder="Enter your username">
       </div>
       <div class="form-group" style="position: relative;">
-        <label>PASSWORD</label>
-        <input type="password" id="loginPassword" placeholder="Enter password">
-        <span id="showToggleBtn" onclick="togglePasswordVisibility(event)" style="position: absolute; right: 12px; top: 38px; cursor: pointer; font-size: 13px; color: #a0aec0;">👁️ Show</span>
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter your password">
+        <span id="showToggleBtn" onclick="togglePasswordVisibility(event)" style="position: absolute; right: 12px; top: 38px; cursor: pointer; font-size: 12px; color: var(--text-muted); font-weight: 600;">👁️ Show</span>
       </div>
-      <div style="text-align: right; margin-bottom: 15px;">
-        <a href="#" onclick="handleForgotPassword(event)" style="color: #d97706; font-size: 13px; text-decoration: none;">Forgot Password?</a>
+      <div style="text-align: right; margin-bottom: 20px;">
+        <a href="#" onclick="handleForgotPassword(event)" style="color: var(--caramel); font-size: 12px; text-decoration: none; font-weight: 600;">Forgot Password?</a>
       </div>
-      <button id="loginBtn" class="btn-primary" onclick="handleRequestOtp()">SEND OTP</button>
+      <button id="loginBtn" class="btn-primary" onclick="handleRequestOtp()">SEND VERIFICATION CODE</button>
     </div>
 
     <!-- STEP 2: OTP VERIFICATION -->
     <div id="stepOtp" class="hidden">
-      <p id="otpNotice" style="font-size: 13px; color: #cbd5e1; margin-bottom: 15px; text-align: center;"></p>
+      <p id="otpNotice" style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px; text-align: center; line-height: 1.4;"></p>
       <div class="form-group">
-        <label>ENTER 6-DIGIT OTP</label>
-        <input type="text" id="otpCode" class="otp-input-box" maxlength="6" placeholder="123456">
+        <label>Enter 6-Digit Code</label>
+        <input type="text" id="otpCode" class="otp-input-box" maxlength="6" placeholder="------">
       </div>
-      <button id="verifyBtn" class="btn-primary" onclick="handleVerifyOtp()">VERIFY & LOG IN</button>
-      <button style="background: none; border: none; color: #94a3b8; font-size: 12px; cursor: pointer; margin-top: 10px;" onclick="resetToStep1()">← Back to Login</button>
+      <button id="verifyBtn" class="btn-primary" onclick="handleVerifyOtp()">VERIFY & ENTER</button>
+      <button style="background: none; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; margin-top: 15px; width: 100%; font-weight: 600;" onclick="resetToStep1()">← Back to Login</button>
     </div>
 
-    <p id="loginError" style="color: #ef4444; font-size: 12px; margin-top: 12px; text-align: center; display: none;"></p>
+    <p id="loginError" style="color: #d9534f; font-size: 12px; margin-top: 15px; text-align: center; display: none; font-weight: 600;"></p>
   </div>
 
   <!-- MAIN APP SECTION -->
   <div id="appView" class="hidden">
     <header>
-      <div class="brand">☕ CAFE INVENTORY</div>
-      <div style="display:flex; align-items:center; gap:10px;">
-        <span id="userBadge" style="font-size: 12px; color: #cbd5e1;">-</span>
+      <div class="brand">☕ The Daily Grind <span style="font-size: 11px; background: rgba(255,255,255,0.15); padding: 3px 8px; border-radius: 4px; font-weight: normal; margin-left: 6px;">Cafe OS</span></div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span id="userBadge" style="font-size: 13px; color: #fdfbf7; font-weight: 500;">-</span>
         <button class="btn-danger" onclick="logout()">Logout</button>
       </div>
     </header>
 
     <div class="nav-bar">
       <button class="nav-btn active" onclick="switchTab('dashboard')">Dashboard</button>
-      <button class="nav-btn" onclick="switchTab('catalog')">Catalog</button>
+      <button class="nav-btn" onclick="switchTab('catalog')">Inventory Catalog</button>
       <button class="nav-btn" onclick="switchTab('addStock')">+ Add Item</button>
       <button class="nav-btn" onclick="switchTab('stock')">Stock In/Out</button>
       <button class="nav-btn" onclick="switchTab('suppliers')">Suppliers</button>
-      <button class="nav-btn" onclick="switchTab('alerts')">Low Stock</button>
+      <button class="nav-btn" onclick="switchTab('alerts')">Low Stock Alerts</button>
       <button class="nav-btn" onclick="switchTab('logs')">Audit Logs</button>
       <button class="nav-btn" onclick="switchTab('users')">Users</button>
     </div>
@@ -114,29 +194,30 @@
     <div class="container">
       <!-- 1. DASHBOARD -->
       <div id="tab-dashboard" class="tab-content card">
-        <h3 style="margin-bottom:12px; color:#d97706;">Cafe Dashboard</h3>
+        <h3 style="margin-bottom:16px; color:var(--espresso); font-size: 18px;">Cafe Overview</h3>
         <div class="grid-3">
-          <div class="metric-box"><div style="font-size:10px; color:#94a3b8;">ITEMS</div><div class="metric-val" id="m-items">0</div></div>
-          <div class="metric-box"><div style="font-size:10px; color:#94a3b8;">VALUATION</div><div class="metric-val" id="m-val">₱0</div></div>
-          <div class="metric-box"><div style="font-size:10px; color:#94a3b8;">LOW STOCK</div><div class="metric-val" id="m-low" style="color:#ef4444;">0</div></div>
+          <div class="metric-box"><div style="font-size:11px; color:var(--text-muted); font-weight: 700;">TOTAL ITEMS</div><div class="metric-val" id="m-items">0</div></div>
+          <div class="metric-box"><div style="font-size:11px; color:var(--text-muted); font-weight: 700;">STOCK VALUATION</div><div class="metric-val" id="m-val">₱0</div></div>
+          <div class="metric-box"><div style="font-size:11px; color:var(--text-muted); font-weight: 700;">LOW STOCK ITEMS</div><div class="metric-val" id="m-low" style="color:#d9534f;">0</div></div>
         </div>
       </div>
 
       <!-- 2. CATALOG -->
       <div id="tab-catalog" class="tab-content card hidden">
-        <h3 style="color:#d97706;">Cafe Catalog</h3>
-        <div id="catalogTable" class="table-responsive">Loading...</div>
+        <h3 style="color:var(--espresso); font-size: 18px;">Catalog Management</h3>
+        <div id="catalogTable" class="table-responsive">Loading catalog...</div>
       </div>
 
       <!-- 3. ADD NEW ITEM -->
       <div id="tab-addStock" class="tab-content card hidden">
-        <h3 style="color:#d97706; margin-bottom:8px;">Add New Cafe Item</h3>
+        <h3 style="color:var(--espresso); margin-bottom:4px; font-size: 18px;">Add New Inventory Item</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Register new beans, syrups, cups, or pastries into the system.</p>
         <label>Item ID</label>
-        <input type="text" id="addId" placeholder="e.g. CF001">
+        <input type="text" id="addId" placeholder="e.g. BEAN-001">
         <label>Item Name</label>
-        <input type="text" id="addName" placeholder="e.g. Arabica Coffee Beans (1kg)">
+        <input type="text" id="addName" placeholder="e.g. Colombian Dark Roast (1kg)">
         <label>Category</label>
-        <input type="text" id="addCategory" placeholder="e.g. Coffee Beans / Dairy / Syrups">
+        <input type="text" id="addCategory" placeholder="e.g. Coffee Beans / Dairy / Syrups / Packaging">
         <label>Initial Quantity</label>
         <input type="number" id="addQty" placeholder="0">
         <label>Unit Price (₱)</label>
@@ -148,46 +229,47 @@
 
       <!-- 4. STOCK IN/OUT -->
       <div id="tab-stock" class="tab-content card hidden">
-        <h3 style="color:#d97706; margin-bottom:8px;">Stock Adjustment</h3>
+        <h3 style="color:var(--espresso); margin-bottom:4px; font-size: 18px;">Stock In / Stock Out</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Record deliveries received or stock consumed during shifts.</p>
         <label>Item ID</label>
-        <input type="text" id="stkId" placeholder="e.g. CF001">
+        <input type="text" id="stkId" placeholder="e.g. BEAN-001">
         <label>Movement Type</label>
-        <select id="stkType"><option value="STOCK IN">Stock IN (+)</option><option value="STOCK OUT">Stock OUT (-)</option></select>
+        <select id="stkType"><option value="STOCK IN">Stock IN (+) - Delivery Received</option><option value="STOCK OUT">Stock OUT (-) - Used / Spilled / Sold</option></select>
         <label>Quantity</label>
         <input type="number" id="stkQty" placeholder="0">
         <label>Notes / Reason</label>
-        <input type="text" id="stkNotes" placeholder="e.g. Weekly delivery, Spilled milk">
-        <button class="btn-amber" onclick="submitStock()">Submit Stock Transaction</button>
+        <input type="text" id="stkNotes" placeholder="e.g. Weekly supplier drop-off, Morning shift usage">
+        <button class="btn-amber" onclick="submitStock()">Submit Movement</button>
       </div>
 
       <!-- 5. SUPPLIERS -->
       <div id="tab-suppliers" class="tab-content card hidden">
-        <h3 style="color:#d97706;">Supplier Contacts</h3>
-        <div id="supplierTable" class="table-responsive">Loading...</div>
+        <h3 style="color:var(--espresso); font-size: 18px;">Supplier Directory</h3>
+        <div id="supplierTable" class="table-responsive">Loading suppliers...</div>
       </div>
 
       <!-- 6. LOW STOCK ALERTS -->
       <div id="tab-alerts" class="tab-content card hidden">
-        <h3 style="color:#ef4444;">Low Stock Items</h3>
-        <div id="alertsTable" class="table-responsive">Loading...</div>
+        <h3 style="color:#d9534f; font-size: 18px;">Restock Needed</h3>
+        <div id="alertsTable" class="table-responsive">Checking stock levels...</div>
       </div>
 
       <!-- 7. AUDIT LOGS -->
       <div id="tab-logs" class="tab-content card hidden">
-        <h3 style="color:#d97706;">Transaction Audit Trail</h3>
-        <div id="logsTable" class="table-responsive">Loading...</div>
+        <h3 style="color:var(--espresso); font-size: 18px;">Audit Logs & Transaction History</h3>
+        <div id="logsTable" class="table-responsive">Loading logs...</div>
       </div>
 
       <!-- 8. USER MANAGEMENT -->
       <div id="tab-users" class="tab-content card hidden">
-        <h3 style="color:#d97706;">System Users</h3>
-        <div id="usersTable" class="table-responsive">Loading...</div>
+        <h3 style="color:var(--espresso); font-size: 18px;">System Users</h3>
+        <div id="usersTable" class="table-responsive">Loading users...</div>
       </div>
     </div>
   </div>
 
   <script>
-    // Replace with your new Google Apps Script Web App URL after deploying the backend code
+    // Replace with your Google Apps Script Web App URL after deploying backend code
     const API_URL = "YOUR_NEW_DEPLOYED_APPS_SCRIPT_URL_HERE";
     
     let sessionToken = sessionStorage.getItem("sessionToken");
@@ -211,7 +293,7 @@
 
     function handleForgotPassword(e) {
       if (e) e.preventDefault();
-      alert("Forgot Password?\n\nPlease contact your Cafe Administrator to reset your credentials.");
+      alert("Password Reset\n\nPlease reach out to your cafe manager or system administrator to request a secure password update.");
     }
 
     function apiCall(payload, callback) {
@@ -224,16 +306,15 @@
       .then(res => res.json())
       .then(data => {
         if (!data.success && (data.message === "Unauthorized or session expired." || data.message === "Access denied.")) {
-          alert("Session Expired or Unauthorized Access: " + data.message);
+          alert("Session Expired: " + data.message);
           logout();
           return;
         }
         callback(data);
       })
-      .catch(err => alert("Connection error. Ensure your APPS SCRIPT URL is correct."));
+      .catch(err => alert("Connection error. Please double-check your Apps Script Web App deployment URL."));
     }
 
-    // OTP STEP 1: Request OTP
     function handleRequestOtp() {
       const u = document.getElementById("loginUsername").value.trim();
       const p = document.getElementById("loginPassword").value.trim();
@@ -241,17 +322,17 @@
       const err = document.getElementById("loginError");
 
       if (!u || !p) {
-        err.innerText = "Please enter both username and password.";
+        err.innerText = "Please provide both username and password.";
         err.style.display = "block";
         return;
       }
 
-      btn.innerText = "Sending Code...";
+      btn.innerText = "Sending Secure Code...";
       btn.disabled = true;
       err.style.display = "none";
 
       apiCall({ action: "requestOtp", username: u, password: p }, res => {
-        btn.innerText = "SEND OTP";
+        btn.innerText = "SEND VERIFICATION CODE";
         btn.disabled = false;
         if (res.success) {
           pendingUsername = res.username;
@@ -265,14 +346,13 @@
       });
     }
 
-    // OTP STEP 2: Verify OTP Code
     function handleVerifyOtp() {
       const otp = document.getElementById("otpCode").value.trim();
       const btn = document.getElementById("verifyBtn");
       const err = document.getElementById("loginError");
 
       if (!otp || otp.length !== 6) {
-        err.innerText = "Please enter a valid 6-digit OTP code.";
+        err.innerText = "Please enter the complete 6-digit code.";
         err.style.display = "block";
         return;
       }
@@ -282,7 +362,7 @@
       err.style.display = "none";
 
       apiCall({ action: "verifyOtp", username: pendingUsername, otp: otp }, res => {
-        btn.innerText = "VERIFY & LOG IN";
+        btn.innerText = "VERIFY & ENTER";
         btn.disabled = false;
         if (res.success) {
           sessionToken = res.token;
@@ -309,7 +389,7 @@
     }
 
     function showAppView(username, role) {
-      document.getElementById("userBadge").innerText = `${username} (${role})`;
+      document.getElementById("userBadge").innerText = `${username} • ${role.toUpperCase()}`;
       document.getElementById("loginSection").classList.add("hidden");
       document.getElementById("appView").classList.remove("hidden");
 
@@ -337,7 +417,7 @@
     }
 
     function renderCatalogTable(rawMatrix) {
-      if (!rawMatrix || rawMatrix.length === 0) return "<p>No data available.</p>";
+      if (!rawMatrix || rawMatrix.length === 0) return "<p style='padding:12px;'>No records found.</p>";
       let html = "<table><tr>";
       rawMatrix[0].forEach(h => html += `<th>${h}</th>`);
       html += "<th>ACTION</th></tr>";
@@ -353,7 +433,7 @@
     }
 
     function renderTable(rawMatrix) {
-      if (!rawMatrix || rawMatrix.length === 0) return "<p>No data available.</p>";
+      if (!rawMatrix || rawMatrix.length === 0) return "<p style='padding:12px;'>No records found.</p>";
       let html = "<table><tr>";
       rawMatrix[0].forEach(h => html += `<th>${h}</th>`);
       html += "</tr>";
@@ -389,10 +469,10 @@
       const price = parseFloat(document.getElementById("addPrice").value);
       const min = parseInt(document.getElementById("addMin").value);
 
-      if (!id || !name || isNaN(qty) || isNaN(price)) return alert("Please fill in all item fields correctly.");
+      if (!id || !name || isNaN(qty) || isNaN(price)) return alert("Please complete all necessary item fields.");
 
       apiCall({ action: "addItem", itemId: id, itemName: name, category: cat, qty: qty, price: price, minStock: min }, res => {
-        alert(res.success ? "Item added successfully!" : "Error: " + res.message);
+        alert(res.success ? "New item registered successfully!" : "Error: " + res.message);
         if (res.success) {
           document.getElementById("addId").value = "";
           document.getElementById("addName").value = "";
@@ -406,7 +486,7 @@
     }
 
     function deleteItem(itemId) {
-      if (!confirm(`Are you sure you want to delete Item ID: ${itemId}?`)) return;
+      if (!confirm(`Are you sure you want to delete item entry: ${itemId}?`)) return;
       apiCall({ action: "deleteItem", itemId: itemId }, res => {
         alert(res.success ? "Item deleted successfully!" : "Error: " + res.message);
         if (res.success) loadCatalog();
@@ -419,11 +499,11 @@
       let qty = parseInt(document.getElementById("stkQty").value);
       const notes = document.getElementById("stkNotes").value.trim();
 
-      if (!itemId || isNaN(qty) || qty <= 0) return alert("Please enter valid item ID and positive quantity.");
+      if (!itemId || isNaN(qty) || qty <= 0) return alert("Please input a valid item ID and quantity value.");
       if (type === "STOCK OUT") qty = -qty;
 
       apiCall({ action: "adjustStock", itemId: itemId, qtyChange: qty, type: type, notes: notes }, res => {
-        alert(res.success ? "Stock transaction successful!" : "Error: " + res.message);
+        alert(res.success ? "Stock transaction logged successfully!" : "Error: " + res.message);
         if (res.success) {
           document.getElementById("stkId").value = "";
           document.getElementById("stkQty").value = "";
