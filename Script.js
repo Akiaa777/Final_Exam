@@ -1,6 +1,6 @@
 <script>
   // NOTE: replace with your deployed Apps Script web app /exec URL
-  const API_URL = "https://script.google.com/macros/s/AKfycbx3Lg2ST3z6o7N6SkFIdZyXVwydEIe3mIbuPYBxSvqOuy4HfioIaLKH5qsoEtLtbBc/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbzGWbMO8QX_27LC7sr0qzny_MYy19cJzEt-WLX6JNcaXDndiPwx2j2NpgtLlqTwWn6A/exec";
 
   let sessionToken = sessionStorage.getItem("sessionToken");
   let currentUserRole = sessionStorage.getItem("userRole");
