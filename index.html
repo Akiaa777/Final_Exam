@@ -1,56 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+  <base target="_top">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
-  <title>EXTRACT BREW CAFE - Inventory System</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Extract Brew Cafe - Inventory System</title>
+  <?!= include('Style'); ?>
 </head>
 <body>
 
   <!-- LOGIN SECTION -->
-  <div id="loginSection" class="login-card">
-    <h2 style="color: #d97706; margin-bottom: 6px; text-align: center;">EXTRACT BREW</h2>
-    <p style="text-align: center; font-size: 12px; color: #9ca3af; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">Cafe Inventory System</p>
-    
-    <!-- STEP 1: CREDENTIALS -->
-    <div id="stepCredentials">
-      <div class="form-group">
-        <label>USERNAME</label>
-        <input type="text" id="loginUsername" placeholder="Enter username">
-      </div>
-      <div class="form-group" style="position: relative;">
-        <label>PASSWORD</label>
-        <input type="password" id="loginPassword" placeholder="Enter password">
-        <span id="showToggleBtn" onclick="togglePasswordVisibility(event)" style="position: absolute; right: 12px; top: 38px; cursor: pointer; font-size: 13px; color: #9ca3af;">👁️ Show</span>
-      </div>
-      <div style="text-align: right; margin-bottom: 15px;">
-        <a href="#" onclick="handleForgotPassword(event)" style="color: #d97706; font-size: 13px; text-decoration: none;">Forgot Password?</a>
-      </div>
-      <button id="loginBtn" class="btn-primary" onclick="handleRequestOtp()">SEND OTP</button>
-    </div>
+  <div id="loginSection" class="login-wrapper">
+    <div class="login-card">
+      <div class="login-brand">☕ EXTRACT BREW CAFE</div>
+      <p class="login-subtitle">Inventory Management System</p>
 
-    <!-- STEP 2: OTP VERIFICATION -->
-    <div id="stepOtp" class="hidden">
-      <p id="otpNotice" style="font-size: 13px; color: #e5e7eb; margin-bottom: 15px; text-align: center;"></p>
-      <div class="form-group">
-        <label>ENTER 6-DIGIT OTP</label>
-        <input type="text" id="otpCode" class="otp-input-box" maxlength="6" placeholder="123456">
+      <!-- STEP 1: CREDENTIALS -->
+      <div id="stepCredentials">
+        <div class="form-group">
+          <label>USERNAME</label>
+          <input type="text" id="loginUsername" placeholder="Enter username">
+        </div>
+        <div class="form-group" style="position: relative;">
+          <label>PASSWORD</label>
+          <input type="password" id="loginPassword" placeholder="Enter password">
+          <span id="showToggleBtn" class="password-toggle" onclick="togglePasswordVisibility(event)">👁️ Show</span>
+        </div>
+        <div style="text-align: right; margin-bottom: 16px;">
+          <a href="#" class="link-muted" onclick="handleForgotPassword(event)">Forgot Password?</a>
+        </div>
+        <button id="loginBtn" class="btn-primary" onclick="handleRequestOtp()">SEND OTP</button>
       </div>
-      <button id="verifyBtn" class="btn-primary" onclick="handleVerifyOtp()">VERIFY & LOG IN</button>
-      <button style="background: none; border: none; color: #9ca3af; font-size: 12px; cursor: pointer; margin-top: 10px;" onclick="resetToStep1()">← Back to Login</button>
-    </div>
 
-    <p id="loginError" style="color: #ef4444; font-size: 12px; margin-top: 12px; text-align: center; display: none;"></p>
+      <!-- STEP 2: OTP VERIFICATION -->
+      <div id="stepOtp" class="hidden">
+        <p id="otpNotice" style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; text-align: center;"></p>
+        <div class="form-group">
+          <label>ENTER 6-DIGIT OTP</label>
+          <input type="text" id="otpCode" class="otp-input-box" maxlength="6" inputmode="numeric" placeholder="••••••">
+        </div>
+        <button id="verifyBtn" class="btn-primary" onclick="handleVerifyOtp()">VERIFY &amp; LOG IN</button>
+        <button style="background: none; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; margin-top: 12px;" onclick="resetToStep1()">← Back to Login</button>
+      </div>
+
+      <p id="loginError" class="error-text"></p>
+    </div>
   </div>
 
   <!-- MAIN APP SECTION -->
   <div id="appView" class="hidden">
     <header>
       <div class="brand">☕ EXTRACT BREW CAFE</div>
-      <div style="display:flex; align-items:center; gap:10px;">
-        <span id="userBadge" style="font-size: 12px; color: #e5e7eb;">-</span>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span id="userBadge" class="user-badge">-</span>
         <button class="btn-danger" onclick="logout()">Logout</button>
       </div>
     </header>
@@ -69,29 +71,29 @@
     <div class="container">
       <!-- 1. DASHBOARD -->
       <div id="tab-dashboard" class="tab-content card">
-        <h3 style="margin-bottom:12px; color:#d97706;">Cafe Dashboard</h3>
+        <h3>Store Dashboard</h3>
         <div class="grid-3">
-          <div class="metric-box"><div style="font-size:10px; color:#9ca3af;">ITEMS</div><div class="metric-val" id="m-items">0</div></div>
-          <div class="metric-box"><div style="font-size:10px; color:#9ca3af;">VALUATION</div><div class="metric-val" id="m-val">₱0</div></div>
-          <div class="metric-box"><div style="font-size:10px; color:#9ca3af;">LOW STOCK</div><div class="metric-val" id="m-low" style="color:#ef4444;">0</div></div>
+          <div class="metric-box"><div class="metric-label">ITEMS</div><div class="metric-val" id="m-items">0</div></div>
+          <div class="metric-box"><div class="metric-label">VALUATION</div><div class="metric-val" id="m-val">₱0</div></div>
+          <div class="metric-box"><div class="metric-label">LOW STOCK</div><div class="metric-val danger" id="m-low">0</div></div>
         </div>
       </div>
 
       <!-- 2. CATALOG -->
       <div id="tab-catalog" class="tab-content card hidden">
-        <h3 style="color:#d97706;">Item Catalog</h3>
+        <h3>Item Catalog</h3>
         <div id="catalogTable" class="table-responsive">Loading...</div>
       </div>
 
       <!-- 3. ADD NEW ITEM -->
       <div id="tab-addStock" class="tab-content card hidden">
-        <h3 style="color:#d97706; margin-bottom:8px;">Add New Item</h3>
+        <h3>Add New Item</h3>
         <label>Item ID</label>
-        <input type="text" id="addId" placeholder="e.g. BEAN-01">
+        <input type="text" id="addId" placeholder="e.g. 104">
         <label>Item Name</label>
-        <input type="text" id="addName" placeholder="e.g. Arabica Coffee Beans">
+        <input type="text" id="addName" placeholder="e.g. Arabica Coffee Beans, 1kg">
         <label>Category</label>
-        <input type="text" id="addCategory" placeholder="e.g. Beans / Dairy / Syrup">
+        <input type="text" id="addCategory" placeholder="e.g. Beans, Dairy, Syrups, Packaging">
         <label>Initial Quantity</label>
         <input type="number" id="addQty" placeholder="0">
         <label>Unit Price (₱)</label>
@@ -103,44 +105,44 @@
 
       <!-- 4. STOCK IN/OUT -->
       <div id="tab-stock" class="tab-content card hidden">
-        <h3 style="color:#d97706; margin-bottom:8px;">Stock Adjustment</h3>
+        <h3>Stock Adjustment</h3>
         <label>Item ID</label>
-        <input type="text" id="stkId" placeholder="e.g. BEAN-01">
+        <input type="text" id="stkId" placeholder="e.g. 101">
         <label>Movement Type</label>
         <select id="stkType"><option value="STOCK IN">Stock IN (+)</option><option value="STOCK OUT">Stock OUT (-)</option></select>
         <label>Quantity</label>
         <input type="number" id="stkQty" placeholder="0">
         <label>Notes / Reason</label>
-        <input type="text" id="stkNotes" placeholder="e.g. Weekly delivery, Spillage">
+        <input type="text" id="stkNotes" placeholder="e.g. Weekly delivery, Expired milk disposed">
         <button class="btn-amber" onclick="submitStock()">Submit Stock Transaction</button>
       </div>
 
       <!-- 5. SUPPLIERS -->
       <div id="tab-suppliers" class="tab-content card hidden">
-        <h3 style="color:#d97706;">Supplier Contacts</h3>
+        <h3>Supplier Contacts</h3>
         <div id="supplierTable" class="table-responsive">Loading...</div>
       </div>
 
       <!-- 6. LOW STOCK ALERTS -->
       <div id="tab-alerts" class="tab-content card hidden">
-        <h3 style="color:#ef4444;">Low Stock Items</h3>
+        <h3 class="danger-heading">Low Stock Items</h3>
         <div id="alertsTable" class="table-responsive">Loading...</div>
       </div>
 
       <!-- 7. AUDIT LOGS -->
       <div id="tab-logs" class="tab-content card hidden">
-        <h3 style="color:#d97706;">Transaction Audit Trail</h3>
+        <h3>Transaction Audit Trail</h3>
         <div id="logsTable" class="table-responsive">Loading...</div>
       </div>
 
       <!-- 8. USER MANAGEMENT -->
       <div id="tab-users" class="tab-content card hidden">
-        <h3 style="color:#d97706;">System Users</h3>
+        <h3>System Users</h3>
         <div id="usersTable" class="table-responsive">Loading...</div>
       </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <?!= include('Script'); ?>
 </body>
 </html>
