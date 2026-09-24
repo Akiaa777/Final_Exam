@@ -1,5 +1,5 @@
 // Replace with your deployed Google Apps Script Web App URL
-const API_URL = "YOUR_DEPLOYED_APPS_SCRIPT_URL_HERE";
+const API_URL = "https://script.google.com/macros/s/AKfycbyWL7DKt3xT1Kc23RSkaL9cnwWbYKo8u_8tspFMUvPss4qn050wmu992bwAgW2Arazx/exec";
 
 let sessionToken = sessionStorage.getItem("sessionToken");
 let currentUserRole = sessionStorage.getItem("userRole");
