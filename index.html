@@ -1,148 +1,646 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <base target="_top">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Extract Brew Cafe - Inventory System</title>
-  <?!= include('Style'); ?>
+<base target="_top">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
+<title>Extract Brew Cafe - Inventory System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-main: #f6efe2;
+    --bg-surface: #fffcf6;
+    --bg-card: #ffffff;
+    --border-color: #e6d9c3;
+    --border-focus: #6f4423;
+    --text-main: #2b1d12;
+    --text-muted: #8a7660;
+    --primary: #5b3a1e;
+    --primary-hover: #43290f;
+    --accent: #74875f;
+    --accent-hover: #5e6f4c;
+    --danger: #a1402f;
+    --danger-hover: #832f21;
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --------------------------------------
+     LOGIN
+     -------------------------------------- */
+  .login-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(116, 135, 95, 0.08), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(91, 58, 30, 0.08), transparent 45%),
+      var(--bg-main);
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 400px;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 24px 48px -18px rgba(43, 29, 18, 0.35);
+  }
+
+  .login-banner {
+    background: var(--primary);
+    color: #f3e9da;
+    padding: 34px 30px 28px;
+    text-align: center;
+    position: relative;
+  }
+
+  .bean-icon { width: 34px; height: 34px; display: block; margin: 0 auto 10px; opacity: 0.92; }
+
+  .login-brand {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 24px;
+    letter-spacing: 0.3px;
+  }
+
+  .login-subtitle {
+    font-size: 12.5px;
+    color: #d9c7ae;
+    margin-top: 4px;
+    letter-spacing: 0.4px;
+  }
+
+  .login-body { padding: 30px; }
+
+  .form-group { margin-bottom: 16px; text-align: left; }
+  .form-group label {
+    font-size: 11px; font-weight: 600; color: var(--text-muted);
+    letter-spacing: 0.3px; margin-bottom: 5px; display: block;
+  }
+  .form-group input { width: 100%; padding: 12px 14px; padding-right: 66px; }
+
+  .btn-primary {
+    width: 100%;
+    padding: 13px;
+    background: var(--primary);
+    color: #fdf8f0;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 999px;
+    font-size: 14px;
+    transition: var(--transition);
+  }
+  .btn-primary:hover:not(:disabled) { background: var(--primary-hover); }
+  .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+  .otp-input-box { text-align: center; font-size: 22px; letter-spacing: 9px; font-weight: 600; }
+
+  .password-toggle {
+    position: absolute; right: 12px; top: 34px;
+    cursor: pointer; font-size: 12px; color: var(--text-muted); user-select: none;
+  }
+
+  .link-muted { color: var(--primary); font-size: 13px; text-decoration: none; font-weight: 500; }
+  .link-muted:hover { text-decoration: underline; }
+
+  .error-text { color: var(--danger); font-size: 12.5px; margin-top: 14px; text-align: center; display: none; }
+
+  /* --------------------------------------
+     HEADER / NAV
+     -------------------------------------- */
+  header {
+    background: var(--bg-surface);
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky; top: 0; z-index: 10;
+  }
+
+  .brand { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 600; font-size: 18px; color: var(--primary); }
+  .brand .bean-icon { width: 20px; height: 20px; margin: 0; opacity: 1; }
+  .user-badge { font-size: 12.5px; color: var(--text-muted); }
+
+  .nav-bar {
+    display: flex;
+    background: var(--bg-surface);
+    overflow-x: auto;
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-btn {
+    background: none; border: none; border-bottom: 2px solid transparent;
+    color: var(--text-muted); padding: 13px 16px; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: var(--transition);
+  }
+  .nav-btn:hover { color: var(--text-main); }
+  .nav-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+  /* --------------------------------------
+     LAYOUT / CARDS
+     -------------------------------------- */
+  .container { padding: 20px; flex: 1; max-width: 860px; margin: 0 auto; width: 100%; }
+
+  .card {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 10px rgba(43, 29, 18, 0.04);
+  }
+  .card h3 { font-family: var(--font-display); font-weight: 600; margin-bottom: 14px; font-size: 17px; color: var(--primary); }
+  .card h3.danger-heading { color: var(--danger); }
+
+  label { font-size: 11px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.3px; margin-top: 10px; display: block; }
+
+  input, select, button {
+    width: 100%; padding: 12px 14px; margin-top: 5px;
+    border-radius: var(--radius-sm); border: 1px solid var(--border-color);
+    background: var(--bg-main); color: var(--text-main); font-size: 14px;
+    font-family: var(--font-body); transition: var(--transition);
+  }
+  input:focus, select:focus { outline: none; border-color: var(--border-focus); background: #fff; }
+
+  button.btn-amber {
+    background: var(--accent); color: #fff; border: none; font-weight: 600;
+    cursor: pointer; margin-top: 14px; border-radius: 999px;
+  }
+  button.btn-amber:hover { background: var(--accent-hover); }
+
+  button.btn-danger {
+    background: transparent; color: var(--danger); border: 1px solid var(--danger);
+    font-weight: 600; cursor: pointer; padding: 6px 13px; width: auto; font-size: 12px;
+    border-radius: 999px; margin-top: 0;
+  }
+  button.btn-danger:hover { background: var(--danger); color: #fff; }
+
+  /* --------------------------------------
+     DASHBOARD METRICS
+     -------------------------------------- */
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; }
+  .metric-box { background: var(--bg-main); padding: 16px 8px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); }
+  .metric-label { font-size: 10px; color: var(--text-muted); letter-spacing: 0.4px; font-weight: 600; }
+  .metric-val { font-family: var(--font-display); font-size: 23px; font-weight: 600; color: var(--primary); margin-top: 4px; }
+  .metric-val.danger { color: var(--danger); }
+
+  /* --------------------------------------
+     TABLES
+     -------------------------------------- */
+  .table-responsive { overflow-x: auto; margin-top: 12px; }
+  table { width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; }
+  th { background: var(--bg-main); color: var(--primary); padding: 10px; border-bottom: 1px solid var(--border-color); white-space: nowrap; font-weight: 600; }
+  td { padding: 10px; border-bottom: 1px solid var(--border-color); color: var(--text-main); }
+  tr:last-child td { border-bottom: none; }
+  .empty-note { color: var(--text-muted); font-size: 13px; padding: 8px 0; }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 380px) {
+    .grid-3 { grid-template-columns: 1fr 1fr; }
+    .metric-box:last-child { grid-column: span 2; }
+  }
+</style>
 </head>
 <body>
 
-  <!-- LOGIN SECTION -->
-  <div id="loginSection" class="login-wrapper">
-    <div class="login-card">
-      <div class="login-brand">☕ EXTRACT BREW CAFE</div>
-      <p class="login-subtitle">Inventory Management System</p>
+<!-- Shared decorative bean icon (referenced via <use>) -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="bean" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 2C6.5 2 2 6.9 2 12.8 2 18 6 22 11.2 22c1.1 0 2.1-.3 3-.8-2.6-.4-4.6-2.7-4.6-5.4 0-1.6.7-3 1.8-4 .6-.5 1.3-1 1.9-1.6 1.1-1.1 1.7-2.5 1.7-4 0-1.5-.6-2.9-1.6-3.9C13.6 2.1 12.8 2 12 2z"/>
+    <path fill="none" stroke="var(--bg-card, #fff)" stroke-width="1.4" d="M12 3.2c-1.6 1.6-2.6 3.4-2.6 5.4 0 2.6 1.6 4.7 3.8 5.6-2.2.5-3.8 2.5-3.8 4.9"/>
+  </symbol>
+</svg>
 
+<!-- LOGIN SECTION -->
+<div id="loginSection" class="login-wrapper">
+  <div class="login-card">
+    <div class="login-banner">
+      <svg class="bean-icon"><use href="#bean"/></svg>
+      <div class="login-brand">Extract Brew Cafe</div>
+      <div class="login-subtitle">INVENTORY MANAGEMENT</div>
+    </div>
+    <div class="login-body">
       <!-- STEP 1: CREDENTIALS -->
       <div id="stepCredentials">
         <div class="form-group">
-          <label>USERNAME</label>
+          <label>Username</label>
           <input type="text" id="loginUsername" placeholder="Enter username">
         </div>
         <div class="form-group" style="position: relative;">
-          <label>PASSWORD</label>
+          <label>Password</label>
           <input type="password" id="loginPassword" placeholder="Enter password">
-          <span id="showToggleBtn" class="password-toggle" onclick="togglePasswordVisibility(event)">👁️ Show</span>
+          <span id="showToggleBtn" class="password-toggle" onclick="togglePasswordVisibility(event)">Show</span>
         </div>
         <div style="text-align: right; margin-bottom: 16px;">
-          <a href="#" class="link-muted" onclick="handleForgotPassword(event)">Forgot Password?</a>
+          <a href="#" class="link-muted" onclick="handleForgotPassword(event)">Forgot password?</a>
         </div>
-        <button id="loginBtn" class="btn-primary" onclick="handleRequestOtp()">SEND OTP</button>
+        <button id="loginBtn" class="btn-primary" onclick="handleRequestOtp()">Send OTP</button>
       </div>
 
       <!-- STEP 2: OTP VERIFICATION -->
       <div id="stepOtp" class="hidden">
         <p id="otpNotice" style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; text-align: center;"></p>
         <div class="form-group">
-          <label>ENTER 6-DIGIT OTP</label>
+          <label>Enter 6-digit code</label>
           <input type="text" id="otpCode" class="otp-input-box" maxlength="6" inputmode="numeric" placeholder="••••••">
         </div>
-        <button id="verifyBtn" class="btn-primary" onclick="handleVerifyOtp()">VERIFY &amp; LOG IN</button>
-        <button style="background: none; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; margin-top: 12px;" onclick="resetToStep1()">← Back to Login</button>
+        <button id="verifyBtn" class="btn-primary" onclick="handleVerifyOtp()">Verify &amp; Log In</button>
+        <button style="background: none; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; margin-top: 12px;" onclick="resetToStep1()">← Back to login</button>
       </div>
 
       <p id="loginError" class="error-text"></p>
     </div>
   </div>
+</div>
 
-  <!-- MAIN APP SECTION -->
-  <div id="appView" class="hidden">
-    <header>
-      <div class="brand">☕ EXTRACT BREW CAFE</div>
-      <div style="display:flex; align-items:center; gap:12px;">
-        <span id="userBadge" class="user-badge">-</span>
-        <button class="btn-danger" onclick="logout()">Logout</button>
-      </div>
-    </header>
-
-    <div class="nav-bar">
-      <button class="nav-btn active" onclick="switchTab('dashboard')">Dashboard</button>
-      <button class="nav-btn" onclick="switchTab('catalog')">Catalog</button>
-      <button class="nav-btn" onclick="switchTab('addStock')">+ Add New Item</button>
-      <button class="nav-btn" onclick="switchTab('stock')">Stock In/Out</button>
-      <button class="nav-btn" onclick="switchTab('suppliers')">Suppliers</button>
-      <button class="nav-btn" onclick="switchTab('alerts')">Low Stock</button>
-      <button class="nav-btn" onclick="switchTab('logs')">Audit Logs</button>
-      <button class="nav-btn" onclick="switchTab('users')">Users</button>
+<!-- MAIN APP SECTION -->
+<div id="appView" class="hidden">
+  <header>
+    <div class="brand"><svg class="bean-icon"><use href="#bean"/></svg> Extract Brew Cafe</div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span id="userBadge" class="user-badge">-</span>
+      <button class="btn-danger" onclick="logout()">Logout</button>
     </div>
+  </header>
 
-    <div class="container">
-      <!-- 1. DASHBOARD -->
-      <div id="tab-dashboard" class="tab-content card">
-        <h3>Store Dashboard</h3>
-        <div class="grid-3">
-          <div class="metric-box"><div class="metric-label">ITEMS</div><div class="metric-val" id="m-items">0</div></div>
-          <div class="metric-box"><div class="metric-label">VALUATION</div><div class="metric-val" id="m-val">₱0</div></div>
-          <div class="metric-box"><div class="metric-label">LOW STOCK</div><div class="metric-val danger" id="m-low">0</div></div>
-        </div>
-      </div>
-
-      <!-- 2. CATALOG -->
-      <div id="tab-catalog" class="tab-content card hidden">
-        <h3>Item Catalog</h3>
-        <div id="catalogTable" class="table-responsive">Loading...</div>
-      </div>
-
-      <!-- 3. ADD NEW ITEM -->
-      <div id="tab-addStock" class="tab-content card hidden">
-        <h3>Add New Item</h3>
-        <label>Item ID</label>
-        <input type="text" id="addId" placeholder="e.g. 104">
-        <label>Item Name</label>
-        <input type="text" id="addName" placeholder="e.g. Arabica Coffee Beans, 1kg">
-        <label>Category</label>
-        <input type="text" id="addCategory" placeholder="e.g. Beans, Dairy, Syrups, Packaging">
-        <label>Initial Quantity</label>
-        <input type="number" id="addQty" placeholder="0">
-        <label>Unit Price (₱)</label>
-        <input type="number" id="addPrice" placeholder="0.00">
-        <label>Min Stock Alert Level</label>
-        <input type="number" id="addMin" placeholder="5">
-        <button class="btn-amber" onclick="submitNewItem()">Save New Item</button>
-      </div>
-
-      <!-- 4. STOCK IN/OUT -->
-      <div id="tab-stock" class="tab-content card hidden">
-        <h3>Stock Adjustment</h3>
-        <label>Item ID</label>
-        <input type="text" id="stkId" placeholder="e.g. 101">
-        <label>Movement Type</label>
-        <select id="stkType"><option value="STOCK IN">Stock IN (+)</option><option value="STOCK OUT">Stock OUT (-)</option></select>
-        <label>Quantity</label>
-        <input type="number" id="stkQty" placeholder="0">
-        <label>Notes / Reason</label>
-        <input type="text" id="stkNotes" placeholder="e.g. Weekly delivery, Expired milk disposed">
-        <button class="btn-amber" onclick="submitStock()">Submit Stock Transaction</button>
-      </div>
-
-      <!-- 5. SUPPLIERS -->
-      <div id="tab-suppliers" class="tab-content card hidden">
-        <h3>Supplier Contacts</h3>
-        <div id="supplierTable" class="table-responsive">Loading...</div>
-      </div>
-
-      <!-- 6. LOW STOCK ALERTS -->
-      <div id="tab-alerts" class="tab-content card hidden">
-        <h3 class="danger-heading">Low Stock Items</h3>
-        <div id="alertsTable" class="table-responsive">Loading...</div>
-      </div>
-
-      <!-- 7. AUDIT LOGS -->
-      <div id="tab-logs" class="tab-content card hidden">
-        <h3>Transaction Audit Trail</h3>
-        <div id="logsTable" class="table-responsive">Loading...</div>
-      </div>
-
-      <!-- 8. USER MANAGEMENT -->
-      <div id="tab-users" class="tab-content card hidden">
-        <h3>System Users</h3>
-        <div id="usersTable" class="table-responsive">Loading...</div>
-      </div>
-    </div>
+  <div class="nav-bar">
+    <button class="nav-btn active" onclick="switchTab('dashboard')">Dashboard</button>
+    <button class="nav-btn" onclick="switchTab('catalog')">Catalog</button>
+    <button class="nav-btn" onclick="switchTab('addStock')">+ Add New Item</button>
+    <button class="nav-btn" onclick="switchTab('stock')">Stock In/Out</button>
+    <button class="nav-btn" onclick="switchTab('suppliers')">Suppliers</button>
+    <button class="nav-btn" onclick="switchTab('alerts')">Low Stock</button>
+    <button class="nav-btn" onclick="switchTab('logs')">Audit Logs</button>
+    <button class="nav-btn" onclick="switchTab('users')">Users</button>
   </div>
 
-  <?!= include('Script'); ?>
+  <div class="container">
+    <!-- 1. DASHBOARD -->
+    <div id="tab-dashboard" class="tab-content card">
+      <h3>Store Dashboard</h3>
+      <div class="grid-3">
+        <div class="metric-box"><div class="metric-label">ITEMS</div><div class="metric-val" id="m-items">0</div></div>
+        <div class="metric-box"><div class="metric-label">VALUATION</div><div class="metric-val" id="m-val">₱0</div></div>
+        <div class="metric-box"><div class="metric-label">LOW STOCK</div><div class="metric-val danger" id="m-low">0</div></div>
+      </div>
+    </div>
+
+    <!-- 2. CATALOG -->
+    <div id="tab-catalog" class="tab-content card hidden">
+      <h3>Item Catalog</h3>
+      <div id="catalogTable" class="table-responsive">Loading...</div>
+    </div>
+
+    <!-- 3. ADD NEW ITEM -->
+    <div id="tab-addStock" class="tab-content card hidden">
+      <h3>Add New Item</h3>
+      <label>Item ID</label>
+      <input type="text" id="addId" placeholder="e.g. 104">
+      <label>Item Name</label>
+      <input type="text" id="addName" placeholder="e.g. Arabica Coffee Beans, 1kg">
+      <label>Category</label>
+      <input type="text" id="addCategory" placeholder="e.g. Beans, Dairy, Syrups, Packaging">
+      <label>Initial Quantity</label>
+      <input type="number" id="addQty" placeholder="0">
+      <label>Unit Price (₱)</label>
+      <input type="number" id="addPrice" placeholder="0.00">
+      <label>Min Stock Alert Level</label>
+      <input type="number" id="addMin" placeholder="5">
+      <button class="btn-amber" onclick="submitNewItem()">Save New Item</button>
+    </div>
+
+    <!-- 4. STOCK IN/OUT -->
+    <div id="tab-stock" class="tab-content card hidden">
+      <h3>Stock Adjustment</h3>
+      <label>Item ID</label>
+      <input type="text" id="stkId" placeholder="e.g. 101">
+      <label>Movement Type</label>
+      <select id="stkType"><option value="STOCK IN">Stock IN (+)</option><option value="STOCK OUT">Stock OUT (-)</option></select>
+      <label>Quantity</label>
+      <input type="number" id="stkQty" placeholder="0">
+      <label>Notes / Reason</label>
+      <input type="text" id="stkNotes" placeholder="e.g. Weekly delivery, Expired milk disposed">
+      <button class="btn-amber" onclick="submitStock()">Submit Stock Transaction</button>
+    </div>
+
+    <!-- 5. SUPPLIERS -->
+    <div id="tab-suppliers" class="tab-content card hidden">
+      <h3>Supplier Contacts</h3>
+      <div id="supplierTable" class="table-responsive">Loading...</div>
+    </div>
+
+    <!-- 6. LOW STOCK ALERTS -->
+    <div id="tab-alerts" class="tab-content card hidden">
+      <h3 class="danger-heading">Low Stock Items</h3>
+      <div id="alertsTable" class="table-responsive">Loading...</div>
+    </div>
+
+    <!-- 7. AUDIT LOGS -->
+    <div id="tab-logs" class="tab-content card hidden">
+      <h3>Transaction Audit Trail</h3>
+      <div id="logsTable" class="table-responsive">Loading...</div>
+    </div>
+
+    <!-- 8. USER MANAGEMENT -->
+    <div id="tab-users" class="tab-content card hidden">
+      <h3>System Users</h3>
+      <div id="usersTable" class="table-responsive">Loading...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // NOTE: replace with your deployed Apps Script web app /exec URL
+  const API_URL = "https://script.google.com/macros/s/REPLACE_WITH_YOUR_DEPLOYMENT_ID/exec";
+
+  let sessionToken = sessionStorage.getItem("sessionToken");
+  let currentUserRole = sessionStorage.getItem("userRole");
+  let currentUsername = sessionStorage.getItem("userName");
+  let pendingUsername = "";
+
+  window.addEventListener("DOMContentLoaded", () => {
+    if (sessionToken && currentUserRole && currentUsername) {
+      showAppView(currentUsername, currentUserRole);
+    }
+  });
+
+  function togglePasswordVisibility(e) {
+    if (e) e.preventDefault();
+    const passwordInput = document.getElementById("loginPassword");
+    const toggleBtn = document.getElementById("showToggleBtn");
+    passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+    toggleBtn.textContent = passwordInput.type === "password" ? "Show" : "Hide";
+  }
+
+  function handleForgotPassword(e) {
+    if (e) e.preventDefault();
+    alert("Forgot Password?\n\nPlease contact your System Administrator to reset your credentials.");
+  }
+
+  function apiCall(payload, callback) {
+    if (sessionToken) payload.token = sessionToken;
+    fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (!data.success && (data.message === "Unauthorized or session expired." || data.message === "Access denied.")) {
+        alert("Session expired or unauthorized access: " + data.message);
+        logout();
+        return;
+      }
+      callback(data);
+    })
+    .catch(() => alert("Connection error. Make sure API_URL points to your deployed web app."));
+  }
+
+  // OTP STEP 1: Request OTP
+  function handleRequestOtp() {
+    const u = document.getElementById("loginUsername").value.trim();
+    const p = document.getElementById("loginPassword").value.trim();
+    const btn = document.getElementById("loginBtn");
+    const err = document.getElementById("loginError");
+
+    if (!u || !p) {
+      err.innerText = "Please enter both username and password.";
+      err.style.display = "block";
+      return;
+    }
+
+    btn.innerText = "Sending Code...";
+    btn.disabled = true;
+    err.style.display = "none";
+
+    apiCall({ action: "requestOtp", username: u, password: p }, res => {
+      btn.innerText = "Send OTP";
+      btn.disabled = false;
+      if (res.success) {
+        pendingUsername = res.username;
+        document.getElementById("stepCredentials").classList.add("hidden");
+        document.getElementById("stepOtp").classList.remove("hidden");
+        document.getElementById("otpNotice").innerText = res.message;
+        document.getElementById("otpCode").focus();
+      } else {
+        err.innerText = res.message;
+        err.style.display = "block";
+      }
+    });
+  }
+
+  // OTP STEP 2: Verify OTP Code
+  function handleVerifyOtp() {
+    const otp = document.getElementById("otpCode").value.trim();
+    const btn = document.getElementById("verifyBtn");
+    const err = document.getElementById("loginError");
+
+    if (!otp || otp.length !== 6) {
+      err.innerText = "Please enter a valid 6-digit OTP code.";
+      err.style.display = "block";
+      return;
+    }
+
+    btn.innerText = "Verifying...";
+    btn.disabled = true;
+    err.style.display = "none";
+
+    apiCall({ action: "verifyOtp", username: pendingUsername, otp: otp }, res => {
+      btn.innerText = "Verify & Log In";
+      btn.disabled = false;
+      if (res.success) {
+        sessionToken = res.token;
+        currentUserRole = res.role;
+        currentUsername = res.username;
+
+        sessionStorage.setItem("sessionToken", sessionToken);
+        sessionStorage.setItem("userRole", currentUserRole);
+        sessionStorage.setItem("userName", currentUsername);
+
+        showAppView(currentUsername, currentUserRole);
+      } else {
+        err.innerText = res.message;
+        err.style.display = "block";
+      }
+    });
+  }
+
+  function resetToStep1() {
+    document.getElementById("stepOtp").classList.add("hidden");
+    document.getElementById("stepCredentials").classList.remove("hidden");
+    document.getElementById("loginError").style.display = "none";
+    document.getElementById("otpCode").value = "";
+  }
+
+  function showAppView(username, role) {
+    document.getElementById("userBadge").innerText = `${username} (${role})`;
+    document.getElementById("loginSection").classList.add("hidden");
+    document.getElementById("appView").classList.remove("hidden");
+
+    const userTabBtn = document.querySelector("button[onclick=\"switchTab('users')\"]");
+    if (userTabBtn) userTabBtn.style.display = role.toLowerCase() === "admin" ? "inline-block" : "none";
+
+    switchTab("dashboard");
+  }
+
+  function switchTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+    const activeBtn = document.querySelector(`.nav-btn[onclick="switchTab('${tabName}')"]`);
+    if (activeBtn) activeBtn.classList.add('active');
+
+    document.getElementById('tab-' + tabName).classList.remove('hidden');
+
+    if (tabName === 'dashboard') loadDashboard();
+    if (tabName === 'catalog') loadCatalog();
+    if (tabName === 'suppliers') loadSuppliers();
+    if (tabName === 'alerts') loadLowStock();
+    if (tabName === 'logs') loadLogs();
+    if (tabName === 'users') loadUsers();
+  }
+
+  function escapeHtml(val) {
+    return String(val ?? "").replace(/[&<>"']/g, c => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[c]));
+  }
+
+  function renderCatalogTable(rawMatrix) {
+    if (!rawMatrix || rawMatrix.length <= 1) return '<p class="empty-note">No items in the catalog yet.</p>';
+    let html = "<table><tr>";
+    rawMatrix[0].forEach(h => html += `<th>${escapeHtml(h)}</th>`);
+    html += "<th>ACTION</th></tr>";
+
+    for (let i = 1; i < rawMatrix.length; i++) {
+      html += "<tr>";
+      const itemId = rawMatrix[i][0];
+      rawMatrix[i].forEach(cell => html += `<td>${escapeHtml(cell)}</td>`);
+      html += `<td><button class="btn-danger" onclick="deleteItem('${escapeHtml(itemId)}')">Delete</button></td>`;
+      html += "</tr>";
+    }
+    return html + "</table>";
+  }
+
+  function renderTable(rawMatrix, emptyMessage) {
+    if (!rawMatrix || rawMatrix.length <= 1) return `<p class="empty-note">${emptyMessage || "No data available."}</p>`;
+    let html = "<table><tr>";
+    rawMatrix[0].forEach(h => html += `<th>${escapeHtml(h)}</th>`);
+    html += "</tr>";
+    for (let i = 1; i < rawMatrix.length; i++) {
+      html += "<tr>";
+      rawMatrix[i].forEach(cell => html += `<td>${escapeHtml(cell)}</td>`);
+      html += "</tr>";
+    }
+    return html + "</table>";
+  }
+
+  function loadDashboard() {
+    apiCall({ action: "getDashboard" }, res => {
+      if (res.success) {
+        document.getElementById("m-items").innerText = res.totalItems;
+        document.getElementById("m-val").innerText = "₱" + res.totalValue;
+        document.getElementById("m-low").innerText = res.lowStock;
+      }
+    });
+  }
+
+  function loadCatalog() { apiCall({ action: "getInventory" }, res => document.getElementById("catalogTable").innerHTML = renderCatalogTable(res.data)); }
+  function loadSuppliers() { apiCall({ action: "getSuppliers" }, res => document.getElementById("supplierTable").innerHTML = renderTable(res.data, "No suppliers on file yet.")); }
+  function loadLowStock() { apiCall({ action: "getLowStock" }, res => document.getElementById("alertsTable").innerHTML = renderTable(res.data, "Nothing running low right now.")); }
+  function loadLogs() { apiCall({ action: "getTransactions" }, res => document.getElementById("logsTable").innerHTML = renderTable(res.data, "No transactions recorded yet.")); }
+  function loadUsers() { apiCall({ action: "getUsers" }, res => document.getElementById("usersTable").innerHTML = res.success ? renderTable(res.data) : `<p class="empty-note">${res.message}</p>`); }
+
+  function submitNewItem() {
+    const id = document.getElementById("addId").value.trim();
+    const name = document.getElementById("addName").value.trim();
+    const cat = document.getElementById("addCategory").value.trim();
+    const qty = parseInt(document.getElementById("addQty").value);
+    const price = parseFloat(document.getElementById("addPrice").value);
+    const min = parseInt(document.getElementById("addMin").value);
+
+    if (!id || !name || isNaN(qty) || isNaN(price)) return alert("Please fill in all item fields correctly.");
+
+    apiCall({ action: "addItem", itemId: id, itemName: name, category: cat, qty: qty, price: price, minStock: min }, res => {
+      alert(res.success ? "Item added successfully!" : "Error: " + res.message);
+      if (res.success) {
+        document.getElementById("addId").value = "";
+        document.getElementById("addName").value = "";
+        document.getElementById("addCategory").value = "";
+        document.getElementById("addQty").value = "";
+        document.getElementById("addPrice").value = "";
+        document.getElementById("addMin").value = "";
+        switchTab('catalog');
+      }
+    });
+  }
+
+  function deleteItem(itemId) {
+    if (!confirm(`Are you sure you want to delete Item ID: ${itemId}?`)) return;
+    apiCall({ action: "deleteItem", itemId: itemId }, res => {
+      alert(res.success ? "Item deleted successfully!" : "Error: " + res.message);
+      if (res.success) loadCatalog();
+    });
+  }
+
+  function submitStock() {
+    const itemId = document.getElementById("stkId").value.trim();
+    const type = document.getElementById("stkType").value;
+    let qty = parseInt(document.getElementById("stkQty").value);
+    const notes = document.getElementById("stkNotes").value.trim();
+
+    if (!itemId || isNaN(qty) || qty <= 0) return alert("Please enter a valid item ID and a positive quantity.");
+    if (type === "STOCK OUT") qty = -qty;
+
+    apiCall({ action: "adjustStock", itemId: itemId, qtyChange: qty, type: type, notes: notes }, res => {
+      alert(res.success ? "Stock transaction successful!" : "Error: " + res.message);
+      if (res.success) {
+        document.getElementById("stkId").value = "";
+        document.getElementById("stkQty").value = "";
+        document.getElementById("stkNotes").value = "";
+        switchTab('catalog');
+      }
+    });
+  }
+
+  function logout() {
+    sessionToken = null;
+    currentUserRole = null;
+    currentUsername = null;
+    pendingUsername = "";
+    sessionStorage.clear();
+
+    resetToStep1();
+    document.getElementById("appView").classList.add("hidden");
+    document.getElementById("loginSection").classList.remove("hidden");
+  }
+</script>
 </body>
 </html>
